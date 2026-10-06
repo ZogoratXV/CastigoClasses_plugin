@@ -1,0 +1,140 @@
+# CastigoClasses — plugin
+
+Prima versione di test **0.1.0-beta.1** per **Purpur Minecraft 26.2**, Java 25 e **CastigoCore 2.1.0-beta.5**.
+Client: [CastigoClasses Fabric](https://github.com/ZogoratXV/CastigoClasses_fabricmod), Minecraft 26.2 / Fabric Loader 0.19.5.
+
+## Installazione
+
+1. Lascia CastigoCore nella cartella `plugins` del server.
+2. Aggiungi `CastigoClasses-0.1.0-beta.1.jar` nella stessa cartella e riavvia.
+3. LuckPerms è facoltativo: quando presente, il suo gruppo principale viene mostrato nel client.
+4. Installa la mod e Fabric API sul client seguendo il repository della mod.
+
+Al primo avvio vengono creati `plugins/CastigoClasses/config.yml`, `classes/mago.yml`, un esempio di sottoclasse e `players/<UUID>.yml`.
+Ogni nuovo personaggio riceve la classe configurata in `default-class` (Mago). Tutte le otto abilità del mago sono disponibili dal livello 1.
+
+## Contenuti
+
+- Classi YAML, sottoclassi con ereditarietà e requisito di livello, esattamente otto abilità per classe.
+- Attributi iniziali e crescita per livello: forza, destrezza, vita, mana/risorsa, intelligenza, attacco e difesa.
+- Risorsa nominabile (Mana, Vigore, Fede…), colore, capacità, rigenerazione e crescita della rigenerazione.
+- Livelli MMO, esperienza, salvataggi atomici tramite CastigoCore, cooldown persistenti e disposizione delle skill personale.
+- Il server verifica costi, classe, sblocco, cooldown e bersagli: il client invia solo intenzioni.
+- Catalogo dinamico inviato alla mod: nuove classi configurate con gli otto tipi di effetto disponibili non richiedono un aggiornamento client.
+- Particelle e suoni Minecraft visibili/udibili ai giocatori vicini. Non serve un resource pack per questa versione.
+
+| Abilità del mago | Effetto | Costo | Ricarica |
+|---|---|---:|---:|
+| Dardo arcano | Bersaglio in linea di mira | 8 | 1,5 s |
+| Sfera di fuoco | Impatto ad area, senza danni ai blocchi | 18 | 5 s |
+| Nova glaciale | Danno e rallentamento intorno al mago | 20 | 8 s |
+| Passo dimensionale | Teletrasporto breve con controllo del terreno | 15 | 7 s |
+| Barriera arcana | Assorbimento temporaneo dei danni | 22 | 15 s |
+| Ricucitura | Cura personale | 25 | 12 s |
+| Folgore | Colpo elettrico mirato | 24 | 9 s |
+| Meteora | Segnale sul terreno e impatto dopo un secondo | 45 | 25 s |
+
+## Comandi
+
+Permesso giocatori: `castigo.classes.use` (attivo di default).
+
+- `/classe`: riepilogo personaggio, attributi e otto slot.
+- `/classe skill <1-8>`: lancia uno slot, anche senza mod.
+- `/classe scambia <1-8> <1-8>`: scambia due skill e salva.
+- `/classe lista`: classi e sottoclassi disponibili.
+- `/classe sottoclasse <id>`: passa a una figlia diretta della classe corrente, se il livello richiesto è raggiunto. Il passaggio è permanente per il giocatore; lo staff può cambiarlo.
+
+Permesso staff: `castigo.classes.admin` (op di default).
+
+- `/classe set <giocatore-online> <id>`: cambia classe mantenendo livello e percentuale della risorsa. Non ripristina i cooldown.
+- `/classe xp <giocatore-online> <quantità>`: assegna XP MMO.
+- `/classe reload`: valida l'intero catalogo prima di sostituirlo e lo reinvia ai client. Una classe utilizzata da un giocatore online non può essere rimossa.
+
+Alias: `/classi`, `/cc`. Per cambiare una classe base in questa prima versione si usa il comando staff.
+
+## Creare una classe
+
+Copia `classes/mago.yml` con un altro nome e modifica `id` e `name`. Gli ID accettano lettere minuscole, numeri e `_` (massimo 40 caratteri).
+
+```yaml
+id: guerriero
+name: Guerriero
+resource:
+  name: Vigore
+  color: 'E0A24A'
+  regen-per-second: 7
+  regen-per-level: 0.2
+attributes:
+  base:
+    strength: 12
+    dexterity: 5
+    health: 36
+    mana: 80
+    intelligence: 1
+    attack: 3
+    defense: 8
+  per-level:
+    strength: 1.5
+    dexterity: 0.4
+    health: 3
+    mana: 3
+    intelligence: 0.1
+    attack: 0.5
+    defense: 1
+# Aggiungi esattamente otto voci skills come nel mago.
+```
+
+`mana` è la chiave tecnica della capacità della risorsa, anche quando l'etichetta visibile è Vigore o Fede.
+I valori finali sono `base + crescita × (livello - 1)`. La vita è limitata a 1–1024 punti; un cuore vanilla equivale a 2 punti.
+
+Per ogni skill sono configurabili `name`, `description`, `effect`, `icon` (ID di un oggetto Minecraft), `color` RGB, `unlock-level`, `cost`, `cooldown-seconds`, `power`, `intelligence-scale`, `range`, `radius`, `duration-seconds`.
+Gli effetti disponibili sono `BOLT`, `FIREBALL`, `FROST_NOVA`, `BLINK`, `WARD`, `HEAL`, `LIGHTNING`, `METEOR`. I parametri non pertinenti a un effetto vengono ignorati; METEOR ha un ritardo fisso di 1 secondo.
+Il potere è `power + intelligenza × intelligence-scale` per danno, cura e scudo. Il costo resta quello configurato.
+Gli ID skill condivisi tra classi condividono il cooldown per impedire azzeramenti cambiando classe. Usa ID diversi per abilità diverse.
+
+Una nuova **meccanica** di abilità richiede un nuovo esecutore nel plugin. Un nuovo tipo di rendering esclusivamente client richiede anche un aggiornamento mod. Questa versione usa icone, particelle e suoni vanilla.
+
+## Creare una sottoclasse
+
+Rinomina `piromante.yml.example` in `piromante.yml`, poi esegui `/classe reload`:
+
+```yaml
+id: piromante
+name: Piromante
+parent: mago
+required-level: 10
+attributes:
+  base:
+    intelligence: 14
+  per-level:
+    intelligence: 2
+```
+
+La sottoclasse eredita gli attributi e le proprietà della risorsa non specificati. Se `skills` è assente, eredita tutte le otto abilità. Se presente, deve contenere tutte le otto abilità della specializzazione. I valori specificati sostituiscono quelli del genitore, non si sommano. Sono possibili più livelli di specializzazione; cicli e genitori mancanti vengono rifiutati.
+
+## Regole di gioco della beta
+
+- XP richiesti: `ceil(xp.base × xp.growth^(livello-1))`, con limite configurabile di livello. Gli XP vanilla ricevuti tramite `PlayerExpChangeEvent` diventano XP MMO. La conversione non recupera gli XP già consumati prima dell'evento da Ripristino/Mending.
+- Barra e numero esperienza vanilla mostrano la progressione MMO. I comandi vanilla `/experience` non assegnano XP MMO: usa `/classe xp`.
+- Morte: non si perdono livelli/XP MMO e non vengono lasciate sfere XP del giocatore. Respawn: vita e risorsa ripristinate; cooldown mantenuti.
+- Incudini e tavoli da incantamento sono disattivati per i personaggi gestiti, così non spendono i livelli MMO. Una valuta separata per questi servizi è fuori da questa prima versione.
+- Forza aggiunge `forza × combat.strength-melee-factor` all'attacco vanilla; Attacco aggiunge un contributo diretto. Destrezza aumenta proporzionalmente la velocità di attacco, fino a +200%. Intelligenza scala le skill. Difesa applica `danno × 100/(100+difesa)` ai danni da entità, prima delle altre riduzioni vanilla.
+- Vita e attacco sono modificatori rimovibili: eventuali bonus di equipaggiamento o di altri plugin possono sommarsi. La vita configurata sostituisce il valore base convenzionale di 20 tramite un modificatore.
+- Rigenerazione solo online, nessun guadagno della risorsa durante l'assenza. Cambio classe mantiene la percentuale disponibile, senza ricaricare gratuitamente.
+- PvP delle skill disattivato di default. Le skill evitano giocatori creativi/spettatori, animali addomesticati, armor stand e NPC marcati. Danno e teletrasporto passano dagli eventi Bukkit; viene consultata anche `CastigoCore.Protection.interact`.
+- Non vengono distrutti blocchi o creati incendi. Barriera assorbe danni grezzi dopo la difesa, prima di armatura/resistenze; non protegge dal vuoto.
+- Salvataggio atomico ogni 60 secondi, su uscita e su arresto; classe e ordine salvati subito dai relativi comandi. Non eliminare classi usate da profili offline senza migrarli: al login viene impedito di sovrascrivere il profilo con una classe diversa.
+
+## Compilazione e test
+
+Java 25. Copia il JAR originale del core in `libs/CastigoCore.jar` (non viene incorporato o caricato su GitHub).
+
+```powershell
+.\gradlew.bat build
+```
+
+Linux/macOS: `./gradlew build`. Risultato: `build/libs/CastigoClasses-0.1.0-beta.1.jar`.
+Dipendenza API fissata: `org.purpurmc.purpur:purpur-api:26.2.build.2632-stable`.
+
+I test coprono crescita, curva XP, cap, risorse/cooldown, ordine degli slot, ereditarietà/validazione YAML e salvataggi reali attraverso CastigoCore. Build e test automatici verificati; prova multiplayer e compatibilità con gli altri plugin del server ancora da effettuare.
+Protocollo comune: [docs/PROTOCOL.md](docs/PROTOCOL.md). Prove manuali: [docs/TEST-IN-GIOCO.md](docs/TEST-IN-GIOCO.md).
