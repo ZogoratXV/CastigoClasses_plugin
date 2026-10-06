@@ -1,0 +1,28 @@
+plugins { id 'java' }
+group = 'it.castigo'
+version = '0.1.0-beta.1'
+repositories {
+    mavenCentral()
+    maven { url = 'https://repo.purpurmc.org/snapshots' }
+}
+dependencies {
+    compileOnly 'org.purpurmc.purpur:purpur-api:26.2.build.2632-stable'
+    compileOnly files('libs/CastigoCore.jar')
+    compileOnly 'net.luckperms:api:5.4'
+    testImplementation platform('org.junit:junit-bom:5.12.2')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'org.purpurmc.purpur:purpur-api:26.2.build.2632-stable'
+    testRuntimeOnly files('libs/CastigoCore.jar')
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+java { toolchain { languageVersion = JavaLanguageVersion.of(25) } }
+tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
+tasks.named('compileJava') {
+    doFirst {
+        if (!file('libs/CastigoCore.jar').isFile()) {
+            throw new GradleException('Copia CastigoCore-2.1.0-beta.5.jar in libs/CastigoCore.jar prima di compilare.')
+        }
+    }
+}
+test { useJUnitPlatform() }
+processResources { filesMatching('plugin.yml') { expand(version: project.version) } }

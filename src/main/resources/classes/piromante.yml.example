@@ -1,0 +1,15 @@
+# Rinomina in piromante.yml e usa /classe reload per attivarla.
+# Le otto skill e gli attributi non specificati vengono ereditati dal mago.
+id: piromante
+name: Piromante
+parent: mago
+required-level: 10
+description: Specializzazione del mago con maggiore potere magico.
+resource:
+  name: Mana
+  color: 'FF8844'
+attributes:
+  base:
+    intelligence: 14
+  per-level:
+    intelligence: 2

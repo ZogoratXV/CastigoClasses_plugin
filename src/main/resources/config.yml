@@ -1,0 +1,12 @@
+default-class: mago
+max-level: 100
+xp:
+  base: 100
+  growth: 1.18
+  vanilla-multiplier: 1.0
+combat:
+  pvp: false
+  global-cooldown-ms: 350
+  strength-melee-factor: 0.5
+  dexterity-speed-factor: 0.005
+autosave-seconds: 60

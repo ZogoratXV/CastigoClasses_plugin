@@ -1,0 +1,15 @@
+name: CastigoClasses
+version: '${version}'
+main: it.castigo.classes.CastigoClasses
+api-version: '26.2'
+depend: [CastigoCore]
+softdepend: [LuckPerms]
+commands:
+  classe:
+    description: Classi, abilità e progressione Castigo
+    aliases: [classi, cc]
+permissions:
+  castigo.classes.use:
+    default: true
+  castigo.classes.admin:
+    default: op

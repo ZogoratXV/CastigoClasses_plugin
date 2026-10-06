@@ -1,0 +1,114 @@
+id: mago
+name: Mago
+description: Studioso delle arti arcane, del fuoco e del gelo.
+resource:
+  name: Mana
+  color: '668CFF'
+  regen-per-second: 5
+  regen-per-level: 0.15
+attributes:
+  base:
+    strength: 2
+    dexterity: 4
+    health: 24
+    mana: 100
+    intelligence: 10
+    attack: 1
+    defense: 3
+  per-level:
+    strength: 0.2
+    dexterity: 0.3
+    health: 2
+    mana: 6
+    intelligence: 1.5
+    attack: 0.2
+    defense: 0.5
+skills:
+  dardo_arcano:
+    name: Dardo arcano
+    description: Un raggio preciso che colpisce il primo nemico nella linea di mira.
+    effect: BOLT
+    icon: minecraft:amethyst_shard
+    color: 'BB88FF'
+    cost: 8
+    cooldown-seconds: 1.5
+    power: 4
+    intelligence-scale: 0.45
+    range: 28
+  sfera_di_fuoco:
+    name: Sfera di fuoco
+    description: Una sfera esplosiva che danneggia i nemici vicino al punto mirato, senza distruggere blocchi.
+    effect: FIREBALL
+    icon: minecraft:fire_charge
+    color: 'FF8833'
+    cost: 18
+    cooldown-seconds: 5
+    power: 6
+    intelligence-scale: 0.6
+    range: 24
+    radius: 3
+  nova_glaciale:
+    name: Nova glaciale
+    description: Un anello di gelo danneggia e rallenta i nemici circostanti.
+    effect: FROST_NOVA
+    icon: minecraft:packed_ice
+    color: '88DDFF'
+    cost: 20
+    cooldown-seconds: 8
+    power: 3
+    intelligence-scale: 0.3
+    radius: 5
+    duration-seconds: 4
+  passo_dimensionale:
+    name: Passo dimensionale
+    description: Ti sposta in avanti fino a una destinazione libera e con terreno sicuro.
+    effect: BLINK
+    icon: minecraft:ender_pearl
+    color: 'BB66FF'
+    cost: 15
+    cooldown-seconds: 7
+    range: 8
+  barriera_arcana:
+    name: Barriera arcana
+    description: Assorbe parte dei danni subiti per alcuni secondi.
+    effect: WARD
+    icon: minecraft:shield
+    color: '7799FF'
+    cost: 22
+    cooldown-seconds: 15
+    power: 8
+    intelligence-scale: 0.5
+    duration-seconds: 8
+  ricucitura:
+    name: Ricucitura
+    description: Ripristina immediatamente parte della tua vita.
+    effect: HEAL
+    icon: minecraft:glistering_melon_slice
+    color: '66EEBB'
+    cost: 25
+    cooldown-seconds: 12
+    power: 5
+    intelligence-scale: 0.6
+  folgore:
+    name: Folgore
+    description: Un lampo colpisce il nemico mirato senza incendiare il terreno.
+    effect: LIGHTNING
+    icon: minecraft:lightning_rod
+    color: 'FFEE88'
+    cost: 24
+    cooldown-seconds: 9
+    power: 8
+    intelligence-scale: 0.8
+    range: 24
+  meteora:
+    name: Meteora
+    description: Segna il terreno e, dopo un secondo, scatena un impatto ad area.
+    effect: METEOR
+    icon: minecraft:magma_cream
+    color: 'FF5544'
+    cost: 45
+    cooldown-seconds: 25
+    power: 12
+    intelligence-scale: 1.2
+    range: 28
+    radius: 5
