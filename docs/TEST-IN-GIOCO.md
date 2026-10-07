@@ -30,3 +30,16 @@ Se qualcosa non funziona, conserva `logs/latest.log` del server e del client e i
 7. Controllare che K → Disposizione skill conservi trascinamento, scambio e salvataggio; HUD medievale, fame e barre vanilla devono mantenere il comportamento precedente.
 
 Queste verifiche in gioco restano da eseguire sul server; build e test automatici non sostituiscono la prova multiplayer.
+
+
+## Core beta.9 e VFX client
+
+1. Avviare con CastigoCore beta.9 e plugin beta.3, accedere con mod beta.4: provare tutte le otto skill e verificare che non ci siano NoSuchMethodError e che statistiche/profili restino corretti.
+2. Due giocatori con mod: lanciare una skill e verificare effetti e audio anche dall'osservatore. Un client senza mod aggiornata non deve ricevere VFX delle skill, mentre il danno rimane effettivo.
+3. Applicare l'esempio presentation a una skill e fare reload: verificare LINE, RING, SPIRAL, BURST, RGB, dimensione, tono e durata. Disabilitare particelle, suono e presentation separatamente. Nessuna variazione ai danni o ai costi.
+4. Provare costo insufficiente, cooldown e bersaglio assente: nessun cast VFX. Meteora: preavviso immediato, impatto dopo un secondo; cambio mondo/morte prima dell'impatto lo annullano. Barriera: HIT solo quando assorbe danno.
+5. Inserire una configurazione non valida: reload deve essere rifiutato conservando il catalogo precedente. Ripristinare valori validi e ricaricare.
+6. Uscire, cambiare mondo, spegnere il plugin o allontanarsi: nessuna animazione rimasta in coda. Sotto molti lanci simultanei i dettagli cosmetici possono essere scartati, mantenendo risultati di gioco corretti.
+7. Con WorldGuard verificare INTERACT deny, bypass autorizzato e zona con BUILD deny ma INTERACT allow; controllare anche eventi PvP/danno e teletrasporto. Eseguire prove con l'anticheat effettivamente installato.
+
+Questa prova grafica/multiplayer non è stata eseguita durante la compilazione automatica.

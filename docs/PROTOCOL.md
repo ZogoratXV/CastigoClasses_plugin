@@ -55,3 +55,20 @@ Campi facoltativi aggiunti a `state`:
 - `stats` contiene i totali comprensivi dei punti spesi.
 
 La versione resta 1: i client precedenti ignorano i campi aggiunti; il nuovo client nasconde i controlli quando `statPoints` non è presente. Alla disconnessione o all'arrivo di uno stato senza questi campi vengono cancellati i dati precedenti. Il client limita localmente le assegnazioni a una ogni 250 ms; resta valido il limite server di 80 ms per le richieste.
+
+
+## VFX eseguiti dal client (plugin beta.3 / mod beta.4)
+
+Saluto nuovo client: `{"v":1,"type":"hello","clientVfx":1}`. `clientVfx` è facoltativo: solo questi client ricevono gli eventi grafici. Il campo facoltativo `world` nello stato è l'UUID Bukkit del mondo corrente, usato come identificatore opaco.
+
+Esempio server → client:
+
+```json
+{"v":1,"type":"vfx","world":"11111111-1111-1111-1111-111111111111","shape":"LINE","from":[0,64,0],"at":[10,64,0],"points":24,"durationTicks":8,"radius":3,"particles":{"enabled":true,"id":"minecraft:dust","count":1,"spread":0.08,"color":12290303,"size":1.2},"sound":{"enabled":false,"id":"minecraft:block.amethyst_block.chime","category":"PLAYERS","volume":0.7,"pitch":1}}
+```
+
+Le forme ammesse sono BURST, LINE, RING e SPIRAL. RING traccia una circonferenza; SPIRAL traccia due giri salendo di 2 blocchi; LINE interpola from→at; BURST emette una sola volta in at. Il server decide i momenti di attivazione, senza delegare danno o collisione al rendering. Ogni evento è indipendente e non richiede risposta client.
+
+Il client accetta solo eventi nel mondo dello stato attivo, entro 64 blocchi dal segmento, con segmento massimo 128 blocchi, 2–32 punti, 1–40 tick, raggio 0,1–12, count 1–32, spread 0–2, size 0,05–4, volume 0–2 e pitch 0,5–2. Coordinate finite e ID validi sono obbligatori. DUST include color RGB/size; gli altri tipi supportati sono particelle semplici. Suoni personalizzati richiedono asset client.
+
+Il server limita a 32 eventi per destinatario/tick; il client mantiene massimo 64 animazioni e limita a 512 emissioni dirette di particelle e 8 suoni/tick. L'eccesso cosmetico viene scartato. Cambio mondo/client level, disconnessione e timeout dello stato svuotano le animazioni. I vecchi client ignorano il nuovo messaggio e non lo ricevono se non dichiarano clientVfx. Il catalogo resta privo degli oggetti runtime Bukkit/ParticleStyle; i preset completi restano sul server.

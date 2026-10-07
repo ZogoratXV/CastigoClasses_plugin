@@ -3,7 +3,7 @@ version: '${version}'
 main: it.castigo.classes.CastigoClasses
 api-version: '26.2'
 depend: [CastigoCore]
-softdepend: [LuckPerms]
+softdepend: [LuckPerms, WorldGuard]
 commands:
   classe:
     description: Classi, abilità e progressione Castigo

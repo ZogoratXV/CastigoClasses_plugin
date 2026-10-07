@@ -1,6 +1,7 @@
 package it.castigo.classes.config;
 
 import it.castigo.classes.model.*;
+import it.castigo.classes.SkillPresentation;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
@@ -9,6 +10,7 @@ import java.util.*;
 public final class ClassCatalog {
     private final Map<String, ClassDefinition> definitions = new LinkedHashMap<>();
     private final Map<String, ConfigurationSection> raw = new LinkedHashMap<>();
+    private final Map<Skill, SkillPresentation> presentations = new IdentityHashMap<>();
     public ClassCatalog(File directory) throws Exception {
         File[] files = directory.listFiles((d, n) -> n.endsWith(".yml"));
         if (files == null || files.length == 0) throw new IllegalArgumentException("Nessuna classe nella cartella classes");
@@ -24,6 +26,7 @@ public final class ClassCatalog {
     }
     public Map<String, ClassDefinition> all() { return Collections.unmodifiableMap(definitions); }
     public ClassDefinition get(String id) { return definitions.get(id); }
+    public SkillPresentation presentation(Skill skill) { return presentations.get(skill); }
     private ClassDefinition resolve(String id, Set<String> path) {
         if (definitions.containsKey(id)) return definitions.get(id);
         if (!path.add(id)) throw new IllegalArgumentException("Ciclo nelle sottoclassi: " + id);
@@ -39,13 +42,17 @@ public final class ClassCatalog {
         if (section == null && p != null) skills.addAll(p.skills());
         else if (section != null) for (String sid : section.getKeys(false)) {
             identifier(sid); ConfigurationSection s = Objects.requireNonNull(section.getConfigurationSection(sid));
-            skills.add(new Skill(sid, text(s,"name",sid), text(s,"description",""),
+            Skill skill=new Skill(sid, text(s,"name",sid), text(s,"description",""),
                     Skill.Effect.valueOf(s.getString("effect", "BOLT").toUpperCase(Locale.ROOT)),
                     text(s,"icon","minecraft:amethyst_shard"), color(s.getString("color","AA77FF")),
                     (int)number(s,"unlock-level",1,1,1000), number(s,"cost",10,0,1000000),
                     (long)(number(s,"cooldown-seconds",2,0.1,86400)*1000), number(s,"power",5,0,10000),
                     number(s,"intelligence-scale",0.5,0,100), number(s,"range",24,1,64),
-                    number(s,"radius",4,0.5,12), (int)(number(s,"duration-seconds",5,0.05,120)*20)));
+                    number(s,"radius",4,0.5,12), (int)(number(s,"duration-seconds",5,0.05,120)*20));
+            skills.add(skill);
+            if(s.contains("presentation")&&!s.isConfigurationSection("presentation"))throw new IllegalArgumentException("Sezione presentation richiesta: "+sid);
+            try { presentations.put(skill,SkillPresentation.read(s.getConfigurationSection("presentation"),skill)); }
+            catch(RuntimeException ex) { throw new IllegalArgumentException(id+"/"+sid+": "+ex.getMessage(),ex); }
         }
         if (skills.size()!=8) throw new IllegalArgumentException(id+": servono esattamente 8 skill");
         ClassDefinition result = new ClassDefinition(id, text(c,"name",id), text(c,"description",""), parentId,

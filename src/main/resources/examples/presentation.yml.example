@@ -1,0 +1,47 @@
+# Copia presentation dentro una singola skill nel relativo classes/<classe>.yml.
+# Richiede mod 0.1.0-beta.4: le forme vengono animate dal client.
+# I campi omessi mantengono il preset dell'effetto della skill.
+presentation:
+  enabled: true
+  cast:
+    shape: SPIRAL
+    points: 24
+    duration-ticks: 12
+    radius: 0.6
+    particles:
+      enabled: true
+      particle: DUST
+      count: 1
+      spread: 0.02
+      color: 'D8B9FF'
+      size: 0.8
+  trail:
+    enabled: true
+    shape: LINE
+    points: 32
+    duration-ticks: 6
+    particles:
+      enabled: true
+      particle: DUST
+      count: 1
+      spread: 0.03
+      color: 'AA66FF'
+      size: 1.1
+  impact:
+    shape: RING
+    points: 24
+    duration-ticks: 8
+    radius: 1.2
+    particles:
+      enabled: true
+      particle: DUST
+      count: 1
+      spread: 0.02
+      color: 'E8D8FF'
+      size: 0.8
+    sound:
+      enabled: true
+      id: minecraft:block.amethyst_block.chime
+      category: PLAYERS
+      volume: 0.8
+      pitch: 1.4

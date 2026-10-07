@@ -1,12 +1,12 @@
 # CastigoClasses — plugin
 
-Versione di test **0.1.0-beta.2** per **Purpur Minecraft 26.2**, Java 25 e **CastigoCore 2.1.0-beta.5**.
+Versione di test **0.1.0-beta.3** per **Purpur Minecraft 26.2**, Java 25 e **CastigoCore 2.1.0-beta.9**.
 Client: [CastigoClasses Fabric](https://github.com/ZogoratXV/CastigoClasses_fabricmod), Minecraft 26.2 / Fabric Loader 0.19.5.
 
 ## Installazione
 
 1. Lascia CastigoCore nella cartella `plugins` del server.
-2. Aggiungi `CastigoClasses-0.1.0-beta.2.jar` nella stessa cartella e riavvia.
+2. Aggiungi `CastigoClasses-0.1.0-beta.3.jar` nella stessa cartella e riavvia.
 3. LuckPerms è facoltativo: quando presente, il suo gruppo principale viene mostrato nel client.
 4. Installa la mod e Fabric API sul client seguendo il repository della mod.
 
@@ -21,7 +21,7 @@ Ogni nuovo personaggio riceve la classe configurata in `default-class` (Mago). T
 - Livelli MMO, esperienza, salvataggi atomici tramite CastigoCore, cooldown persistenti e disposizione delle skill personale.
 - Il server verifica costi, classe, sblocco, cooldown e bersagli: il client invia solo intenzioni.
 - Catalogo dinamico inviato alla mod: nuove classi configurate con gli otto tipi di effetto disponibili non richiedono un aggiornamento client.
-- Particelle e suoni Minecraft visibili/udibili ai giocatori vicini. Non serve un resource pack per questa versione.
+- VFX e suoni delle skill configurabili: il plugin invia eventi ai giocatori vicini con la mod beta.4, che anima localmente raggi, anelli, spirali e particelle. Asset vanilla, senza resource pack obbligatorio.
 
 | Abilità del mago | Effetto | Costo | Ricarica |
 |---|---|---:|---:|
@@ -92,7 +92,7 @@ Gli effetti disponibili sono `BOLT`, `FIREBALL`, `FROST_NOVA`, `BLINK`, `WARD`, 
 Il potere è `power + intelligenza × intelligence-scale` per danno, cura e scudo. Il costo resta quello configurato.
 Gli ID skill condivisi tra classi condividono il cooldown per impedire azzeramenti cambiando classe. Usa ID diversi per abilità diverse.
 
-Una nuova **meccanica** di abilità richiede un nuovo esecutore nel plugin. Un nuovo tipo di rendering esclusivamente client richiede anche un aggiornamento mod. Questa versione usa icone, particelle e suoni vanilla.
+Una nuova **meccanica** di abilità richiede un nuovo esecutore nel plugin. Un nuovo tipo di rendering esclusivamente client richiede anche un aggiornamento mod. Questa versione compone animazioni client con icone, particelle e suoni vanilla.
 
 ## Creare una sottoclasse
 
@@ -121,7 +121,7 @@ La sottoclasse eredita gli attributi e le proprietà della risorsa non specifica
 - Forza aggiunge `forza × combat.strength-melee-factor` all'attacco vanilla; Attacco aggiunge un contributo diretto. Destrezza aumenta proporzionalmente la velocità di attacco, fino a +200%. Intelligenza scala le skill. Difesa applica `danno × 100/(100+difesa)` ai danni da entità, prima delle altre riduzioni vanilla.
 - Vita e attacco sono modificatori rimovibili: eventuali bonus di equipaggiamento o di altri plugin possono sommarsi. La vita configurata sostituisce il valore base convenzionale di 20 tramite un modificatore.
 - Rigenerazione solo online, nessun guadagno della risorsa durante l'assenza. Cambio classe mantiene la percentuale disponibile, senza ricaricare gratuitamente.
-- PvP delle skill disattivato di default. Le skill evitano giocatori creativi/spettatori, animali addomesticati, armor stand e NPC marcati. Danno e teletrasporto passano dagli eventi Bukkit; viene consultata anche `CastigoCore.Protection.interact`.
+- PvP delle skill disattivato di default. Le skill evitano giocatori creativi/spettatori, animali addomesticati, armor stand e NPC marcati. Danno e teletrasporto passano dagli eventi Bukkit; un adattatore preserva il controllo WorldGuard INTERACT rimosso dal core beta.9.
 - Non vengono distrutti blocchi o creati incendi. Barriera assorbe danni grezzi dopo la difesa, prima di armatura/resistenze; non protegge dal vuoto.
 - Salvataggio atomico ogni 60 secondi, su uscita e su arresto; classe e ordine salvati subito dai relativi comandi. Non eliminare classi usate da profili offline senza migrarli: al login viene impedito di sovrascrivere il profilo con una classe diversa.
 
@@ -133,7 +133,7 @@ Java 25. Copia il JAR originale del core in `libs/CastigoCore.jar` (non viene in
 .\gradlew.bat build
 ```
 
-Linux/macOS: `./gradlew build`. Risultato: `build/libs/CastigoClasses-0.1.0-beta.2.jar`.
+Linux/macOS: `./gradlew build`. Risultato: `build/libs/CastigoClasses-0.1.0-beta.3.jar`.
 Dipendenza API fissata: `org.purpurmc.purpur:purpur-api:26.2.build.2632-stable`.
 
 I test coprono crescita, curva XP, cap, risorse/cooldown, ordine degli slot, ereditarietà/validazione YAML e salvataggi reali attraverso CastigoCore. Build e test automatici verificati; prova multiplayer e compatibilità con gli altri plugin del server ancora da effettuare.
@@ -175,3 +175,9 @@ Ogni totale è `base + crescita × (livello - 1) + punti assegnati × bonus per 
 | Difesa | Riduce il danno da entità con `danno × 100/(100+difesa)`, prima delle riduzioni vanilla |
 
 Le stesse formule usano sia la crescita automatica sia i punti assegnati. Il pannello mostra danno e velocità degli attributi Minecraft correnti, inclusi i modificatori applicabili: il danno finale di un colpo dipende anche da ricarica, critici, armatura e bersaglio. La riduzione mostrata riguarda solo la difesa MMO. Non si possono spendere punti quando il relativo contributo ha già raggiunto il limite.
+
+## Aggiornamento core e VFX client
+
+Usa la mod **0.1.0-beta.4** per vedere e sentire gli effetti delle skill. Configurazione e limiti: [docs/VFX-CLIENT.md](docs/VFX-CLIENT.md). L'esempio viene creato in `examples/presentation.yml.example` al primo avvio. I vecchi YAML ricevono preset compatibili senza essere sovrascritti.
+
+Le cinque discipline del documento RP sono soltanto valutate in [docs/PROPOSTA-DISCIPLINE.md](docs/PROPOSTA-DISCIPLINE.md): le 40 abilità non sono incluse in questa build.

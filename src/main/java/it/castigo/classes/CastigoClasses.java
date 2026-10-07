@@ -25,6 +25,9 @@ public final class CastigoClasses extends JavaPlugin implements Listener, Plugin
     private final Gson gson=new Gson();
     private final Map<UUID,Profile> profiles=new HashMap<>();
     private final Set<UUID> connected=new HashSet<>();
+    private final Set<UUID> clientEffects=new HashSet<>();
+    private final Map<UUID,Integer> effectPackets=new HashMap<>();
+    private int effectTick=-1;
     private final Map<UUID,Long> lastRequest=new HashMap<>();
     private final Map<UUID,Long> lastCatalog=new HashMap<>();
     private ProfileStore store;
@@ -38,7 +41,9 @@ public final class CastigoClasses extends JavaPlugin implements Listener, Plugin
         saveDefaultConfig();
         if(!new File(getDataFolder(),"classes/mago.yml").exists()) saveResource("classes/mago.yml",false);
         if(!new File(getDataFolder(),"classes/piromante.yml.example").exists()) saveResource("classes/piromante.yml.example",false);
+        if(!new File(getDataFolder(),"examples/presentation.yml.example").exists()) saveResource("examples/presentation.yml.example",false);
         try {
+            Class.forName("it.castigo.core.ParticleStyle").getMethod("read",org.bukkit.configuration.ConfigurationSection.class);
             loadConfiguration();
             getConfig().options().copyDefaults(true);
             saveConfig();
@@ -103,12 +108,13 @@ public final class CastigoClasses extends JavaPlugin implements Listener, Plugin
             if(connected.contains(p.getUniqueId())) send(p,"disabled",new JsonObject());
             removeModifiers(p);
         }
-        profiles.clear(); connected.clear();
+        profiles.clear(); connected.clear();clientEffects.clear();effectPackets.clear();
     }
     @EventHandler public void join(PlayerJoinEvent e) { load(e.getPlayer()); }
     @EventHandler public void quit(PlayerQuitEvent e) {
         Player p=e.getPlayer(); Profile data=profiles.remove(p.getUniqueId()); if(data!=null) save(data);
         connected.remove(p.getUniqueId()); lastRequest.remove(p.getUniqueId()); lastCatalog.remove(p.getUniqueId()); removeModifiers(p);
+        clientEffects.remove(p.getUniqueId());effectPackets.remove(p.getUniqueId());
         engine.clear(p.getUniqueId());
     }
     @EventHandler public void respawn(PlayerRespawnEvent e) {
@@ -203,6 +209,7 @@ public final class CastigoClasses extends JavaPlugin implements Listener, Plugin
         if(!connected.contains(player.getUniqueId()))return;
         Profile p=profile(player); if(p==null)return;
         JsonObject obj=new JsonObject();
+        obj.addProperty("world",player.getWorld().getUID().toString());
         obj.addProperty("name",net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer.plainText().serialize(player.displayName())); obj.addProperty("classId",p.classId);
         obj.addProperty("level",p.level); obj.addProperty("xp",p.xp); obj.addProperty("xpNext",progression.required(p.level));
         obj.addProperty("health",player.getHealth()); obj.addProperty("maxHealth",player.getAttribute(Attribute.MAX_HEALTH).getValue());
@@ -250,6 +257,8 @@ public final class CastigoClasses extends JavaPlugin implements Listener, Plugin
             String type=o.get("type").getAsString();
             if(type.equals("hello")) {
                 if(now-lastCatalog.getOrDefault(player.getUniqueId(),0L)<1000)return;
+                if(o.has("clientVfx")&&o.get("clientVfx").getAsInt()==1)clientEffects.add(player.getUniqueId());
+                else clientEffects.remove(player.getUniqueId());
                 lastCatalog.put(player.getUniqueId(),now);connected.add(player.getUniqueId()); catalog(player); return;
             }
             if(!connected.contains(player.getUniqueId())||!player.hasPermission("castigo.classes.use"))return;
@@ -270,6 +279,16 @@ public final class CastigoClasses extends JavaPlugin implements Listener, Plugin
     private void cast(Player p,int slot) {
         if(slot<0||slot>=8||profile(p)==null||!p.hasPermission("castigo.classes.use"))return;
         engine.cast(p,definition(profile(p)).skill(profile(p).slots.get(slot)));
+    }
+    public void broadcastEffect(Location from,Location at,JsonObject effect) {
+        int tick=Bukkit.getCurrentTick();if(tick!=effectTick) { effectTick=tick;effectPackets.clear(); }
+        var a=(from==null?at:from).toVector();var delta=at.toVector().subtract(a);double length=delta.lengthSquared();
+        for(Player observer:at.getWorld().getPlayers()) {
+            UUID id=observer.getUniqueId();if(!clientEffects.contains(id)||effectPackets.getOrDefault(id,0)>=32)continue;
+            var eye=observer.getEyeLocation().toVector();double t=length<0.001?0:Math.max(0,Math.min(1,eye.clone().subtract(a).dot(delta)/length));
+            if(eye.distanceSquared(a.clone().add(delta.clone().multiply(t)))>64*64)continue;
+            effectPackets.merge(id,1,Integer::sum);send(observer,"vfx",effect);
+        }
     }
     private void allocate(Player player,StatAttribute stat) {
         Profile p=profile(player);

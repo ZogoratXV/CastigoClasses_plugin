@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.0-beta.3 — 2026-10-07
+
+- Compilazione e persistenza contro CastigoCore 2.1.0-beta.9; adattatore WorldGuard INTERACT per l'API rimossa.
+- Preset VFX/suoni configurabili per fase, validati da ParticleStyle; esempio YAML e reload compatibile con le classi esistenti.
+- Eventi grafici compatti inviati alla mod compatibile, senza rendering delle skill sul server; limiti di distanza e frequenza.
+- Protocollo con capacità clientVfx e UUID mondo; nessuna decisione di combattimento nel client.
+- Valutazione delle 40 abilità RP e proposta di gradi, senza implementare le nuove classi.
+
 ## 0.1.0-beta.2 — 2026-10-07
 
 - Punti attributo configurabili, assegnazione server tramite comando/mod e salvataggio immediato.
