@@ -30,6 +30,7 @@ public final class CastigoClasses extends JavaPlugin implements Listener, Plugin
     private ProfileStore store;
     private ClassCatalog catalog;
     private Progression progression;
+    private StatPointRules statPoints;
     private SkillEngine engine;
     private int ticks;
 
@@ -39,6 +40,8 @@ public final class CastigoClasses extends JavaPlugin implements Listener, Plugin
         if(!new File(getDataFolder(),"classes/piromante.yml.example").exists()) saveResource("classes/piromante.yml.example",false);
         try {
             loadConfiguration();
+            getConfig().options().copyDefaults(true);
+            saveConfig();
             store=new ProfileStore(new File(getDataFolder(),"players"));
         } catch(Exception e) { getLogger().severe("Configurazione non valida: "+e.getMessage()); getServer().getPluginManager().disablePlugin(this); return; }
         engine=new SkillEngine(this);
@@ -61,17 +64,32 @@ public final class CastigoClasses extends JavaPlugin implements Listener, Plugin
         ClassCatalog.number(getConfig(),"combat.dexterity-speed-factor",0.005,0,1);
         ClassCatalog.number(getConfig(),"combat.global-cooldown-ms",350,100,60000);
         ClassCatalog.number(getConfig(),"autosave-seconds",60,10,3600);
-        catalog=next; progression=curve;
+        int interval=configInteger("stat-points.every-levels",2,1,1000);
+        int amount=configInteger("stat-points.points-per-award",1,0,1000);
+        Stats gain=new Stats(pointGain("strength",1),pointGain("dexterity",1),pointGain("health",2),
+                pointGain("mana",5),pointGain("intelligence",1),pointGain("attack",1),pointGain("defense",1));
+        StatPointRules pointRules=new StatPointRules(interval,amount,gain);
+        catalog=next; progression=curve; statPoints=pointRules;
     }
+    private int configInteger(String key,int fallback,int min,int max) {
+        double value=ClassCatalog.number(getConfig(),key,fallback,min,max);
+        if(value!=Math.rint(value))throw new IllegalArgumentException("Numero intero richiesto: "+key);
+        return (int)value;
+    }
+    private double pointGain(String stat,double fallback) { return ClassCatalog.number(getConfig(),"stat-points.per-point."+stat,fallback,0,1000); }
+    private double strengthFactor() { return getConfig().getDouble("combat.strength-melee-factor",0.5); }
+    private double dexterityFactor() { return getConfig().getDouble("combat.dexterity-speed-factor",0.005); }
     public Profile profile(Player p) { return profiles.get(p.getUniqueId()); }
     public ClassDefinition definition(Profile p) { return catalog.get(p.classId); }
     public ClassCatalog catalog() { return catalog; }
-    public Stats stats(Player p) { Profile data=profile(p); return definition(data).stats(data.level); }
+    public Stats stats(Player p) { return stats(profile(p)); }
+    private Stats stats(Profile p) { return statPoints.total(p,definition(p)); }
     private void load(Player player) {
         try {
             Profile p=store.load(player.getUniqueId(),catalog.get(getConfig().getString("default-class","mago")),progression.maxLevel());
             if(catalog.get(p.classId)==null) throw new IllegalStateException("Classe salvata non trovata: "+p.classId);
-            p.normalize(definition(p)); progression.add(p,0);
+            progression.add(p,0); statPoints.reconcile(p);p.normalize(definition(p),stats(p));
+            store.save(p); // Persist migration/retroactive awards before the profile becomes usable.
             profiles.put(player.getUniqueId(),p); applyStats(player); displayXp(player,p);
         } catch(Exception e) { getLogger().severe("Caricamento profilo "+player.getUniqueId()+": "+e.getMessage()); player.kickPlayer("Profilo classi non disponibile. Contatta lo staff."); }
     }
@@ -96,7 +114,7 @@ public final class CastigoClasses extends JavaPlugin implements Listener, Plugin
     @EventHandler public void respawn(PlayerRespawnEvent e) {
         getServer().getScheduler().runTask(this,()-> {
             Player p=e.getPlayer(); Profile data=profile(p); if(data==null)return;
-            applyStats(p); data.resource=definition(data).stats(data.level).mana();
+            applyStats(p); data.resource=stats(p).mana();
             p.setHealth(p.getAttribute(Attribute.MAX_HEALTH).getValue()); sync(p);
         });
     }
@@ -123,6 +141,10 @@ public final class CastigoClasses extends JavaPlugin implements Listener, Plugin
     public void grantXp(Player player,long amount) {
         Profile p=profile(player); if(p==null)return;
         int before=p.level; progression.add(p,amount);
+        int awarded=statPoints.reconcile(p);
+        if(awarded>0) {
+            save(p);player.sendMessage("§6Hai guadagnato "+awarded+" punti attributo. Disponibili: "+p.availableStatPoints());
+        }
         if(p.level!=before) {
             applyStats(player); player.sendMessage("§dLivello "+p.level+" raggiunto!");
             player.playSound(player.getLocation(),Sound.ENTITY_PLAYER_LEVELUP,0.6f,1.1f);
@@ -138,7 +160,7 @@ public final class CastigoClasses extends JavaPlugin implements Listener, Plugin
         for(Player player:Bukkit.getOnlinePlayers()) {
             Profile p=profile(player); if(p==null)continue;
             ClassDefinition d=definition(p);
-            if(!player.isDead()) p.resource=AbilityRules.regenerate(p.resource,d.stats(p.level).mana(),d.regenPerSecond()+d.regenPerLevel()*(p.level-1),0.25);
+            if(!player.isDead()) p.resource=AbilityRules.regenerate(p.resource,stats(p).mana(),d.regenPerSecond()+d.regenPerLevel()*(p.level-1),0.25);
             p.cooldowns.entrySet().removeIf(e->e.getValue()<=System.currentTimeMillis());
             displayXp(player,p); sync(player);
         }
@@ -160,8 +182,8 @@ public final class CastigoClasses extends JavaPlugin implements Listener, Plugin
     public void applyStats(Player p) {
         Stats s=stats(p); double hp=p.getHealth();
         modifier(p,Attribute.MAX_HEALTH,"health",s.health()-20,AttributeModifier.Operation.ADD_NUMBER);
-        modifier(p,Attribute.ATTACK_DAMAGE,"attack",s.attack()+s.strength()*getConfig().getDouble("combat.strength-melee-factor",0.5),AttributeModifier.Operation.ADD_NUMBER);
-        modifier(p,Attribute.ATTACK_SPEED,"dexterity",Math.min(2,s.dexterity()*getConfig().getDouble("combat.dexterity-speed-factor",0.005)),AttributeModifier.Operation.ADD_SCALAR);
+        modifier(p,Attribute.ATTACK_DAMAGE,"attack",CombatMath.meleeBonus(s,strengthFactor()),AttributeModifier.Operation.ADD_NUMBER);
+        modifier(p,Attribute.ATTACK_SPEED,"dexterity",CombatMath.speedBonus(s,dexterityFactor()),AttributeModifier.Operation.ADD_SCALAR);
         if(!p.isDead()) p.setHealth(Math.min(hp,p.getAttribute(Attribute.MAX_HEALTH).getValue()));
     }
     public void send(Player player,String type,JsonObject body) {
@@ -186,6 +208,21 @@ public final class CastigoClasses extends JavaPlugin implements Listener, Plugin
         obj.addProperty("health",player.getHealth()); obj.addProperty("maxHealth",player.getAttribute(Attribute.MAX_HEALTH).getValue());
         obj.addProperty("resource",p.resource); obj.addProperty("maxResource",stats(player).mana());
         obj.addProperty("group",group(player)); obj.add("stats",gson.toJsonTree(stats(player)));
+        JsonObject points=new JsonObject(),allocated=new JsonObject();JsonArray allocatable=new JsonArray();
+        for(StatAttribute stat:StatAttribute.values()) {
+            allocated.addProperty(stat.id(),p.allocatedStats.getOrDefault(stat,0));
+            if(player.hasPermission("castigo.classes.use")&&!player.isDead()&&statPoints.canAllocate(p,definition(p),stat,strengthFactor(),dexterityFactor()))allocatable.add(stat.id());
+        }
+        points.addProperty("available",p.availableStatPoints());points.addProperty("earned",p.earnedStatPoints);
+        points.addProperty("everyLevels",statPoints.everyLevels());points.addProperty("pointsPerAward",statPoints.pointsPerAward());
+        points.add("allocated",allocated);points.add("perPoint",gson.toJsonTree(statPoints.perPoint()));points.add("canAllocate",allocatable);
+        obj.add("statPoints",points);
+        JsonObject combat=new JsonObject();
+        combat.addProperty("attackDamage",player.getAttribute(Attribute.ATTACK_DAMAGE).getValue());
+        combat.addProperty("attackSpeed",player.getAttribute(Attribute.ATTACK_SPEED).getValue());
+        combat.addProperty("meleeBonus",CombatMath.meleeBonus(stats(p),strengthFactor()));
+        combat.addProperty("defenseReductionPercent",CombatMath.defenseReduction(stats(p)));
+        obj.add("combat",combat);
         obj.add("slots",gson.toJsonTree(p.slots)); JsonObject cooldowns=new JsonObject();
         p.cooldowns.forEach((id,end)->cooldowns.addProperty(id,Math.max(0,end-System.currentTimeMillis())));
         obj.add("cooldowns",cooldowns); send(player,"state",obj);
@@ -218,6 +255,7 @@ public final class CastigoClasses extends JavaPlugin implements Listener, Plugin
             if(!connected.contains(player.getUniqueId())||!player.hasPermission("castigo.classes.use"))return;
             switch(type) {
                 case "cast" -> cast(player,o.get("slot").getAsInt());
+                case "allocate" -> allocate(player,StatAttribute.parse(o.get("attribute").getAsString()));
                 case "reorder" -> {
                     List<String> order=new ArrayList<>();o.getAsJsonArray("slots").forEach(e->order.add(e.getAsString()));
                     Profile p=profile(player);
@@ -233,6 +271,23 @@ public final class CastigoClasses extends JavaPlugin implements Listener, Plugin
         if(slot<0||slot>=8||profile(p)==null||!p.hasPermission("castigo.classes.use"))return;
         engine.cast(p,definition(profile(p)).skill(profile(p).slots.get(slot)));
     }
+    private void allocate(Player player,StatAttribute stat) {
+        Profile p=profile(player);
+        if(p==null||!player.hasPermission("castigo.classes.use")||player.isDead())return;
+        var before=new EnumMap<>(p.allocatedStats);
+        if(!statPoints.allocate(p,definition(p),stat,strengthFactor(),dexterityFactor())) {
+            feedback(player,"Punti insufficienti oppure attributo al limite/disabilitato.");sync(player);return;
+        }
+        try { store.save(p); }
+        catch(Exception e) {
+            p.allocatedStats.clear();p.allocatedStats.putAll(before);
+            getLogger().severe("Salvataggio assegnazione punti "+p.uuid+": "+e.getMessage());
+            feedback(player,"Assegnazione annullata: impossibile salvare il profilo.");sync(player);return;
+        }
+        applyStats(player);sync(player);
+        String label=stat==StatAttribute.MANA?definition(p).resourceName():stat.label();
+        feedback(player,label+" +"+statPoints.perPoint().value(stat)+" | Punti rimasti: "+p.availableStatPoints());
+    }
     @Override public boolean onCommand(CommandSender sender,Command command,String label,String[] args) {
         try {
             if(args.length>0 && Set.of("reload","set","xp").contains(args[0])) {
@@ -242,7 +297,8 @@ public final class CastigoClasses extends JavaPlugin implements Listener, Plugin
                     try { reloadConfig(); loadConfiguration(); }
                     catch(Exception invalid) { getConfig().loadFromString(oldConfig); throw invalid; }
                     for(Player p:Bukkit.getOnlinePlayers()) if(profile(p)!=null) {
-                        progression.add(profile(p),0);profile(p).normalize(definition(profile(p)));
+                        Profile profile=profile(p);progression.add(profile,0);statPoints.reconcile(profile);
+                        profile.normalize(definition(profile),stats(profile));save(profile);
                         applyStats(p);if(connected.contains(p.getUniqueId()))catalog(p);
                     }
                     sender.sendMessage("Classi ricaricate.");return true;
@@ -257,6 +313,7 @@ public final class CastigoClasses extends JavaPlugin implements Listener, Plugin
             if(!(sender instanceof Player p)) { sender.sendMessage("Comandi staff: /classe set|xp|reload");return true; }
             if(profile(p)==null||!p.hasPermission("castigo.classes.use"))return true;
             Profile data=profile(p);
+            if(args.length==2&&args[0].equals("assegna")) { allocate(p,StatAttribute.parse(args[1]));return true; }
             if(args.length==2&&args[0].equals("skill")) { cast(p,Integer.parseInt(args[1])-1);return true; }
             if(args.length==3&&args[0].equals("scambia")) {
                 int a=Integer.parseInt(args[1])-1,b=Integer.parseInt(args[2])-1;
@@ -275,6 +332,9 @@ public final class CastigoClasses extends JavaPlugin implements Listener, Plugin
             p.sendMessage("§d"+d.name()+" §fLv. "+data.level+" | XP "+data.xp+"/"+progression.required(data.level));
             p.sendMessage("§b"+d.resourceName()+": "+Math.round(data.resource)+"/"+Math.round(s.mana()));
             p.sendMessage("§7Forza "+s.strength()+" | Destrezza "+s.dexterity()+" | Vita "+s.health()+" | Intelligenza "+s.intelligence()+" | Attacco "+s.attack()+" | Difesa "+s.defense());
+            p.sendMessage("§6Punti attributo: "+data.availableStatPoints()+" | /classe assegna <attributo>");
+            p.sendMessage(String.format(Locale.ITALIAN,"§7Danno d'attacco: %.2f | Velocità: %.2f | Riduzione da difesa: %.2f%%",
+                    p.getAttribute(Attribute.ATTACK_DAMAGE).getValue(),p.getAttribute(Attribute.ATTACK_SPEED).getValue(),CombatMath.defenseReduction(s)));
             for(int i=0;i<8;i++)p.sendMessage((i+1)+". "+d.skill(data.slots.get(i)).name());
             p.sendMessage("§7/classe skill <1-8> | scambia <1-8> <1-8> | lista | sottoclasse <id>");
         } catch(Exception e) { sender.sendMessage("§c"+e.getMessage()); }
@@ -283,11 +343,12 @@ public final class CastigoClasses extends JavaPlugin implements Listener, Plugin
     private void changeClass(Player p,String id) {
         ClassDefinition next=catalog.get(id);if(next==null)throw new IllegalArgumentException("Classe sconosciuta");
         Profile data=profile(p);double fraction=data.resource/Math.max(1,stats(p).mana());
-        data.classId=id;data.normalize(next);data.resource=next.stats(data.level).mana()*fraction;
+        data.classId=id;data.normalize(next,stats(data));data.resource=stats(data).mana()*fraction;
         engine.clear(p.getUniqueId());applyStats(p);sync(p);p.sendMessage("§dClasse: "+next.name());
     }
     @Override public List<String> onTabComplete(CommandSender s,Command c,String label,String[] args) {
-        List<String> choices=args.length==1?new ArrayList<>(List.of("lista","skill","scambia","sottoclasse")):new ArrayList<>();
+        List<String> choices=args.length==1?new ArrayList<>(List.of("lista","skill","scambia","sottoclasse","assegna")):new ArrayList<>();
+        if(args.length==2&&args[0].equals("assegna"))for(StatAttribute stat:StatAttribute.values())choices.add(stat.label().toLowerCase(Locale.ROOT));
         if(args.length==1&&s.hasPermission("castigo.classes.admin"))choices.addAll(List.of("reload","set","xp"));
         if(args.length==2&&args[0].equals("sottoclasse")||args.length==3&&args[0].equals("set"))choices.addAll(catalog.all().keySet());
         if(args.length==2&&Set.of("set","xp").contains(args[0])&&s.hasPermission("castigo.classes.admin"))Bukkit.getOnlinePlayers().forEach(p->choices.add(p.getName()));

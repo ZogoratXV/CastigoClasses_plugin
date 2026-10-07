@@ -1,12 +1,12 @@
 # CastigoClasses — plugin
 
-Prima versione di test **0.1.0-beta.1** per **Purpur Minecraft 26.2**, Java 25 e **CastigoCore 2.1.0-beta.5**.
+Versione di test **0.1.0-beta.2** per **Purpur Minecraft 26.2**, Java 25 e **CastigoCore 2.1.0-beta.5**.
 Client: [CastigoClasses Fabric](https://github.com/ZogoratXV/CastigoClasses_fabricmod), Minecraft 26.2 / Fabric Loader 0.19.5.
 
 ## Installazione
 
 1. Lascia CastigoCore nella cartella `plugins` del server.
-2. Aggiungi `CastigoClasses-0.1.0-beta.1.jar` nella stessa cartella e riavvia.
+2. Aggiungi `CastigoClasses-0.1.0-beta.2.jar` nella stessa cartella e riavvia.
 3. LuckPerms è facoltativo: quando presente, il suo gruppo principale viene mostrato nel client.
 4. Installa la mod e Fabric API sul client seguendo il repository della mod.
 
@@ -85,7 +85,7 @@ attributes:
 ```
 
 `mana` è la chiave tecnica della capacità della risorsa, anche quando l'etichetta visibile è Vigore o Fede.
-I valori finali sono `base + crescita × (livello - 1)`. La vita è limitata a 1–1024 punti; un cuore vanilla equivale a 2 punti.
+I valori finali includono anche i bonus dei punti attributo assegnati (vedi sotto). La vita è limitata a 1–1024 punti; un cuore vanilla equivale a 2 punti.
 
 Per ogni skill sono configurabili `name`, `description`, `effect`, `icon` (ID di un oggetto Minecraft), `color` RGB, `unlock-level`, `cost`, `cooldown-seconds`, `power`, `intelligence-scale`, `range`, `radius`, `duration-seconds`.
 Gli effetti disponibili sono `BOLT`, `FIREBALL`, `FROST_NOVA`, `BLINK`, `WARD`, `HEAL`, `LIGHTNING`, `METEOR`. I parametri non pertinenti a un effetto vengono ignorati; METEOR ha un ritardo fisso di 1 secondo.
@@ -133,8 +133,45 @@ Java 25. Copia il JAR originale del core in `libs/CastigoCore.jar` (non viene in
 .\gradlew.bat build
 ```
 
-Linux/macOS: `./gradlew build`. Risultato: `build/libs/CastigoClasses-0.1.0-beta.1.jar`.
+Linux/macOS: `./gradlew build`. Risultato: `build/libs/CastigoClasses-0.1.0-beta.2.jar`.
 Dipendenza API fissata: `org.purpurmc.purpur:purpur-api:26.2.build.2632-stable`.
 
 I test coprono crescita, curva XP, cap, risorse/cooldown, ordine degli slot, ereditarietà/validazione YAML e salvataggi reali attraverso CastigoCore. Build e test automatici verificati; prova multiplayer e compatibilità con gli altri plugin del server ancora da effettuare.
 Protocollo comune: [docs/PROTOCOL.md](docs/PROTOCOL.md). Prove manuali: [docs/TEST-IN-GIOCO.md](docs/TEST-IN-GIOCO.md).
+
+## Punti attributo
+
+Apri **K → Attributi** e premi **+** accanto alla statistica, oppure usa `/classe assegna <attributo>` (forza, destrezza, vita, mana/risorsa, intelligenza, attacco, difesa). Ogni pressione spende un punto; il server verifica disponibilità e limiti e salva immediatamente. La scheda **Disposizione skill** conserva il riordino degli otto slot. In questa versione non è previsto il rimborso dei punti.
+
+In `plugins/CastigoClasses/config.yml`:
+
+```yaml
+stat-points:
+  every-levels: 2
+  points-per-award: 1
+  per-point:
+    strength: 1
+    dexterity: 1
+    health: 2
+    mana: 5
+    intelligence: 1
+    attack: 1
+    defense: 1
+```
+
+Il valore predefinito assegna un punto ai livelli 2, 4, 6…; con `every-levels: 1` si inizia dal livello 2. `points-per-award: 0` disabilita le nuove ricompense; un bonus `per-point` pari a zero disabilita l'assegnazione a quell'attributo. Applica le modifiche con `/classe reload`.
+
+I vecchi profili ricevono una sola volta i punti già maturati secondo il loro livello. Successivamente, le modifiche a frequenza e quantità valgono per i livelli futuri, senza ricalcolare ricompense precedenti. Abbassare e riguadagnare livelli non duplica i punti. Cambio classe, sottoclasse e riconnessione conservano punti e assegnazioni. Modificare `per-point` ricalcola invece il bonus di tutti i punti già spesi.
+
+Ogni totale è `base + crescita × (livello - 1) + punti assegnati × bonus per punto`, entro i limiti previsti. Vita massima 1024; gli altri attributi arrivano a 1.000.000. L'aumento di vita o risorsa massima non cura e non ricarica istantaneamente.
+
+| Attributo totale | Effetto effettivo |
+|---|---|
+| Forza e attacco | Bonus all'attacco corpo a corpo: `attacco + forza × combat.strength-melee-factor`, massimo 2047 |
+| Destrezza | Bonus proporzionale alla velocità d'attacco: `destrezza × combat.dexterity-speed-factor`, massimo +200% |
+| Vita | Aumenta la vita massima |
+| Mana/risorsa | Aumenta la capacità di Mana, Vigore, Fede o altra risorsa della classe |
+| Intelligenza | Aumenta danno, cura e barriera delle skill secondo `intelligence-scale` |
+| Difesa | Riduce il danno da entità con `danno × 100/(100+difesa)`, prima delle riduzioni vanilla |
+
+Le stesse formule usano sia la crescita automatica sia i punti assegnati. Il pannello mostra danno e velocità degli attributi Minecraft correnti, inclusi i modificatori applicabili: il danno finale di un colpo dipende anche da ricarica, critici, armatura e bersaglio. La riduzione mostrata riguarda solo la difesa MMO. Non si possono spendere punti quando il relativo contributo ha già raggiunto il limite.

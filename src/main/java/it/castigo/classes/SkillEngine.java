@@ -32,7 +32,7 @@ public final class SkillEngine implements Listener {
             case NO_RESOURCE -> { plugin.feedback(p,plugin.definition(data).resourceName()+" insufficiente");return; }
             case READY -> { }
         }
-        double power=skill.power()+plugin.stats(p).intelligence()*skill.intelligenceScale();
+        double power=CombatMath.skillPower(plugin.stats(p),skill);
         double previousResource=data.resource;long previousGlobal=data.globalReadyAt;
         Long previousCooldown=data.cooldowns.get(skill.id());
         AbilityRules.commit(data,skill,now,plugin.getConfig().getLong("combat.global-cooldown-ms",350));

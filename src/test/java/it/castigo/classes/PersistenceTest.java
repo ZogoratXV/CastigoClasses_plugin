@@ -31,4 +31,25 @@ class PersistenceTest {
         assertThrows(Exception.class,()->new ProfileStore(players.toFile()).load(uuid,mage,100));
         assertEquals(broken,Files.readString(file));
     }
+    @Test void legacyProfileReceivesRetroactivePointsOnceAndKeepsInvestmentsAfterReconnect() throws Exception {
+        ClassDefinition mage=mage();Path players=Files.createDirectory(directory.resolve("players"));
+        UUID uuid=UUID.randomUUID();Files.writeString(players.resolve(uuid+".yml"),"schema: 1\nclass: mago\nlevel: 10\nxp: 17\nresource: 90\n");
+        ProfileStore store=new ProfileStore(players.toFile());
+        StatPointRules rules=new StatPointRules(2,1,new Stats(1,1,2,5,1,1,1));
+        Profile p=store.load(uuid,mage,100);assertEquals(5,rules.reconcile(p));
+        assertTrue(rules.allocate(p,mage,StatAttribute.ATTACK,0.5,0.005));
+        p.normalize(mage,rules.total(p,mage));store.save(p);
+        Profile loaded=store.load(uuid,mage,100);assertEquals(0,rules.reconcile(loaded));
+        assertEquals(4,loaded.availableStatPoints());assertEquals(1,loaded.allocatedStats.get(StatAttribute.ATTACK));
+        assertEquals(10,loaded.statPointsRewardedThroughLevel);assertEquals(17,loaded.xp);
+        assertEquals(rules.total(p,mage),rules.total(loaded,mage));
+    }
+    @Test void corruptPointLedgerIsRejectedWithoutOverwritingTheFile() throws Exception {
+        ClassDefinition mage=mage();Path players=Files.createDirectory(directory.resolve("players"));
+        UUID uuid=UUID.randomUUID();Path file=players.resolve(uuid+".yml");
+        String bad="class: mago\nlevel: 10\nstat-points:\n  earned: 1\n  allocated:\n    strength: 5\n";
+        Files.writeString(file,bad);
+        assertThrows(Exception.class,()->new ProfileStore(players.toFile()).load(uuid,mage,100));
+        assertEquals(bad,Files.readString(file));
+    }
 }
