@@ -33,6 +33,12 @@ public final class SkillEngine implements Listener {
     void visual(Player p,Skill s,Location at) {
         effects.play(plugin.catalog().presentation(s),SkillPresentation.Stage.IMPACT,p.getEyeLocation(),at);
     }
+    void visual(Player p,Skill s,LivingEntity target) {
+        var fx=plugin.catalog().presentation(s);
+        boolean beam=fx.cues().get(SkillPresentation.Stage.IMPACT).shape()==SkillPresentation.Shape.HEALING_BEAM;
+        Location at=target.getLocation().add(0,beam?0:1,0);
+        effects.play(fx,SkillPresentation.Stage.IMPACT,beam?at:p.getEyeLocation(),at,target.getUniqueId());
+    }
 
     public void cast(Player p,Skill skill) {
         Profile data=plugin.profile(p); long now=System.currentTimeMillis();

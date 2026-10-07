@@ -129,7 +129,7 @@ public final class DisciplineEngine implements Listener {
                     if(target.equals(p)||buff(p,Kind.LINK)!=null||buffs.values().stream().anyMatch(b->b.key.kind()==Kind.LINK&&b.source.player().equals(target.getUniqueId())))return fail(p,"Vincolo non valido: scegli un altro alleato senza catene di protezione.");
                     put(p,target,Kind.LINK,s,0,mechanics(s).fraction());
                 }
-                engine.visual(p,s,target.getLocation().add(0,1,0));
+                engine.visual(p,s,target);
             }
             case REPULSE -> { for(LivingEntity e:engine.area(p,p.getLocation(),s.radius()))push(p,e,e.getLocation().toVector().subtract(p.getLocation().toVector()),0.8); }
             case SANCTUARY,RUIN,VORTEX -> {

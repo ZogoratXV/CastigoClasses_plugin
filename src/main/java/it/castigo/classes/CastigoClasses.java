@@ -26,6 +26,7 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
     private final Map<UUID,Profile> profiles=new HashMap<>();
     private final Set<UUID> connected=new HashSet<>();
     private final Set<UUID> clientEffects=new HashSet<>();
+    private final Set<UUID> healingEffects=new HashSet<>();
     private final Map<UUID,Integer> effectPackets=new HashMap<>();
     private int effectTick=-1;
     private final Map<UUID,Long> lastRequest=new HashMap<>();
@@ -133,6 +134,7 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
         Player p=e.getPlayer(); Profile data=profiles.remove(p.getUniqueId()); if(data!=null) save(data);
         connected.remove(p.getUniqueId()); lastRequest.remove(p.getUniqueId()); lastCatalog.remove(p.getUniqueId()); removeModifiers(p);
         clientEffects.remove(p.getUniqueId());effectPackets.remove(p.getUniqueId());
+        healingEffects.remove(p.getUniqueId());
         engine.clear(p.getUniqueId());
     }
     @EventHandler public void respawn(PlayerRespawnEvent e) {
@@ -280,8 +282,10 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
             String type=o.get("type").getAsString();
             if(type.equals("hello")) {
                 if(now-lastCatalog.getOrDefault(player.getUniqueId(),0L)<1000)return;
-                if(o.has("clientVfx")&&o.get("clientVfx").getAsInt()==1)clientEffects.add(player.getUniqueId());
+                int vfx=o.has("clientVfx")?o.get("clientVfx").getAsInt():0;
+                if(vfx==1||vfx==2)clientEffects.add(player.getUniqueId());
                 else clientEffects.remove(player.getUniqueId());
+                if(o.has("healingBeam")&&o.get("healingBeam").getAsInt()==1)healingEffects.add(player.getUniqueId());else healingEffects.remove(player.getUniqueId());
                 lastCatalog.put(player.getUniqueId(),now);connected.add(player.getUniqueId()); catalog(player); return;
             }
             if(!connected.contains(player.getUniqueId())||!player.hasPermission("castigo.classes.use"))return;
@@ -310,7 +314,13 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
             UUID id=observer.getUniqueId();if(!clientEffects.contains(id)||effectPackets.getOrDefault(id,0)>=32)continue;
             var eye=observer.getEyeLocation().toVector();double t=length<0.001?0:Math.max(0,Math.min(1,eye.clone().subtract(a).dot(delta)/length));
             if(eye.distanceSquared(a.clone().add(delta.clone().multiply(t)))>64*64)continue;
-            effectPackets.merge(id,1,Integer::sum);send(observer,"vfx",effect);
+            effectPackets.merge(id,1,Integer::sum);
+            JsonObject outgoing=effect;
+            if(effect.get("shape").getAsString().equals("HEALING_BEAM")&&!healingEffects.contains(id)) {
+                outgoing=effect.deepCopy();outgoing.addProperty("shape","SPIRAL");outgoing.remove("target");
+                outgoing.getAsJsonObject("sound").addProperty("id","minecraft:block.amethyst_block.chime");
+            }
+            send(observer,"vfx",outgoing);
         }
     }
     private void allocate(Player player,StatAttribute stat) {

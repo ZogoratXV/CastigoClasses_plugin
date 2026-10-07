@@ -12,6 +12,8 @@ public class DisciplineIntegrationTest {
     // MockBukkit cannot instantiate the supplied final core plugin. Only its scheduling
     // bridge is substituted; ParticleStyle and atomic profile writes use the real core JAR.
     public static class TestClasses extends CastigoClasses {
+        final java.util.List<com.google.gson.JsonObject> effects=new java.util.ArrayList<>();
+        @Override public void broadcastEffect(Location from,Location at,com.google.gson.JsonObject effect) { effects.add(effect.deepCopy()); }
         @Override protected void scheduleTick(Runnable task) { getServer().getScheduler().runTaskTimer(this,task,5,5); }
         @Override protected void cancelTicks() { getServer().getScheduler().cancelTasks(this); }
     }
@@ -149,5 +151,31 @@ public class DisciplineIntegrationTest {
     @Test void normalPlayerCannotOpenAdminGui() {
         plugin.onCommand(player,plugin.getCommand("classe"),"classe",new String[]{"admin"});
         assertNull(player.getOpenInventory().getTopInventory());
+    }
+    @Test void orisonSelfCastEmitsBeamAtRecipientsFeet() {
+        player.getWorld().loadChunk(player.getLocation().getChunk());
+        player.setSneaking(true);player.setHealth(5);use("mago_bianco",1);
+        var effects=((TestClasses)plugin).effects;assertEquals(1,effects.size());var effect=effects.getFirst();
+        assertEquals("HEALING_BEAM",effect.get("shape").getAsString());
+        assertEquals(player.getUniqueId().toString(),effect.get("target").getAsString());
+        assertEquals(player.getLocation().getY(),effect.getAsJsonArray("at").get(1).getAsDouble());
+        assertEquals("castigoclasses:skill.orison",effect.getAsJsonObject("sound").get("id").getAsString());
+    }
+    @Test void targetedVisualUsesRecipientInsteadOfCaster() {
+        var recipient=server.addPlayer("Recipient");recipient.teleport(player.getLocation().add(4,0,0));
+        recipient.getWorld().loadChunk(recipient.getLocation().getChunk());
+        var skill=plugin.catalog().get("mago_bianco").skills().getFirst();
+        new SkillEngine(plugin).visual(player,skill,recipient);
+        var effect=((TestClasses)plugin).effects.getLast();
+        assertEquals(recipient.getUniqueId().toString(),effect.get("target").getAsString());
+        assertEquals(recipient.getLocation().getX(),effect.getAsJsonArray("at").get(0).getAsDouble());
+        assertEquals(effect.getAsJsonArray("at"),effect.getAsJsonArray("from"));
+    }
+    @Test void unsuccessfulOrisonDoesNotEmitGraphicsOrSound() {
+        command("set",player.getName(),"mago_bianco");command("livello",player.getName(),"50");
+        player.setSneaking(true);player.setHealth(player.getAttribute(Attribute.MAX_HEALTH).getValue());
+        plugin.profile(player).resource=1000;
+        plugin.onCommand(player,plugin.getCommand("classe"),"classe",new String[]{"skill","1"});
+        assertTrue(((TestClasses)plugin).effects.isEmpty());
     }
 }

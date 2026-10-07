@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.0-beta.6 — 2026-10-07
+
+- Preset Orison HEALING_BEAM, UUID del destinatario e origine ai suoi piedi, solo a cura riuscita.
+- Suono originale castigoclasses:skill.orison riprodotto dalla mod beta.6.
+- Negoziazione healingBeam e ripiego SPIRAL/audio vanilla per mod precedenti.
+- 60 test plugin; documentazione del preset e dei limiti di collaudo.
+
 ## 0.1.0-beta.5 — 2026-10-07
 
 - Cure e selezione dei bersagli senza vincoli di squadra; rimosso il gate combat.pvp interno, mantenute protezioni del mondo e delle regioni.

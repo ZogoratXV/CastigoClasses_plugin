@@ -11,10 +11,17 @@ public final class PresentationPlayer {
     private long nextWarning;
     public PresentationPlayer(CastigoClasses plugin) { this.plugin=plugin; }
     public void play(SkillPresentation fx,SkillPresentation.Stage stage,Location from,Location at) {
+        play(fx,stage,from,at,null);
+    }
+    public void play(SkillPresentation fx,SkillPresentation.Stage stage,Location from,Location at,java.util.UUID target) {
         if(fx==null||!fx.enabled()||at==null||at.getWorld()==null||!at.getWorld().isChunkLoaded(at.getBlockX()>>4,at.getBlockZ()>>4))return;
         var cue=fx.cues().get(stage);if(cue==null||!cue.enabled())return;
         if(!cue.particles().enabled()&&!cue.sound().enabled())return;
-        try { plugin.broadcastEffect(from,at,packet(cue,from,at)); }
+        try {
+            JsonObject packet=packet(cue,from,at);
+            if(target!=null)packet.addProperty("target",target.toString());
+            plugin.broadcastEffect(from,at,packet);
+        }
         catch(RuntimeException ex) {
             // A cosmetic failure must not refund a skill that has already dealt damage.
             if(System.currentTimeMillis()>=nextWarning) {

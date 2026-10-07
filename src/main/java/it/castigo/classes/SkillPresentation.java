@@ -11,7 +11,7 @@ import java.util.*;
 /** Server-only cosmetic definitions: never serialized into the gameplay protocol. */
 public record SkillPresentation(boolean enabled, Map<Stage,Cue> cues) {
     public enum Stage { CAST, TRAIL, IMPACT, TELEGRAPH, HIT }
-    public enum Shape { BURST, LINE, RING, SPIRAL }
+    public enum Shape { BURST, LINE, RING, SPIRAL, HEALING_BEAM }
     public record Audio(boolean enabled,String id,SoundCategory category,float volume,float pitch) {}
     public record Cue(boolean enabled,Shape shape,int points,int durationTicks,double radius,ParticleStyle particles,Audio sound) {}
     public SkillPresentation { cues=Map.copyOf(cues); }
@@ -34,6 +34,12 @@ public record SkillPresentation(boolean enabled, Map<Stage,Cue> cues) {
             case HEAL -> { burst(defaults,"impact","HAPPY_VILLAGER",20,0.5); sound(defaults,"impact","minecraft:block.enchantment_table.use",0.7,1.3); }
             case METEOR -> { enable(defaults,"telegraph"); enable(defaults,"trail"); burst(defaults,"impact","EXPLOSION",1,0); sound(defaults,"impact","minecraft:entity.generic.explode",0.9,0.65); }
             default -> { burst(defaults,"impact","DUST",6,0.15); }
+        }
+        if(skill.id().equals("mago_bianco_orison")&&skill.effect()==Skill.Effect.ALLY_HEAL) {
+            burst(defaults,"impact","DUST",1,0);
+            defaults.set("impact.shape","HEALING_BEAM");defaults.set("impact.duration-ticks",36);
+            defaults.set("impact.radius",0.85);defaults.set("impact.particles.color","55FF66");defaults.set("impact.particles.size",0.65);
+            sound(defaults,"impact","castigoclasses:skill.orison",0.75,1);
         }
         // Overlay only explicitly supplied keys, so a color-only edit retains all other defaults.
         if(section!=null) {
