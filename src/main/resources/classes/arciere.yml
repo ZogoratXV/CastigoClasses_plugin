@@ -1,0 +1,188 @@
+id: arciere
+name: Arciere
+description: Disciplina MMO con otto abilità e progressione per livello.
+resource:
+  name: Concentrazione
+  color: '96D58A'
+  regen-per-second: 5
+  regen-per-level: 0.1
+attributes:
+  base:
+    strength: 4
+    dexterity: 12
+    health: 28
+    mana: 100
+    intelligence: 2
+    attack: 3
+    defense: 4
+  per-level:
+    strength: 0.4
+    dexterity: 1.5
+    health: 2.1
+    mana: 4
+    intelligence: 0.2
+    attack: 0.5
+    defense: 0.5
+# Gradi: Aspirante 1, Apprendista 5, Praticante 15, Esperto 30, Maestro 50.
+# Ogni coppia di unlock-level controlla il relativo grado e lo sblocco.
+skills:
+  arciere_tiro_preciso:
+    name: 'Tiro preciso'
+    description: 'Preparazione di 0,6 secondi e una freccia precisa.'
+    effect: PRECISE_SHOT
+    icon: minecraft:bow
+    color: '96D58A'
+    unlock-level: 5
+    cost: 10
+    cooldown-seconds: 3
+    power: 4
+    intelligence-scale: 0
+    strength-scale: 0
+    dexterity-scale: 0.45
+    attack-scale: 0.5
+    weapon: BOW
+    preparation-seconds: 0.6
+    fraction: 0.3
+    range: 40
+    radius: 3
+    duration-seconds: 1
+  arciere_passo_cacciatore:
+    name: 'Passo del cacciatore'
+    description: 'Scatto in avanti su terreno libero.'
+    effect: HUNTER_STEP
+    icon: minecraft:leather_boots
+    color: '96D58A'
+    unlock-level: 5
+    cost: 12
+    cooldown-seconds: 7
+    power: 0
+    intelligence-scale: 0
+    strength-scale: 0
+    dexterity-scale: 0
+    attack-scale: 0
+    weapon: ANY
+    preparation-seconds: 0
+    fraction: 0.3
+    range: 4
+    radius: 3
+    duration-seconds: 1
+  arciere_occhio_cacciatore:
+    name: 'Occhio del cacciatore'
+    description: 'Bonus del 25% ai tiri speciali sul bersaglio studiato, finché visibile.'
+    effect: STUDY
+    icon: minecraft:spyglass
+    color: '96D58A'
+    unlock-level: 15
+    cost: 12
+    cooldown-seconds: 10
+    power: 0
+    intelligence-scale: 0
+    strength-scale: 0
+    dexterity-scale: 0
+    attack-scale: 0
+    weapon: ANY
+    preparation-seconds: 0
+    fraction: 0.25
+    range: 32
+    radius: 3
+    duration-seconds: 8
+  arciere_disimpegno:
+    name: 'Disimpegno'
+    description: 'Scatto all''indietro, senza invulnerabilità.'
+    effect: DISENGAGE
+    icon: minecraft:rabbit_foot
+    color: '96D58A'
+    unlock-level: 15
+    cost: 16
+    cooldown-seconds: 10
+    power: 0
+    intelligence-scale: 0
+    strength-scale: 0
+    dexterity-scale: 0
+    attack-scale: 0
+    weapon: ANY
+    preparation-seconds: 0
+    fraction: 0.3
+    range: 4
+    radius: 3
+    duration-seconds: 1
+  arciere_tiro_ostacolante:
+    name: 'Tiro ostacolante'
+    description: 'Una freccia che rallenta solo dopo un colpo valido.'
+    effect: HINDERING_SHOT
+    icon: minecraft:tipped_arrow
+    color: '96D58A'
+    unlock-level: 30
+    cost: 18
+    cooldown-seconds: 8
+    power: 3
+    intelligence-scale: 0
+    strength-scale: 0
+    dexterity-scale: 0.3
+    attack-scale: 0.4
+    weapon: BOW
+    preparation-seconds: 0.4
+    fraction: 0.3
+    range: 36
+    radius: 3
+    duration-seconds: 3
+  arciere_tiro_copertura:
+    name: 'Tiro di copertura'
+    description: 'Tre frecce verso il terreno mirato, con dispersione e rallentamento.'
+    effect: COVER_FIRE
+    icon: minecraft:arrow
+    color: '96D58A'
+    unlock-level: 30
+    cost: 25
+    cooldown-seconds: 12
+    power: 2
+    intelligence-scale: 0
+    strength-scale: 0
+    dexterity-scale: 0.2
+    attack-scale: 0.3
+    weapon: BOW
+    preparation-seconds: 0.5
+    fraction: 0.3
+    range: 32
+    radius: 4
+    duration-seconds: 2
+  arciere_doppio_tiro:
+    name: 'Doppio tiro'
+    description: 'Due frecce in successione; maggiore dispersione.'
+    effect: DOUBLE_SHOT
+    icon: minecraft:crossbow
+    color: '96D58A'
+    unlock-level: 50
+    cost: 24
+    cooldown-seconds: 9
+    power: 3
+    intelligence-scale: 0
+    strength-scale: 0
+    dexterity-scale: 0.3
+    attack-scale: 0.4
+    weapon: BOW
+    preparation-seconds: 0
+    fraction: 0.3
+    range: 36
+    radius: 3
+    duration-seconds: 1
+  arciere_colpo_maestro:
+    name: 'Colpo del maestro'
+    description: 'Preparazione di 1,5 secondi; bonus contro bersagli esposti o indeboliti.'
+    effect: MASTER_SHOT
+    icon: minecraft:spectral_arrow
+    color: '96D58A'
+    unlock-level: 50
+    cost: 36
+    cooldown-seconds: 18
+    power: 8
+    intelligence-scale: 0
+    strength-scale: 0
+    dexterity-scale: 0.7
+    attack-scale: 0.8
+    weapon: BOW
+    preparation-seconds: 1.5
+    fraction: 0.3
+    range: 48
+    radius: 3
+    duration-seconds: 1

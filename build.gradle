@@ -1,6 +1,6 @@
 plugins { id 'java' }
 group = 'it.castigo'
-version = '0.1.0-beta.3'
+version = '0.1.0-beta.4'
 repositories {
     mavenCentral()
     maven { url = 'https://repo.purpurmc.org/snapshots' }
@@ -9,8 +9,9 @@ dependencies {
     compileOnly 'org.purpurmc.purpur:purpur-api:26.2.build.2632-stable'
     compileOnly files('libs/CastigoCore.jar')
     compileOnly 'net.luckperms:api:5.4'
-    testImplementation platform('org.junit:junit-bom:5.12.2')
+    testImplementation platform('org.junit:junit-bom:6.1.3')
     testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'org.mockbukkit.mockbukkit:mockbukkit-v26.2:4.117.0'
     testImplementation 'org.purpurmc.purpur:purpur-api:26.2.build.2632-stable'
     testImplementation files('libs/CastigoCore.jar')
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
@@ -24,7 +25,7 @@ tasks.named('compileJava') {
         }
     }
 }
-test { useJUnitPlatform() }
+test { useJUnitPlatform(); dependsOn jar }
 processResources {
     inputs.property('version', project.version)
     filesMatching('plugin.yml') { expand(version: project.version) }

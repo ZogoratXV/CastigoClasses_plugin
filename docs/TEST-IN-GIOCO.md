@@ -2,7 +2,7 @@
 
 Compilazione e test automatici sono stati eseguiti. Queste prove richiedono ancora un avvio Minecraft e il server reale o una sua copia di prova.
 
-1. Avvia Purpur 26.2 con il core 2.1.0-beta.5 e il plugin; verifica l'assenza di errori di abilitazione.
+1. Avvia Purpur 26.2 con il core 2.1.0-beta.9 e il plugin; verifica l'assenza di errori di abilitazione.
 2. Collegati con Minecraft 26.2, Fabric Loader 0.19.5, Fabric API 0.161.0+26.2 e la mod.
 3. Controlla testa della skin, nome, Mago, vita, Mana e gruppo primario LuckPerms. Prova senza LuckPerms.
 4. Premi R e 1–8: il numero dello slot impugnato non deve cambiare. Premi di nuovo R: torna la hotbar normale. Rimappa R e K nelle opzioni, prova chat, inventario, F1 e spettatore.

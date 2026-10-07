@@ -11,6 +11,7 @@ public final class ClassCatalog {
     private final Map<String, ClassDefinition> definitions = new LinkedHashMap<>();
     private final Map<String, ConfigurationSection> raw = new LinkedHashMap<>();
     private final Map<Skill, SkillPresentation> presentations = new IdentityHashMap<>();
+    private final Map<Skill, SkillMechanics> mechanics = new IdentityHashMap<>();
     public ClassCatalog(File directory) throws Exception {
         File[] files = directory.listFiles((d, n) -> n.endsWith(".yml"));
         if (files == null || files.length == 0) throw new IllegalArgumentException("Nessuna classe nella cartella classes");
@@ -27,6 +28,7 @@ public final class ClassCatalog {
     public Map<String, ClassDefinition> all() { return Collections.unmodifiableMap(definitions); }
     public ClassDefinition get(String id) { return definitions.get(id); }
     public SkillPresentation presentation(Skill skill) { return presentations.get(skill); }
+    public SkillMechanics mechanics(Skill skill) { return mechanics.get(skill); }
     private ClassDefinition resolve(String id, Set<String> path) {
         if (definitions.containsKey(id)) return definitions.get(id);
         if (!path.add(id)) throw new IllegalArgumentException("Ciclo nelle sottoclassi: " + id);
@@ -50,6 +52,7 @@ public final class ClassCatalog {
                     number(s,"intelligence-scale",0.5,0,100), number(s,"range",24,1,64),
                     number(s,"radius",4,0.5,12), (int)(number(s,"duration-seconds",5,0.05,120)*20));
             skills.add(skill);
+            mechanics.put(skill,SkillMechanics.read(s));
             if(s.contains("presentation")&&!s.isConfigurationSection("presentation"))throw new IllegalArgumentException("Sezione presentation richiesta: "+sid);
             try { presentations.put(skill,SkillPresentation.read(s.getConfigurationSection("presentation"),skill)); }
             catch(RuntimeException ex) { throw new IllegalArgumentException(id+"/"+sid+": "+ex.getMessage(),ex); }

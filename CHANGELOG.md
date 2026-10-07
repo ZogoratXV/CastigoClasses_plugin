@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.1.0-beta.4 — 2026-10-07
+
+- Cinque discipline e 40 skill configurabili, con sblocchi per coppie e risorse specifiche.
+- Cure alleati, maledizioni, guardie direzionali, condivisione dei danni, cariche, combo e frecce reali.
+- Preparazioni interrompibili, controlli equipaggiamento e munizioni, pulizia degli stati al cambio classe/mondo, morte e uscita.
+- Coefficienti di forza, destrezza e attacco per le skill; attributi totali già comprensivi di crescita e punti assegnati.
+- Comando staff livello, controlli WorldGuard PVP per le abilità e limiti ai bersagli/stati/proiettili.
+- Compatibilità con mod beta.4 e core beta.9; grafica dedicata delle discipline rimandata.
+- 51 test plugin senza errori o test saltati, inclusi 10 test su server simulato. Collaudo multiplayer reale ancora necessario.
+
 ## 0.1.0-beta.3 — 2026-10-07
 
 - Compilazione e persistenza contro CastigoCore 2.1.0-beta.9; adattatore WorldGuard INTERACT per l'API rimossa.

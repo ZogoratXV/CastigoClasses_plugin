@@ -13,6 +13,10 @@ public final class AbilityProtection {
     private long nextWarning;
     public AbilityProtection(Logger logger) { this.logger=logger; }
     public boolean interact(Player player,Location location) {
+        return flag(player,location,"INTERACT");
+    }
+    public boolean pvp(Player player,Location location) { return flag(player,location,"PVP"); }
+    private boolean flag(Player player,Location location,String flag) {
         var wg=Bukkit.getPluginManager().getPlugin("WorldGuard");
         if(wg==null||!wg.isEnabled())return true;
         try {
@@ -24,7 +28,7 @@ public final class AbilityProtection {
             if(Boolean.TRUE.equals(Reflect.call(Reflect.call(platform,"getSessionManager"),"hasBypass",actor,world)))return true;
             Object query=Reflect.call(Reflect.call(platform,"getRegionContainer"),"createQuery");
             Object flags=Array.newInstance(Reflect.type("com.sk89q.worldguard.protection.flags.StateFlag"),1);
-            Array.set(flags,0,Reflect.type("com.sk89q.worldguard.protection.flags.Flags").getField("INTERACT").get(null));
+            Array.set(flags,0,Reflect.type("com.sk89q.worldguard.protection.flags.Flags").getField(flag).get(null));
             return Boolean.TRUE.equals(Reflect.call(query,"testState",Reflect.call(adapter,"adapt",location),actor,flags));
         } catch(ReflectiveOperationException|RuntimeException|LinkageError ex) {
             if(System.currentTimeMillis()>=nextWarning) {

@@ -1,0 +1,188 @@
+id: mago_nero
+name: Mago Nero
+description: Disciplina MMO con otto abilità e progressione per livello.
+resource:
+  name: Energia oscura
+  color: 'AC70E8'
+  regen-per-second: 5
+  regen-per-level: 0.1
+attributes:
+  base:
+    strength: 2
+    dexterity: 4
+    health: 24
+    mana: 110
+    intelligence: 12
+    attack: 1
+    defense: 2
+  per-level:
+    strength: 0.2
+    dexterity: 0.3
+    health: 1.8
+    mana: 6
+    intelligence: 1.6
+    attack: 0.2
+    defense: 0.4
+# Gradi: Aspirante 1, Apprendista 5, Praticante 15, Esperto 30, Maestro 50.
+# Ogni coppia di unlock-level controlla il relativo grado e lo sblocco.
+skills:
+  mago_nero_dardo_maledetto:
+    name: 'Dardo maledetto'
+    description: 'Danno oscuro e breve danno periodico.'
+    effect: CURSED_BOLT
+    icon: minecraft:amethyst_shard
+    color: 'AC70E8'
+    unlock-level: 5
+    cost: 10
+    cooldown-seconds: 3
+    power: 4
+    intelligence-scale: 0.4
+    strength-scale: 0
+    dexterity-scale: 0
+    attack-scale: 0
+    weapon: ANY
+    preparation-seconds: 0
+    fraction: 0.3
+    range: 24
+    radius: 3
+    duration-seconds: 3
+  mago_nero_malocchio:
+    name: 'Malocchio'
+    description: 'Colpo lieve che riduce del 35% la difesa MMO; vulnerabilità sui mob.'
+    effect: VULNERABILITY
+    icon: minecraft:fermented_spider_eye
+    color: 'AC70E8'
+    unlock-level: 5
+    cost: 14
+    cooldown-seconds: 8
+    power: 1
+    intelligence-scale: 0
+    strength-scale: 0
+    dexterity-scale: 0
+    attack-scale: 0
+    weapon: ANY
+    preparation-seconds: 0
+    fraction: 0.35
+    range: 20
+    radius: 3
+    duration-seconds: 6
+  mago_nero_consunzione:
+    name: 'Consunzione'
+    description: 'Danno iniziale e maledizione che pulsa ogni secondo.'
+    effect: DOT
+    icon: minecraft:wither_rose
+    color: 'AC70E8'
+    unlock-level: 15
+    cost: 20
+    cooldown-seconds: 12
+    power: 1.5
+    intelligence-scale: 0.16
+    strength-scale: 0
+    dexterity-scale: 0
+    attack-scale: 0
+    weapon: ANY
+    preparation-seconds: 0
+    fraction: 0.3
+    range: 20
+    radius: 3
+    duration-seconds: 6
+  mago_nero_terrore:
+    name: 'Terrore sussurrato'
+    description: 'Colpo lieve, lentezza e preparazioni più lunghe; interrompe la tecnica attiva.'
+    effect: FEAR
+    icon: minecraft:echo_shard
+    color: 'AC70E8'
+    unlock-level: 15
+    cost: 18
+    cooldown-seconds: 10
+    power: 1
+    intelligence-scale: 0
+    strength-scale: 0
+    dexterity-scale: 0
+    attack-scale: 0
+    weapon: ANY
+    preparation-seconds: 0
+    fraction: 0.3
+    range: 16
+    radius: 3
+    duration-seconds: 4
+  mago_nero_cerchio_rovina:
+    name: 'Cerchio della rovina'
+    description: 'Zona a terra che infligge danno ogni secondo.'
+    effect: RUIN
+    icon: minecraft:crying_obsidian
+    color: 'AC70E8'
+    unlock-level: 30
+    cost: 28
+    cooldown-seconds: 16
+    power: 2
+    intelligence-scale: 0.22
+    strength-scale: 0
+    dexterity-scale: 0
+    attack-scale: 0
+    weapon: ANY
+    preparation-seconds: 0
+    fraction: 0.3
+    range: 22
+    radius: 4
+    duration-seconds: 6
+  mago_nero_sigillo_tormento:
+    name: 'Sigillo del tormento'
+    description: 'Colpo lieve che riduce del 50% le cure ricevute.'
+    effect: HEAL_BLOCK
+    icon: minecraft:black_dye
+    color: 'AC70E8'
+    unlock-level: 30
+    cost: 22
+    cooldown-seconds: 12
+    power: 1
+    intelligence-scale: 0
+    strength-scale: 0
+    dexterity-scale: 0
+    attack-scale: 0
+    weapon: ANY
+    preparation-seconds: 0
+    fraction: 0.5
+    range: 20
+    radius: 3
+    duration-seconds: 6
+  mago_nero_patto_sangue:
+    name: 'Patto del sangue'
+    description: 'Cura il mago per il 50% della salute realmente sottratta.'
+    effect: DRAIN
+    icon: minecraft:redstone
+    color: 'AC70E8'
+    unlock-level: 50
+    cost: 24
+    cooldown-seconds: 10
+    power: 6
+    intelligence-scale: 0.65
+    strength-scale: 0
+    dexterity-scale: 0
+    attack-scale: 0
+    weapon: ANY
+    preparation-seconds: 0
+    fraction: 0.5
+    range: 20
+    radius: 3
+    duration-seconds: 1
+  mago_nero_vortice_tenebre:
+    name: 'Vortice delle tenebre'
+    description: 'Attira i nemici verso una zona senza attraversare i muri.'
+    effect: VORTEX
+    icon: minecraft:ender_eye
+    color: 'AC70E8'
+    unlock-level: 50
+    cost: 40
+    cooldown-seconds: 24
+    power: 0
+    intelligence-scale: 0
+    strength-scale: 0
+    dexterity-scale: 0
+    attack-scale: 0
+    weapon: ANY
+    preparation-seconds: 0
+    fraction: 0.3
+    range: 22
+    radius: 5
+    duration-seconds: 5

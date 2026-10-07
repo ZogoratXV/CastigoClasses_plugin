@@ -33,6 +33,7 @@ public record SkillPresentation(boolean enabled, Map<Stage,Cue> cues) {
             case WARD -> { enable(defaults,"impact"); defaults.set("impact.shape","RING"); defaults.set("impact.radius",1.2); defaults.set("impact.particles.count",1); enable(defaults,"hit"); sound(defaults,"impact","minecraft:block.beacon.activate",0.6,1.5); }
             case HEAL -> { burst(defaults,"impact","HAPPY_VILLAGER",20,0.5); sound(defaults,"impact","minecraft:block.enchantment_table.use",0.7,1.3); }
             case METEOR -> { enable(defaults,"telegraph"); enable(defaults,"trail"); burst(defaults,"impact","EXPLOSION",1,0); sound(defaults,"impact","minecraft:entity.generic.explode",0.9,0.65); }
+            default -> { burst(defaults,"impact","DUST",6,0.15); }
         }
         // Overlay only explicitly supplied keys, so a color-only edit retains all other defaults.
         if(section!=null) {

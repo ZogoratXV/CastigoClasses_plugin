@@ -1,0 +1,188 @@
+id: guerriero_due_mani
+name: Guerriero a due mani
+description: Disciplina MMO con otto abilità e progressione per livello.
+resource:
+  name: Vigore
+  color: 'DB9A5E'
+  regen-per-second: 5
+  regen-per-level: 0.1
+attributes:
+  base:
+    strength: 13
+    dexterity: 5
+    health: 32
+    mana: 100
+    intelligence: 1
+    attack: 5
+    defense: 5
+  per-level:
+    strength: 1.5
+    dexterity: 0.4
+    health: 2.8
+    mana: 3
+    intelligence: 0.1
+    attack: 0.8
+    defense: 0.7
+# Gradi: Aspirante 1, Apprendista 5, Praticante 15, Esperto 30, Maestro 50.
+# Ogni coppia di unlock-level controlla il relativo grado e lo sblocco.
+skills:
+  guerriero_due_mani_fendente_pesante:
+    name: 'Fendente pesante'
+    description: 'Colpo preparato; dopo il tentativo subisci più danni per poco tempo.'
+    effect: HEAVY_STRIKE
+    icon: minecraft:iron_axe
+    color: 'DB9A5E'
+    unlock-level: 5
+    cost: 12
+    cooldown-seconds: 4
+    power: 5
+    intelligence-scale: 0
+    strength-scale: 0.65
+    dexterity-scale: 0
+    attack-scale: 0.9
+    weapon: TWO_HANDED
+    preparation-seconds: 0.5
+    fraction: 0.3
+    range: 3.3
+    radius: 3
+    duration-seconds: 2
+  guerriero_due_mani_affondo_lungo:
+    name: 'Affondo lungo'
+    description: 'Affondo con portata maggiore, fermato dagli ostacoli.'
+    effect: LONG_THRUST
+    icon: minecraft:iron_sword
+    color: 'DB9A5E'
+    unlock-level: 5
+    cost: 12
+    cooldown-seconds: 5
+    power: 3
+    intelligence-scale: 0
+    strength-scale: 0.4
+    dexterity-scale: 0
+    attack-scale: 0.7
+    weapon: TWO_HANDED
+    preparation-seconds: 0
+    fraction: 0.3
+    range: 4.5
+    radius: 3
+    duration-seconds: 1
+  guerriero_due_mani_carica:
+    name: 'Carica travolgente'
+    description: 'Carica e colpisce il primo nemico vicino; ti espone.'
+    effect: CHARGE
+    icon: minecraft:iron_boots
+    color: 'DB9A5E'
+    unlock-level: 15
+    cost: 20
+    cooldown-seconds: 10
+    power: 5
+    intelligence-scale: 0
+    strength-scale: 0.5
+    dexterity-scale: 0
+    attack-scale: 0.7
+    weapon: TWO_HANDED
+    preparation-seconds: 0
+    fraction: 0.3
+    range: 6
+    radius: 3
+    duration-seconds: 3
+  guerriero_due_mani_arresto:
+    name: 'Colpo di arresto'
+    description: 'Interrompe cariche e preparazioni e rallenta.'
+    effect: STOP_STRIKE
+    icon: minecraft:stone_axe
+    color: 'DB9A5E'
+    unlock-level: 15
+    cost: 15
+    cooldown-seconds: 7
+    power: 3
+    intelligence-scale: 0
+    strength-scale: 0.35
+    dexterity-scale: 0
+    attack-scale: 0.5
+    weapon: TWO_HANDED
+    preparation-seconds: 0
+    fraction: 0.3
+    range: 3
+    radius: 3
+    duration-seconds: 2
+  guerriero_due_mani_circolare:
+    name: 'Fendente circolare'
+    description: 'Colpisce i nemici vicini e visibili, massimo sedici.'
+    effect: SWEEP
+    icon: minecraft:diamond_axe
+    color: 'DB9A5E'
+    unlock-level: 30
+    cost: 24
+    cooldown-seconds: 10
+    power: 3
+    intelligence-scale: 0
+    strength-scale: 0.4
+    dexterity-scale: 0
+    attack-scale: 0.6
+    weapon: TWO_HANDED
+    preparation-seconds: 0
+    fraction: 0.3
+    range: 3
+    radius: 3
+    duration-seconds: 1
+  guerriero_due_mani_falciata:
+    name: 'Falciata bassa'
+    description: 'Sbilancia i nemici vicini, lasciandoti temporaneamente esposto.'
+    effect: LOW_SWEEP
+    icon: minecraft:iron_hoe
+    color: 'DB9A5E'
+    unlock-level: 30
+    cost: 20
+    cooldown-seconds: 10
+    power: 2
+    intelligence-scale: 0
+    strength-scale: 0.25
+    dexterity-scale: 0
+    attack-scale: 0.4
+    weapon: TWO_HANDED
+    preparation-seconds: 0
+    fraction: 0.3
+    range: 3
+    radius: 3
+    duration-seconds: 3
+  guerriero_due_mani_spezzaguardia:
+    name: 'Spezzaguardia'
+    description: 'Apre la guardia e riduce la difesa del bersaglio.'
+    effect: GUARD_BREAK
+    icon: minecraft:mace
+    color: 'DB9A5E'
+    unlock-level: 50
+    cost: 26
+    cooldown-seconds: 14
+    power: 4
+    intelligence-scale: 0
+    strength-scale: 0.5
+    dexterity-scale: 0
+    attack-scale: 0.6
+    weapon: TWO_HANDED
+    preparation-seconds: 0
+    fraction: 0.4
+    range: 3.2
+    radius: 3
+    duration-seconds: 4
+  guerriero_due_mani_sequenza:
+    name: 'Sequenza del campione'
+    description: 'Tre attacchi distanziati; puoi essere interrotto o perdere il bersaglio.'
+    effect: COMBO
+    icon: minecraft:netherite_axe
+    color: 'DB9A5E'
+    unlock-level: 50
+    cost: 40
+    cooldown-seconds: 20
+    power: 3
+    intelligence-scale: 0
+    strength-scale: 0.35
+    dexterity-scale: 0
+    attack-scale: 0.55
+    weapon: TWO_HANDED
+    preparation-seconds: 0
+    fraction: 0.3
+    range: 3.3
+    radius: 3
+    duration-seconds: 2

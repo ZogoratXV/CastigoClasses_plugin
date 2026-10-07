@@ -15,18 +15,29 @@ public final class SkillEngine implements Listener {
     private final CastigoClasses plugin;
     private final AbilityProtection protection;
     private final PresentationPlayer effects;
+    private final DisciplineEngine disciplines;
     private final Map<UUID,Ward> wards=new HashMap<>();
     private LivingEntity damageTarget;
     private Player damageSource;
     private boolean acceptedDamage;
     public SkillEngine(CastigoClasses plugin) {
         this.plugin=plugin;this.protection=new AbilityProtection(plugin.getLogger());this.effects=new PresentationPlayer(plugin);
+        this.disciplines=new DisciplineEngine(plugin,this);
+        plugin.getServer().getPluginManager().registerEvents(disciplines,plugin);
+        plugin.getServer().getScheduler().runTaskTimer(plugin,disciplines::tick,1,1);
     }
-    public void clear(UUID id) { wards.remove(id); }
+    public void clear(UUID id) { wards.remove(id);disciplines.clear(id); }
+    public void shutdown() { wards.clear();disciplines.shutdown(); }
+    public double defenseFactor(UUID id) { return disciplines.defenseFactor(id); }
+    boolean allowed(Player p,Location at) { return protection.interact(p,at); }
+    void visual(Player p,Skill s,Location at) {
+        effects.play(plugin.catalog().presentation(s),SkillPresentation.Stage.IMPACT,p.getEyeLocation(),at);
+    }
 
     public void cast(Player p,Skill skill) {
         Profile data=plugin.profile(p); long now=System.currentTimeMillis();
         if(skill==null||data==null||p.isDead()||p.getGameMode()==GameMode.SPECTATOR)return;
+        if(disciplines.busy(p)) { plugin.feedback(p,"Stai preparando una tecnica.");return; }
         if(!protection.interact(p,p.getLocation())) { plugin.feedback(p,"Non puoi usare abilità qui.");return; }
         switch(AbilityRules.check(data,skill,now)) {
             case LOCKED -> { plugin.feedback(p,"Abilità sbloccata al livello "+skill.unlockLevel());return; }
@@ -35,12 +46,12 @@ public final class SkillEngine implements Listener {
             case NO_RESOURCE -> { plugin.feedback(p,plugin.definition(data).resourceName()+" insufficiente");return; }
             case READY -> { }
         }
-        double power=CombatMath.skillPower(plugin.stats(p),skill);
+        double power=plugin.catalog().mechanics(skill).power(plugin.stats(p),skill);
         double previousResource=data.resource;long previousGlobal=data.globalReadyAt;
         Long previousCooldown=data.cooldowns.get(skill.id());
         AbilityRules.commit(data,skill,now,plugin.getConfig().getLong("combat.global-cooldown-ms",350));
         boolean accepted=false;
-        try { accepted=execute(p,skill,power); }
+        try { accepted=skill.effect().discipline()?disciplines.cast(p,skill,power):execute(p,skill,power); }
         finally {
             if(!accepted) {
                 data.resource=previousResource;data.globalReadyAt=previousGlobal;
@@ -49,10 +60,11 @@ public final class SkillEngine implements Listener {
             plugin.sync(p);
         }
     }
-    private boolean targetAllowed(Player p,Entity target) {
+    boolean targetAllowed(Player p,Entity target) {
         if(!(target instanceof LivingEntity living)||target.equals(p)||living.isDead()||target instanceof ArmorStand||target.isInvulnerable()||target.hasMetadata("NPC"))return false;
         if(target instanceof Tameable tame&&tame.isTamed())return false;
         if(target instanceof Player other) {
+            if(!p.canSee(other)||!protection.pvp(p,p.getLocation())||!protection.pvp(p,other.getLocation()))return false;
             if(!plugin.getConfig().getBoolean("combat.pvp",false)||!p.getWorld().getPVP()||other.getGameMode()==GameMode.CREATIVE||other.getGameMode()==GameMode.SPECTATOR)return false;
             var team=p.getScoreboard().getEntryTeam(p.getName());
             if(team!=null&&!team.allowFriendlyFire()&&team.hasEntry(other.getName()))return false;
@@ -66,7 +78,7 @@ public final class SkillEngine implements Listener {
         RayTraceResult ray=ray(p,skill.range());
         return ray==null?p.getEyeLocation().add(p.getEyeLocation().getDirection().multiply(skill.range())):ray.getHitPosition().toLocation(p.getWorld());
     }
-    private List<LivingEntity> area(Player p,Location center,double radius) {
+    List<LivingEntity> area(Player p,Location center,double radius) {
         List<LivingEntity> result=new ArrayList<>();
         for(Entity e:center.getWorld().getNearbyEntities(center,radius,radius,radius)) {
             if(!targetAllowed(p,e)||e.getLocation().distanceSquared(center)>radius*radius)continue;
@@ -74,6 +86,7 @@ public final class SkillEngine implements Listener {
             Location origin=center.clone().add(0,0.25,0);Vector delta=living.getEyeLocation().toVector().subtract(origin.toVector());
             double distance=delta.length();
             if(distance<0.1||center.getWorld().rayTraceBlocks(origin,delta.normalize(),distance,FluidCollisionMode.NEVER,true)==null)result.add(living);
+            if(result.size()>=16)break;
         }
         return result;
     }

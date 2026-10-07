@@ -1,6 +1,6 @@
 # Cinque discipline: fattibilità e proposta
 
-Valutazione del documento fornito, 7 ottobre 2026. **Questa è una proposta: le cinque discipline e le 40 abilità non sono ancora implementate.** L'aggiornamento consegnato riguarda CastigoCore beta.9 e il sistema VFX/suoni plugin → mod. Il Mago di prova resta disponibile.
+Documento storico di proposta, 7 ottobre 2026. Le cinque discipline sono ora implementate nella base plugin beta.4: vedere DISCIPLINE.md per comportamento effettivo, progressione automatica e limiti. Le proposte seguenti possono differire dall'implementazione.
 
 ## Organizzazione consigliata
 

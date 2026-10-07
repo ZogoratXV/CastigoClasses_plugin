@@ -1,0 +1,188 @@
+id: guerriero_scudo
+name: Guerriero con scudo
+description: Disciplina MMO con otto abilità e progressione per livello.
+resource:
+  name: Vigore
+  color: 'CFB77A'
+  regen-per-second: 5
+  regen-per-level: 0.1
+attributes:
+  base:
+    strength: 10
+    dexterity: 5
+    health: 36
+    mana: 100
+    intelligence: 1
+    attack: 3
+    defense: 10
+  per-level:
+    strength: 1.2
+    dexterity: 0.4
+    health: 3.2
+    mana: 3
+    intelligence: 0.1
+    attack: 0.6
+    defense: 1.2
+# Gradi: Aspirante 1, Apprendista 5, Praticante 15, Esperto 30, Maestro 50.
+# Ogni coppia di unlock-level controlla il relativo grado e lo sblocco.
+skills:
+  guerriero_scudo_affondo_disciplinato:
+    name: 'Affondo disciplinato'
+    description: 'Attacco preciso a corta portata.'
+    effect: MELEE
+    icon: minecraft:iron_sword
+    color: 'CFB77A'
+    unlock-level: 5
+    cost: 8
+    cooldown-seconds: 2
+    power: 3
+    intelligence-scale: 0
+    strength-scale: 0.45
+    dexterity-scale: 0
+    attack-scale: 0.7
+    weapon: SHIELD
+    preparation-seconds: 0
+    fraction: 0.3
+    range: 3
+    radius: 3
+    duration-seconds: 1
+  guerriero_scudo_urto_scudo:
+    name: 'Urto di scudo'
+    description: 'Sbilancia e interrompe la preparazione del nemico.'
+    effect: SHIELD_BASH
+    icon: minecraft:shield
+    color: 'CFB77A'
+    unlock-level: 5
+    cost: 14
+    cooldown-seconds: 6
+    power: 2
+    intelligence-scale: 0
+    strength-scale: 0.25
+    dexterity-scale: 0
+    attack-scale: 0.4
+    weapon: SHIELD
+    preparation-seconds: 0
+    fraction: 0.3
+    range: 2.8
+    radius: 3
+    duration-seconds: 2
+  guerriero_scudo_guardia_salda:
+    name: 'Guardia salda'
+    description: 'Riduce del 35% i danni frontali; movimento rallentato.'
+    effect: GUARD
+    icon: minecraft:shield
+    color: 'CFB77A'
+    unlock-level: 15
+    cost: 18
+    cooldown-seconds: 12
+    power: 0
+    intelligence-scale: 0
+    strength-scale: 0
+    dexterity-scale: 0
+    attack-scale: 0
+    weapon: SHIELD
+    preparation-seconds: 0
+    fraction: 0.35
+    range: 4
+    radius: 3
+    duration-seconds: 6
+  guerriero_scudo_passo_guardiano:
+    name: 'Passo del guardiano'
+    description: 'Breve avanzamento protetto, solo su terreno libero.'
+    effect: DASH
+    icon: minecraft:iron_boots
+    color: 'CFB77A'
+    unlock-level: 15
+    cost: 15
+    cooldown-seconds: 8
+    power: 0
+    intelligence-scale: 0
+    strength-scale: 0
+    dexterity-scale: 0
+    attack-scale: 0
+    weapon: SHIELD
+    preparation-seconds: 0
+    fraction: 0.2
+    range: 4
+    radius: 3
+    duration-seconds: 2
+  guerriero_scudo_difesa_compagno:
+    name: 'Difesa del compagno'
+    description: 'Condivide il 30% dei danni di un alleato vicino.'
+    effect: LINK
+    icon: minecraft:chain
+    color: 'CFB77A'
+    unlock-level: 30
+    cost: 22
+    cooldown-seconds: 16
+    power: 0
+    intelligence-scale: 0
+    strength-scale: 0
+    dexterity-scale: 0
+    attack-scale: 0
+    weapon: SHIELD
+    preparation-seconds: 0
+    fraction: 0.3
+    range: 8
+    radius: 3
+    duration-seconds: 6
+  guerriero_scudo_contrattacco:
+    name: 'Contrattacco del veterano'
+    description: 'Utilizzabile entro due secondi da una parata riuscita.'
+    effect: COUNTER
+    icon: minecraft:iron_sword
+    color: 'CFB77A'
+    unlock-level: 30
+    cost: 18
+    cooldown-seconds: 6
+    power: 5
+    intelligence-scale: 0
+    strength-scale: 0.6
+    dexterity-scale: 0
+    attack-scale: 1
+    weapon: SHIELD
+    preparation-seconds: 0
+    fraction: 0.3
+    range: 3
+    radius: 3
+    duration-seconds: 1
+  guerriero_scudo_riscossa:
+    name: 'Riscossa'
+    description: 'Rimuove sbilanciamento e paura Castigo; resiste ai respingimenti, senza curare.'
+    effect: RECOVER
+    icon: minecraft:iron_chestplate
+    color: 'CFB77A'
+    unlock-level: 50
+    cost: 22
+    cooldown-seconds: 15
+    power: 0
+    intelligence-scale: 0
+    strength-scale: 0
+    dexterity-scale: 0
+    attack-scale: 0
+    weapon: SHIELD
+    preparation-seconds: 0
+    fraction: 0.8
+    range: 4
+    radius: 3
+    duration-seconds: 5
+  guerriero_scudo_baluardo:
+    name: 'Baluardo'
+    description: 'Riduzione frontale del 60%, movimento molto ridotto.'
+    effect: BULWARK
+    icon: minecraft:netherite_chestplate
+    color: 'CFB77A'
+    unlock-level: 50
+    cost: 35
+    cooldown-seconds: 24
+    power: 0
+    intelligence-scale: 0
+    strength-scale: 0
+    dexterity-scale: 0
+    attack-scale: 0
+    weapon: SHIELD
+    preparation-seconds: 0
+    fraction: 0.6
+    range: 4
+    radius: 3
+    duration-seconds: 6

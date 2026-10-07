@@ -1,17 +1,18 @@
 # CastigoClasses — plugin
 
-Versione di test **0.1.0-beta.3** per **Purpur Minecraft 26.2**, Java 25 e **CastigoCore 2.1.0-beta.9**.
+Versione di test **0.1.0-beta.4** per **Purpur Minecraft 26.2**, Java 25 e **CastigoCore 2.1.0-beta.9**.
 Client: [CastigoClasses Fabric](https://github.com/ZogoratXV/CastigoClasses_fabricmod), Minecraft 26.2 / Fabric Loader 0.19.5.
 
 ## Installazione
 
 1. Lascia CastigoCore nella cartella `plugins` del server.
-2. Aggiungi `CastigoClasses-0.1.0-beta.3.jar` nella stessa cartella e riavvia.
+2. Sostituisci il precedente CastigoClasses con `CastigoClasses-0.1.0-beta.4.jar` e riavvia.
 3. LuckPerms è facoltativo: quando presente, il suo gruppo principale viene mostrato nel client.
 4. Installa la mod e Fabric API sul client seguendo il repository della mod.
 
-Al primo avvio vengono creati `plugins/CastigoClasses/config.yml`, `classes/mago.yml`, un esempio di sottoclasse e `players/<UUID>.yml`.
-Ogni nuovo personaggio riceve la classe configurata in `default-class` (Mago). Tutte le otto abilità del mago sono disponibili dal livello 1.
+All'avvio vengono aggiunte le cinque discipline mancanti in `plugins/CastigoClasses/classes`: Mago Bianco, Mago Nero, Guerriero con scudo, Guerriero a due mani e Arciere, ciascuna con otto skill. Configurazioni e profili esistenti vengono conservati. Le nuove installazioni usano `default-class: mago_bianco`; quelle aggiornate mantengono il valore precedente. Il Mago originale e l'esempio di sottoclasse restano disponibili.
+
+**[Guida alle 40 abilità, configurazione e prova rapida](docs/DISCIPLINE.md)**. La mod Fabric beta.4 riceve già queste classi dinamicamente: non serve un nuovo JAR client. Gli sblocchi iniziali sono ai livelli 5, 15, 30 e 50; al livello 1 si combatte con le azioni vanilla.
 
 ## Contenuti
 
@@ -20,7 +21,7 @@ Ogni nuovo personaggio riceve la classe configurata in `default-class` (Mago). T
 - Risorsa nominabile (Mana, Vigore, Fede…), colore, capacità, rigenerazione e crescita della rigenerazione.
 - Livelli MMO, esperienza, salvataggi atomici tramite CastigoCore, cooldown persistenti e disposizione delle skill personale.
 - Il server verifica costi, classe, sblocco, cooldown e bersagli: il client invia solo intenzioni.
-- Catalogo dinamico inviato alla mod: nuove classi configurate con gli otto tipi di effetto disponibili non richiedono un aggiornamento client.
+- Catalogo dinamico inviato alla mod: nuove classi basate sugli esecutori disponibili non richiedono un aggiornamento client. Un tipo di meccanica completamente nuovo richiede codice server.
 - VFX e suoni delle skill configurabili: il plugin invia eventi ai giocatori vicini con la mod beta.4, che anima localmente raggi, anelli, spirali e particelle. Asset vanilla, senza resource pack obbligatorio.
 
 | Abilità del mago | Effetto | Costo | Ricarica |
@@ -48,6 +49,7 @@ Permesso staff: `castigo.classes.admin` (op di default).
 
 - `/classe set <giocatore-online> <id>`: cambia classe mantenendo livello e percentuale della risorsa. Non ripristina i cooldown.
 - `/classe xp <giocatore-online> <quantità>`: assegna XP MMO.
+- `/classe livello <giocatore-online> <1-100>`: imposta il livello (limite da config), azzera gli XP del livello e riconcilia i punti attributo. Abbassare il livello non revoca i punti già guadagnati; risalire non li duplica.
 - `/classe reload`: valida l'intero catalogo prima di sostituirlo e lo reinvia ai client. Una classe utilizzata da un giocatore online non può essere rimossa.
 
 Alias: `/classi`, `/cc`. Per cambiare una classe base in questa prima versione si usa il comando staff.
