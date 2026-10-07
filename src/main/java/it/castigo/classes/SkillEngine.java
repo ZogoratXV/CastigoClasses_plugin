@@ -37,6 +37,10 @@ public final class SkillEngine implements Listener {
     public void cast(Player p,Skill skill) {
         Profile data=plugin.profile(p); long now=System.currentTimeMillis();
         if(skill==null||data==null||p.isDead()||p.getGameMode()==GameMode.SPECTATOR)return;
+        if(!plugin.equipped(p,skill)) {
+            var required=plugin.equipment().requirement(data.classId,skill,plugin.catalog().mechanics(skill));
+            plugin.feedback(p,"Serve "+required.item()+" nella mano "+(required.offhand()?"secondaria":"principale"));return;
+        }
         if(disciplines.busy(p)) { plugin.feedback(p,"Stai preparando una tecnica.");return; }
         if(!protection.interact(p,p.getLocation())) { plugin.feedback(p,"Non puoi usare abilità qui.");return; }
         switch(AbilityRules.check(data,skill,now)) {
@@ -65,9 +69,7 @@ public final class SkillEngine implements Listener {
         if(target instanceof Tameable tame&&tame.isTamed())return false;
         if(target instanceof Player other) {
             if(!p.canSee(other)||!protection.pvp(p,p.getLocation())||!protection.pvp(p,other.getLocation()))return false;
-            if(!plugin.getConfig().getBoolean("combat.pvp",false)||!p.getWorld().getPVP()||other.getGameMode()==GameMode.CREATIVE||other.getGameMode()==GameMode.SPECTATOR)return false;
-            var team=p.getScoreboard().getEntryTeam(p.getName());
-            if(team!=null&&!team.allowFriendlyFire()&&team.hasEntry(other.getName()))return false;
+            if(!p.getWorld().getPVP()||other.getGameMode()==GameMode.CREATIVE||other.getGameMode()==GameMode.SPECTATOR)return false;
         }
         return protection.interact(p,target.getLocation());
     }

@@ -1,10 +1,10 @@
-# Base giocabile delle cinque discipline — plugin beta.4
+# Base giocabile delle cinque discipline — plugin beta.5
 
-Richiede Purpur Minecraft 26.2, Java 25 e CastigoCore 2.1.0-beta.9. Usa la mod Fabric **0.1.0-beta.4** già consegnata, Fabric Loader 0.19.5 e Fabric API 0.161.0+26.2. Le 40 abilità hanno esecutori server: danni, cure, stati, guardie, movimento e frecce. Il lavoro grafico dedicato è rinviato; resta disponibile il collegamento VFX plugin → mod esistente.
+Richiede Purpur Minecraft 26.2, Java 25 e CastigoCore 2.1.0-beta.9. Usa la mod Fabric **0.1.0-beta.5** per le icone PNG, Fabric Loader 0.19.5 e Fabric API 0.161.0+26.2. Le 40 abilità hanno esecutori server: danni, cure, stati, guardie, movimento e frecce. Il lavoro grafico dedicato è rinviato; resta disponibile il collegamento VFX plugin → mod esistente.
 
 ## Aggiornamento e prova rapida
 
-Arresta il server, sostituisci il vecchio JAR CastigoClasses con la beta.4 e avvia con il core beta.9. I cinque YAML mancanti vengono aggiunti automaticamente; quelli già presenti non vengono sovrascritti. Profili, punti e disposizione degli slot rimangono salvati. Le vecchie installazioni conservano la propria `default-class`; sulle nuove è `mago_bianco`.
+Arresta il server, sostituisci il vecchio JAR CastigoClasses con la beta.5 e avvia con il core beta.9. I cinque YAML mancanti vengono aggiunti automaticamente; quelli già presenti non vengono sovrascritti. Profili, punti e disposizione degli slot rimangono salvati. Le vecchie installazioni conservano la propria `default-class`; sulle nuove è `mago_bianco`.
 
 Da console o come staff:
 
@@ -31,26 +31,11 @@ Ogni classe ha valori iniziali e crescita per livello dei sette attributi. I pun
 
 La potenza di una skill è `power + intelligenza × intelligence-scale + forza × strength-scale + destrezza × dexterity-scale + attacco × attack-scale`, con limite 10000. Danni finali, armatura, guardie e difesa dipendono poi dagli eventi di combattimento. Le formule di attacco vanilla, velocità e difesa MMO restano attive. `mana` è la capacità della risorsa: il nome mostrato può essere Fede, Energia oscura, Vigore o Concentrazione.
 
-## Alleati, equipaggiamento e bersagli
+## Cure libere e oggetti richiesti (beta.5)
 
-Le cure e le protezioni condivise funzionano su se stessi oppure su giocatori della stessa squadra Minecraft con fuoco amico disabilitato. Il gruppo LuckPerms visualizzato nella HUD non determina gli alleati.
+Le cure non richiedono più squadre; gli attacchi delle skill non filtrano i team. Il PvP continua a rispettare mondo, regioni e altri plugin. Ogni abilità richiede un oggetto specifico nella mano configurata. Usa `/classe admin` per scegliere classe e skill e assegnare un oggetto vanilla o ItemsAdder dal tuo inventario.
 
-```text
-/team add avventura
-/team modify avventura friendlyFire false
-/team join avventura NomeGiocatore
-/team join avventura NomeAlleato
-```
-
-Mira all'alleato per curarlo. Accovacciati per selezionare te stesso; senza un'entità nella mira le cure selezionano te stesso. I vincoli richiedono un altro alleato, vicinanza e linea visiva, non formano catene e limitano il trasferimento per lasciare almeno un punto vita al protettore secondo le regole Castigo.
-
-- **Scudo:** spada/ascia nella mano principale e scudo nella secondaria. Uno scudo in ricarica non vale.
-- **Due mani:** spada, ascia o mazza nella principale e secondaria vuota. È una convenzione di gameplay, non un nuovo tipo di arma o modello.
-- **Arciere:** arco nella principale per i tiri; frecce normali nell'inventario principale. Tiro singolo usa 1, doppio 2, copertura 3. Infinito non evita questi costi; frecce speciali e quelle nella seconda mano non vengono consumate. Le frecce delle abilità non sono raccoglibili.
-
-Le preparazioni si interrompono con danno, movimento oltre mezzo blocco, cambio equipaggiamento, classe o mondo. Dopo l'accettazione della preparazione, costo e cooldown rimangono anche se interrotta. I requisiti mancanti prima dell'avvio non consumano risorsa. Le frecce vengono consumate al rilascio dell'intera sequenza; interruzioni successive o annullamenti da altri plugin non le rimborsano. Durante preparazioni/sequenze/scatti non si possono avviare altre skill.
-
-Il PvP delle skill è disattivato inizialmente (`combat.pvp: false`); per provarlo servono anche PvP del mondo e permessi di regione compatibili. Sono controllati INTERACT e PVP di WorldGuard, se presente. Gli eventi di danno restano disponibili agli altri plugin. Le aree offensive controllano gli ostacoli e hanno massimo 16 bersagli per impulso.
+Per impostazioni predefinite, GUI, icone PNG e file VFX/suoni, consulta [OGGETTI-ICONE-VFX.md](OGGETTI-ICONE-VFX.md), che sostituisce le regole di alleanza ed equipaggiamento della beta.4. Skill e progressione elencate sotto restano disponibili.
 
 ## Le 40 abilità
 

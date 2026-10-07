@@ -65,7 +65,7 @@ public final class DisciplineEngine implements Listener {
     private SkillMechanics mechanics(Skill skill) { return plugin.catalog().mechanics(skill); }
     public boolean cast(Player p,Skill skill,double power) {
         var rules=mechanics(skill);
-        if(!equipped(p,rules.weapon())) { plugin.feedback(p,"Equipaggiamento richiesto: "+rules.weapon());return false; }
+        if(!equipped(p,skill)) { plugin.feedback(p,"Equipaggiamento richiesto: "+rules.weapon());return false; }
         int arrows=DisciplineRules.arrows(skill.effect());
         if(arrows>0&&(ammo(p)<arrows||shots.size()+arrows>256)) { plugin.feedback(p,"Servono "+arrows+" frecce normali, oppure troppi proiettili attivi.");return false; }
         if(skill.effect()==Skill.Effect.COUNTER&&counters.getOrDefault(p.getUniqueId(),Long.MIN_VALUE)<tick) { plugin.feedback(p,"Serve una parata riuscita negli ultimi 2 secondi.");return false; }
@@ -80,7 +80,7 @@ public final class DisciplineEngine implements Listener {
         tick++;
         for(var entry:List.copyOf(preparing.entrySet())) {
             var prep=entry.getValue();Player p=resolve(prep.source());
-            boolean valid=p!=null&&DisciplineRules.prepared(true,true,equipped(p,mechanics(prep.skill()).weapon()),p.getLocation().distanceSquared(prep.start()))
+            boolean valid=p!=null&&DisciplineRules.prepared(true,true,equipped(p,prep.skill()),p.getLocation().distanceSquared(prep.start()))
                     &&p.getInventory().getItemInMainHand().isSimilar(prep.weapon())&&engine.allowed(p,p.getLocation());
             if(!valid) { preparing.remove(entry.getKey());if(p!=null)plugin.feedback(p,"Preparazione interrotta.");continue; }
             if(tick>=prep.ready()) { preparing.remove(entry.getKey());if(!execute(p,prep.skill(),prep.power()))plugin.feedback(p,"Tecnica fallita: bersaglio o requisiti non più validi."); }
@@ -89,7 +89,7 @@ public final class DisciplineEngine implements Listener {
             if(buffs.get(b.key)!=b)continue;
             LivingEntity target=living(b.key.target());Player caster=resolve(b.source);
             if(tick>b.end||target==null||target.isDead()||caster==null||!target.getWorld().equals(caster.getWorld())) { remove(b);continue; }
-            if((b.key.kind()==Kind.GUARD)&&!equipped(caster,mechanics(b.skill).weapon())) { remove(b);continue; }
+            if((b.key.kind()==Kind.GUARD)&&!equipped(caster,b.skill)) { remove(b);continue; }
             if(tick>=b.next) {
                 b.next=tick+20;
                 if(b.key.kind()==Kind.HOT) { if(ally(caster,target)&&caster.getLocation().distanceSquared(target.getLocation())<=b.skill.range()*b.skill.range()&&(caster.equals(target)||caster.hasLineOfSight(target)))heal(caster,target,b.power); }
@@ -99,7 +99,7 @@ public final class DisciplineEngine implements Listener {
         if(tick%10==0)for(Zone zone:List.copyOf(zones))pulse(zone);
         for(var entry:List.copyOf(sequences.entrySet())) {
             Sequence seq=entry.getValue();Player p=resolve(seq.source);
-            if(p==null||!equipped(p,mechanics(seq.skill).weapon())||!engine.allowed(p,p.getLocation())) { sequences.remove(entry.getKey());continue; }
+            if(p==null||!equipped(p,seq.skill)||!engine.allowed(p,p.getLocation())) { sequences.remove(entry.getKey());continue; }
             if(tick<seq.next)continue;
             seq.next=tick+12;
             if(seq.skill.effect()==Skill.Effect.COMBO) {
@@ -117,11 +117,11 @@ public final class DisciplineEngine implements Listener {
         counters.entrySet().removeIf(e->e.getValue()<tick);
     }
     private boolean execute(Player p,Skill s,double power) {
-        if(!equipped(p,mechanics(s).weapon())||!engine.allowed(p,p.getLocation()))return false;
+        if(!equipped(p,s)||!engine.allowed(p,p.getLocation()))return false;
         LivingEntity target;Location center;
         switch(s.effect()) {
             case ALLY_HEAL,HOT,CLEANSE,LINK -> {
-                target=friend(p,s.range());if(target==null)return fail(p,"Mira a un alleato della tua squadra, oppure abbassati per selezionare te stesso.");
+                target=friend(p,s.range());if(target==null)return fail(p,"Mira a un giocatore oppure abbassati per selezionare te stesso.");
                 if(s.effect()==Skill.Effect.ALLY_HEAL) { if(!heal(p,target,power))return fail(p,"Cura non possibile o vita già al massimo."); }
                 if(s.effect()==Skill.Effect.HOT)put(p,target,Kind.HOT,s,power,0);
                 if(s.effect()==Skill.Effect.CLEANSE)cleanse(target);
@@ -201,21 +201,11 @@ public final class DisciplineEngine implements Listener {
         return true;
     }
     private boolean fail(Player p,String message) { plugin.feedback(p,message);return false; }
-    private boolean equipped(Player p,SkillMechanics.Weapon weapon) {
-        Material main=p.getInventory().getItemInMainHand().getType(),off=p.getInventory().getItemInOffHand().getType();
-        boolean blade=main.name().endsWith("_SWORD")||main.name().endsWith("_AXE");
-        return switch(weapon) {
-            case ANY -> true;
-            case SHIELD -> blade&&off==Material.SHIELD&&!p.hasCooldown(Material.SHIELD);
-            case TWO_HANDED -> (blade||main==Material.MACE)&&off.isAir();
-            case BOW -> main==Material.BOW;
-        };
-    }
+    private boolean equipped(Player p,Skill skill) { return plugin.equipped(p,skill); }
     private LivingEntity living(UUID id) { Entity e=Bukkit.getEntity(id);return e instanceof LivingEntity l&&l.isValid()?l:null; }
-    private boolean ally(Player p,LivingEntity e) {
+    boolean ally(Player p,LivingEntity e) {
         if(!(e instanceof Player friend)||friend.isDead()||friend.getGameMode()==GameMode.SPECTATOR||!p.getWorld().equals(friend.getWorld())||!engine.allowed(p,friend.getLocation()))return false;
-        if(p.equals(friend))return true;
-        var team=p.getScoreboard().getEntryTeam(p.getName());return team!=null&&team.hasEntry(friend.getName())&&!team.allowFriendlyFire();
+        return p.equals(friend)||p.canSee(friend);
     }
     private LivingEntity ray(Player p,double range) {
         var result=p.getWorld().rayTrace(p.getEyeLocation(),p.getEyeLocation().getDirection(),range,FluidCollisionMode.NEVER,true,0.25,
@@ -237,7 +227,7 @@ public final class DisciplineEngine implements Listener {
         try { target.damage(Math.min(10000,power),p);return new Hit(attempt.accepted,Math.max(0,before-target.getHealth()),attempt.blocked); }
         finally { attempts.pop(); }
     }
-    private boolean heal(Player p,LivingEntity target,double power) {
+    boolean heal(Player p,LivingEntity target,double power) {
         if(!ally(p,target))return false;
         var attr=target.getAttribute(Attribute.MAX_HEALTH);if(attr==null)return false;
         double missing=attr.getValue()-target.getHealth();if(missing<=0||power<=0)return false;
@@ -302,7 +292,7 @@ public final class DisciplineEngine implements Listener {
     }
     private void move(UUID id,Dash dash) {
         Player p=resolve(dash.source);
-        if(p==null||dash.left<=0||++dash.ticks>30||!equipped(p,mechanics(dash.skill).weapon())) { stopDash(id,p);return; }
+        if(p==null||dash.left<=0||++dash.ticks>30||!equipped(p,dash.skill)) { stopDash(id,p);return; }
         double step=Math.min(0.65,dash.left);Location ahead=p.getLocation().clone().add(dash.direction.clone().multiply(step+0.3));
         if(!safe(ahead)||!engine.allowed(p,ahead)||!engine.allowed(p,p.getLocation())) { stopDash(id,p);return; }
         if(dash.skill.effect()==Skill.Effect.CHARGE) {
@@ -364,7 +354,7 @@ public final class DisciplineEngine implements Listener {
     @EventHandler(priority=EventPriority.HIGHEST,ignoreCancelled=true) public void protection(EntityDamageByEntityEvent e) {
         if(!(e.getEntity() instanceof LivingEntity victim))return;
         Buff guard=buff(victim,Kind.GUARD);double reduction=0;
-        if(guard!=null&&victim instanceof Player player&&equipped(player,mechanics(guard.skill).weapon())&&front(victim,e.getDamager()))reduction=guard.fraction;
+        if(guard!=null&&victim instanceof Player player&&equipped(player,guard.skill)&&front(victim,e.getDamager()))reduction=guard.fraction;
         for(Zone zone:zones) {
             if(zone.skill().effect()!=Skill.Effect.SANCTUARY||zone.end()<=tick)continue;
             Player caster=resolve(zone.source());if(caster!=null&&inSanctuary(caster,victim,zone))reduction=Math.max(reduction,mechanics(zone.skill()).fraction());
@@ -374,7 +364,7 @@ public final class DisciplineEngine implements Listener {
         Buff link=buff(victim,Kind.LINK);
         if(link==null||redirecting)return;
         Player protector=resolve(link.source);
-        if(protector==null||!ally(protector,victim)||!protector.hasLineOfSight(victim)||!equipped(protector,mechanics(link.skill).weapon())||protector.getLocation().distanceSquared(victim.getLocation())>link.skill.range()*link.skill.range()||!engine.allowed(protector,protector.getLocation()))return;
+        if(protector==null||!ally(protector,victim)||!protector.hasLineOfSight(victim)||!equipped(protector,link.skill)||protector.getLocation().distanceSquared(victim.getLocation())>link.skill.range()*link.skill.range()||!engine.allowed(protector,protector.getLocation()))return;
         double share=DisciplineRules.transferred(e.getDamage(),link.fraction,protector.getHealth());if(share<=0)return;
         // Never redirect back through another link; health loss confirms a non-cancelled transfer.
         double before=protector.getHealth();redirecting=true;

@@ -35,6 +35,8 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
     private Progression progression;
     private StatPointRules statPoints;
     private SkillEngine engine;
+    private SkillEquipment equipment;
+    private SkillAdminGui adminGui;
     private int ticks;
 
     @Override public void onEnable() {
@@ -52,6 +54,8 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
             store=new ProfileStore(new File(getDataFolder(),"players"));
         } catch(Exception e) { getLogger().severe("Configurazione non valida: "+e.getMessage()); getServer().getPluginManager().disablePlugin(this); return; }
         engine=new SkillEngine(this);
+        adminGui=new SkillAdminGui(this);
+        getServer().getPluginManager().registerEvents(adminGui,this);
         getServer().getPluginManager().registerEvents(this,this);
         getServer().getPluginManager().registerEvents(engine,this);
         getServer().getMessenger().registerIncomingPluginChannel(this,CHANNEL,this);
@@ -78,7 +82,8 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
         Stats gain=new Stats(pointGain("strength",1),pointGain("dexterity",1),pointGain("health",2),
                 pointGain("mana",5),pointGain("intelligence",1),pointGain("attack",1),pointGain("defense",1));
         StatPointRules pointRules=new StatPointRules(interval,amount,gain);
-        catalog=next; progression=curve; statPoints=pointRules;
+        SkillEquipment nextEquipment=new SkillEquipment(new File(getDataFolder(),"skill-equipment.yml"));
+        catalog=next; progression=curve; statPoints=pointRules;equipment=nextEquipment;
     }
     private int configInteger(String key,int fallback,int min,int max) {
         double value=ClassCatalog.number(getConfig(),key,fallback,min,max);
@@ -91,6 +96,14 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
     public Profile profile(Player p) { return profiles.get(p.getUniqueId()); }
     public ClassDefinition definition(Profile p) { return catalog.get(p.classId); }
     public ClassCatalog catalog() { return catalog; }
+    public SkillEquipment equipment() { return equipment; }
+    public boolean equipped(Player p,Skill skill) {
+        return profile(p)!=null&&equipment.matches(p,profile(p).classId,skill,catalog.mechanics(skill));
+    }
+    public void refreshCatalogs() {
+        engine.shutdown();
+        for(Player p:Bukkit.getOnlinePlayers())if(connected.contains(p.getUniqueId()))catalog(p);
+    }
     public Stats stats(Player p) { return stats(profile(p)); }
     private Stats stats(Profile p) { return statPoints.total(p,definition(p)); }
     private void load(Player player) {
@@ -209,7 +222,9 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
     private void catalog(Player player) {
         send(player,"catalog_begin",new JsonObject());
         for(ClassDefinition d:catalog.all().values()) {
-            JsonObject obj=gson.toJsonTree(d).getAsJsonObject(); send(player,"class",obj);
+            JsonObject obj=gson.toJsonTree(d).getAsJsonObject();
+            for(int i=0;i<d.skills().size();i++)obj.getAsJsonArray("skills").get(i).getAsJsonObject().addProperty("icon",equipment.icon(d.id(),d.skills().get(i)));
+            send(player,"class",obj);
         }
         send(player,"catalog_end",new JsonObject()); sync(player);
     }
@@ -317,6 +332,15 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
     }
     @Override public boolean onCommand(CommandSender sender,Command command,String label,String[] args) {
         try {
+            if(args.length>0&&Set.of("admin","icona").contains(args[0])) {
+                if(!sender.hasPermission("castigo.classes.admin")) { sender.sendMessage("Permesso mancante.");return true; }
+                if(args[0].equals("admin")) {
+                    if(sender instanceof Player p)adminGui.open(p);else sender.sendMessage("Apri la GUI da un giocatore.");return true;
+                }
+                if(args.length!=4)throw new IllegalArgumentException("Uso: /classe icona <classe> <skill> <minecraft:oggetto|texture:namespace:textures/gui/skills/nome.png|reset>");
+                var definition=catalog.get(args[1]);if(definition==null||definition.skill(args[2])==null)throw new IllegalArgumentException("Classe o skill sconosciuta");
+                equipment.setIcon(args[1],args[2],args[3]);refreshCatalogs();sender.sendMessage("Icona salvata e inviata alla mod.");return true;
+            }
             if(args.length>0 && Set.of("reload","set","xp","livello").contains(args[0])) {
                 if(!sender.hasPermission("castigo.classes.admin")) { sender.sendMessage("Permesso mancante.");return true; }
                 if(args[0].equals("reload")) {
@@ -382,7 +406,12 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
     @Override public List<String> onTabComplete(CommandSender s,Command c,String label,String[] args) {
         List<String> choices=args.length==1?new ArrayList<>(List.of("lista","skill","scambia","sottoclasse","assegna")):new ArrayList<>();
         if(args.length==2&&args[0].equals("assegna"))for(StatAttribute stat:StatAttribute.values())choices.add(stat.label().toLowerCase(Locale.ROOT));
-        if(args.length==1&&s.hasPermission("castigo.classes.admin"))choices.addAll(List.of("reload","set","xp","livello"));
+        if(args.length==1&&s.hasPermission("castigo.classes.admin"))choices.addAll(List.of("reload","set","xp","livello","admin","icona"));
+        if(s.hasPermission("castigo.classes.admin")&&args[0].equals("icona")) {
+            if(args.length==2)choices.addAll(catalog.all().keySet());
+            if(args.length==3&&catalog.get(args[1])!=null)catalog.get(args[1]).skills().forEach(skill->choices.add(skill.id()));
+            if(args.length==4)choices.addAll(List.of("reset","texture:castigo:textures/gui/skills/nome.png"));
+        }
         if(args.length==2&&args[0].equals("sottoclasse")||args.length==3&&args[0].equals("set"))choices.addAll(catalog.all().keySet());
         if(args.length==2&&Set.of("set","xp","livello").contains(args[0])&&s.hasPermission("castigo.classes.admin"))Bukkit.getOnlinePlayers().forEach(p->choices.add(p.getName()));
         String prefix=args[args.length-1].toLowerCase(Locale.ROOT);return choices.stream().filter(x->x.startsWith(prefix)).toList();

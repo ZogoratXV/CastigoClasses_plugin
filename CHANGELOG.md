@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.0-beta.5 — 2026-10-07
+
+- Cure e selezione dei bersagli senza vincoli di squadra; rimosso il gate combat.pvp interno, mantenute protezioni del mondo e delle regioni.
+- Oggetto specifico obbligatorio per ogni skill, mano principale/secondaria, identificazione tramite API ItemsAdder opzionale.
+- GUI `/classe admin` per scegliere oggetti dall'inventario senza consumarli; salvataggio atomico degli override per classe e skill.
+- Comando `/classe icona` e PNG da resource pack nel catalogo inviato alla mod beta.5.
+- Guida a requisiti, file PNG/OGG e limiti del renderer VFX; 57 test plugin.
+
 ## 0.1.0-beta.4 — 2026-10-07
 
 - Cinque discipline e 40 skill configurabili, con sblocchi per coppie e risorse specifiche.

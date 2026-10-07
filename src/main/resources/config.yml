@@ -5,7 +5,6 @@ xp:
   growth: 1.18
   vanilla-multiplier: 1.0
 combat:
-  pvp: false
   global-cooldown-ms: 350
   strength-melee-factor: 0.5
   dexterity-speed-factor: 0.005

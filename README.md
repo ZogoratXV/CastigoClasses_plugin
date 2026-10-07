@@ -1,18 +1,22 @@
 # CastigoClasses — plugin
 
-Versione di test **0.1.0-beta.4** per **Purpur Minecraft 26.2**, Java 25 e **CastigoCore 2.1.0-beta.9**.
+Versione di test **0.1.0-beta.5** per **Purpur Minecraft 26.2**, Java 25 e **CastigoCore 2.1.0-beta.9**.
 Client: [CastigoClasses Fabric](https://github.com/ZogoratXV/CastigoClasses_fabricmod), Minecraft 26.2 / Fabric Loader 0.19.5.
+
+## Aggiornamento beta.5
+
+Cure senza party, requisiti per oggetto vanilla/ItemsAdder, `/classe admin` e icone PNG personalizzate: [guida completa](docs/OGGETTI-ICONE-VFX.md). Aggiorna sia plugin sia mod alla beta.5 per le icone.
 
 ## Installazione
 
 1. Lascia CastigoCore nella cartella `plugins` del server.
-2. Sostituisci il precedente CastigoClasses con `CastigoClasses-0.1.0-beta.4.jar` e riavvia.
+2. Sostituisci il precedente CastigoClasses con `CastigoClasses-0.1.0-beta.5.jar` e riavvia.
 3. LuckPerms è facoltativo: quando presente, il suo gruppo principale viene mostrato nel client.
 4. Installa la mod e Fabric API sul client seguendo il repository della mod.
 
 All'avvio vengono aggiunte le cinque discipline mancanti in `plugins/CastigoClasses/classes`: Mago Bianco, Mago Nero, Guerriero con scudo, Guerriero a due mani e Arciere, ciascuna con otto skill. Configurazioni e profili esistenti vengono conservati. Le nuove installazioni usano `default-class: mago_bianco`; quelle aggiornate mantengono il valore precedente. Il Mago originale e l'esempio di sottoclasse restano disponibili.
 
-**[Guida alle 40 abilità, configurazione e prova rapida](docs/DISCIPLINE.md)**. La mod Fabric beta.4 riceve già queste classi dinamicamente: non serve un nuovo JAR client. Gli sblocchi iniziali sono ai livelli 5, 15, 30 e 50; al livello 1 si combatte con le azioni vanilla.
+**[Guida alle 40 abilità, configurazione e prova rapida](docs/DISCIPLINE.md)**. La mod Fabric beta.5 riceve classi e icone dinamicamente; sostituisci la beta.4 per visualizzare i PNG personalizzati. Gli sblocchi iniziali sono ai livelli 5, 15, 30 e 50; al livello 1 si combatte con le azioni vanilla.
 
 ## Contenuti
 
@@ -135,7 +139,7 @@ Java 25. Copia il JAR originale del core in `libs/CastigoCore.jar` (non viene in
 .\gradlew.bat build
 ```
 
-Linux/macOS: `./gradlew build`. Risultato: `build/libs/CastigoClasses-0.1.0-beta.3.jar`.
+Linux/macOS: `./gradlew build`. Risultato: `build/libs/CastigoClasses-0.1.0-beta.5.jar`.
 Dipendenza API fissata: `org.purpurmc.purpur:purpur-api:26.2.build.2632-stable`.
 
 I test coprono crescita, curva XP, cap, risorse/cooldown, ordine degli slot, ereditarietà/validazione YAML e salvataggi reali attraverso CastigoCore. Build e test automatici verificati; prova multiplayer e compatibilità con gli altri plugin del server ancora da effettuare.
@@ -180,6 +184,6 @@ Le stesse formule usano sia la crescita automatica sia i punti assegnati. Il pan
 
 ## Aggiornamento core e VFX client
 
-Usa la mod **0.1.0-beta.4** per vedere e sentire gli effetti delle skill. Configurazione e limiti: [docs/VFX-CLIENT.md](docs/VFX-CLIENT.md). L'esempio viene creato in `examples/presentation.yml.example` al primo avvio. I vecchi YAML ricevono preset compatibili senza essere sovrascritti.
+Usa la mod **0.1.0-beta.5** per vedere e sentire gli effetti delle skill. Configurazione e limiti: [docs/VFX-CLIENT.md](docs/VFX-CLIENT.md). L'esempio viene creato in `examples/presentation.yml.example` al primo avvio. I vecchi YAML ricevono preset compatibili senza essere sovrascritti.
 
 Le cinque discipline del documento RP sono soltanto valutate in [docs/PROPOSTA-DISCIPLINE.md](docs/PROPOSTA-DISCIPLINE.md): le 40 abilità non sono incluse in questa build.

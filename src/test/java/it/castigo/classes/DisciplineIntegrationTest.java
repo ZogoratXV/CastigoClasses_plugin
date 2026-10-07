@@ -22,6 +22,7 @@ public class DisciplineIntegrationTest {
         plugin=MockBukkit.loadWith(TestClasses.class,getClass().getResourceAsStream("/plugin.yml"));
         assertTrue(plugin.isEnabled());player=server.addPlayer("Tester");
         player.addAttachment(plugin,"castigo.classes.use",true);
+        player.getInventory().setItemInMainHand(new ItemStack(Material.STICK));
         assertNotNull(plugin.profile(player));
     }
     @AfterEach void cleanup() { MockBukkit.unmock(); }
@@ -96,5 +97,57 @@ public class DisciplineIntegrationTest {
             for(int i=0;i<5;i++)assertEquals(ranks[i],it.castigo.classes.model.DisciplineRules.rank(thresholds[i],skills));
         }
         assertEquals(40,ids.size());
+    }
+    @Test void healWorksWithoutAnyTeamAndPvpEligibilityIgnoresTeams() {
+        var friend=server.addPlayer("Friend");friend.teleport(player.getLocation());friend.setHealth(5);
+        var engine=new SkillEngine(plugin);var disciplines=new DisciplineEngine(plugin,engine);
+        assertTrue(disciplines.heal(player,friend,3));assertEquals(8,friend.getHealth());
+        var team=player.getScoreboard().registerNewTeam("test");team.addEntry(player.getName());team.addEntry(friend.getName());team.setAllowFriendlyFire(false);
+        player.getWorld().setPVP(true);assertTrue(engine.targetAllowed(player,friend));
+        player.getWorld().setPVP(false);assertFalse(engine.targetAllowed(player,friend));
+    }
+    @Test void selectedHandAndSpecificMaterialAreEnforcedAndPersisted() throws Exception {
+        var skill=plugin.catalog().get("mago_bianco").skills().getFirst();
+        plugin.equipment().setItem("mago_bianco",skill.id(),new SkillEquipment.Requirement(true,"minecraft:blaze_rod"));
+        player.getInventory().setItemInMainHand(new ItemStack(Material.BLAZE_ROD));assertFalse(plugin.equipped(player,skill));
+        player.getInventory().setItemInOffHand(new ItemStack(Material.BLAZE_ROD));assertTrue(plugin.equipped(player,skill));
+        var restored=new SkillEquipment(new java.io.File(plugin.getDataFolder(),"skill-equipment.yml"));
+        assertEquals(new SkillEquipment.Requirement(true,"minecraft:blaze_rod"),restored.requirement("mago_bianco",skill,plugin.catalog().mechanics(skill)));
+        restored.setItem("mago_bianco",skill.id(),new SkillEquipment.Requirement(false,"itemsadder:castigo:staff"));
+        assertFalse(restored.matches(player,"mago_bianco",skill,plugin.catalog().mechanics(skill)),"Vanilla cannot substitute an unavailable ItemsAdder item");
+    }
+    @Test void emptyHandCannotCastEvenOldMagicSkills() {
+        player.getInventory().clear();player.setHealth(5);use("mago",6);
+        assertEquals(5,player.getHealth());assertEquals(1000,plugin.profile(player).resource);
+        assertTrue(plugin.profile(player).cooldowns.isEmpty());
+    }
+    @Test void iconOverridePersistsAndRejectsInvalidPaths() throws Exception {
+        var skill=plugin.catalog().get("mago_bianco").skills().getFirst();
+        String icon="texture:castigo:textures/gui/skills/orison.png";
+        plugin.equipment().setIcon("mago_bianco",skill.id(),icon);
+        var restored=new SkillEquipment(new java.io.File(plugin.getDataFolder(),"skill-equipment.yml"));
+        assertEquals(icon,restored.icon("mago_bianco",skill));
+        assertThrows(IllegalArgumentException.class,()->restored.setIcon("mago_bianco",skill.id(),"texture:castigo:../../outside.png"));
+        restored.setIcon("mago_bianco",skill.id(),"reset");assertEquals(skill.icon(),restored.icon("mago_bianco",skill));
+    }
+    private void clickMenu(int rawSlot) {
+        var event=new org.bukkit.event.inventory.InventoryClickEvent(player.getOpenInventory(),org.bukkit.event.inventory.InventoryType.SlotType.CONTAINER,rawSlot,
+                org.bukkit.event.inventory.ClickType.LEFT,org.bukkit.event.inventory.InventoryAction.PICKUP_ALL);
+        server.getPluginManager().callEvent(event);assertTrue(event.isCancelled());server.getScheduler().performTicks(1);
+    }
+    @Test void adminMenuAssignsClickedItemWithoutRemovingIt() {
+        player.addAttachment(plugin,"castigo.classes.admin",true);
+        plugin.onCommand(player,plugin.getCommand("classe"),"classe",new String[]{"admin"});
+        var inventory=player.getOpenInventory().getTopInventory();int selected=-1;
+        for(int i=0;i<45;i++)if(inventory.getItem(i)!=null&&inventory.getItem(i).getItemMeta().getLore().contains("mago_bianco"))selected=i;
+        assertTrue(selected>=0);clickMenu(selected);clickMenu(0);
+        player.getInventory().setItem(9,new ItemStack(Material.BLAZE_ROD,3));clickMenu(54);
+        var skill=plugin.catalog().get("mago_bianco").skills().getFirst();
+        assertEquals("minecraft:blaze_rod",plugin.equipment().requirement("mago_bianco",skill,plugin.catalog().mechanics(skill)).item());
+        assertEquals(3,player.getInventory().getItem(9).getAmount());
+    }
+    @Test void normalPlayerCannotOpenAdminGui() {
+        plugin.onCommand(player,plugin.getCommand("classe"),"classe",new String[]{"admin"});
+        assertNull(player.getOpenInventory().getTopInventory());
     }
 }
