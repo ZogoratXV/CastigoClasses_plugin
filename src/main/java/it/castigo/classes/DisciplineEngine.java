@@ -62,7 +62,7 @@ public final class DisciplineEngine implements Listener {
     }
     private boolean endPreparation(UUID id) {
         boolean removed=preparing.remove(id)!=null;
-        if(removed) { Player p=Bukkit.getPlayer(id);if(p!=null)plugin.sync(p); }
+        if(removed) { Player p=Bukkit.getPlayer(id);if(p!=null) { plugin.weaponMotion(p,null,"stop",0);plugin.sync(p); } }
         return removed;
     }
     private Source source(Player p) { return new Source(p.getUniqueId(),p.getWorld().getUID(),plugin.profile(p).classId,generations.getOrDefault(p.getUniqueId(),0L)); }
@@ -83,6 +83,7 @@ public final class DisciplineEngine implements Listener {
         if(delay>0) {
             preparing.put(p.getUniqueId(),new Preparation(source(p),skill,power,p.getLocation().clone(),p.getInventory().getItemInMainHand().clone(),tick+delay,delay));
             var preparation=preparing.get(p.getUniqueId());
+            plugin.weaponMotion(p,skill,"prepare",delay);
             engine.loop(p,skill,SkillPresentation.Stage.CAST,p::getLocation,p.getUniqueId(),false,()->preparing.get(p.getUniqueId())==preparation&&resolve(preparation.source())!=null);
             plugin.feedback(p,"Preparazione: "+skill.name()+" — resta fermo");return true;
         }

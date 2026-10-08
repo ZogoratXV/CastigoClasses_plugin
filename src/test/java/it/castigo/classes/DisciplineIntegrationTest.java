@@ -14,6 +14,8 @@ public class DisciplineIntegrationTest {
     public static class TestClasses extends CastigoClasses {
         final java.util.List<com.google.gson.JsonObject> effects=new java.util.ArrayList<>();
         final java.util.List<java.util.UUID> stopped=new java.util.ArrayList<>();
+        final java.util.List<String> motions=new java.util.ArrayList<>();
+        @Override public void weaponMotion(org.bukkit.entity.Player p,it.castigo.classes.model.Skill skill,String phase,int ticks) { motions.add(phase);super.weaponMotion(p,skill,phase,ticks); }
         @Override public void broadcastEffect(Location from,Location at,com.google.gson.JsonObject effect) { effects.add(effect.deepCopy()); }
         @Override public void stopEffect(java.util.UUID world,java.util.UUID handle) { stopped.add(handle); }
         @Override protected void scheduleTick(Runnable task) { getServer().getScheduler().runTaskTimer(this,task,5,5); }
@@ -42,6 +44,20 @@ public class DisciplineIntegrationTest {
     @Test void startsWithAllFiveDisciplinesAndKeepsEightSkills() {
         for(String id:new String[]{"mago_bianco","mago_nero","guerriero_scudo","guerriero_due_mani","arciere"})assertEquals(8,plugin.catalog().get(id).skills().size());
         assertEquals("mago_bianco",plugin.profile(player).classId);
+    }
+    @Test void weaponPreparationReleasesOnlyAfterSuccessfulCast() {
+        player.setSneaking(true);player.setHealth(5);use("mago_bianco",7);var t=(TestClasses)plugin;
+        assertTrue(t.motions.contains("prepare"));assertFalse(t.motions.contains("release"));
+        server.getScheduler().performTicks(45);assertTrue(t.motions.contains("release"));
+    }
+    @Test void failedEquipmentNeverAnimatesAWeapon() {
+        player.getInventory().clear();use("guerriero_scudo",3);var t=(TestClasses)plugin;
+        assertFalse(t.motions.contains("release"));assertFalse(t.motions.contains("prepare"));
+    }
+    @Test void classChangeCancelsTheWeaponPreparation() {
+        player.setSneaking(true);player.setHealth(5);use("mago_bianco",7);var t=(TestClasses)plugin;t.motions.clear();
+        command("set",player.getName(),"mago_nero");server.getScheduler().performTicks(45);
+        assertTrue(t.motions.contains("stop"));assertFalse(t.motions.contains("release"));
     }
     @Test void selfHealChangesHealthAndSpendsResource() {
         player.setSneaking(true);player.setHealth(5);use("mago_bianco",1);
@@ -184,7 +200,7 @@ public class DisciplineIntegrationTest {
         assertEquals("castigoclasses:textures/vfx/healing_column.png",effect.getAsJsonObject("mesh").get("columnTexture").getAsString());
         assertEquals(player.getUniqueId().toString(),effect.get("target").getAsString());
         assertEquals(player.getLocation().getY(),effect.getAsJsonArray("at").get(1).getAsDouble());
-        assertEquals("castigoclasses:skill.orison",effect.getAsJsonObject("sound").get("id").getAsString());
+        assertEquals("castigoclasses_audio:cleric.orbs",effect.getAsJsonObject("sound").get("id").getAsString());
     }
     @Test void targetedVisualUsesRecipientInsteadOfCaster() {
         var recipient=server.addPlayer("Recipient");recipient.teleport(player.getLocation().add(4,0,0));

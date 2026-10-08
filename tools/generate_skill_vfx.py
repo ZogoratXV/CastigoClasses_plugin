@@ -107,8 +107,15 @@ def make(cls,sid,effect,radius):
             c['duration-ticks']=max(18,c['duration-ticks']) if phase=='impact' else c['duration-ticks']
             c['mesh']['fadeIn']=.015
             c['mesh']['fadeOut']=.5
+    audio={'mago_bianco':'cleric.holy_impact','mago_nero':'necromancer.shoot','guerriero_scudo':'cleric.bash','guerriero_due_mani':'warrior.warrior_slash1','arciere':'archer.awakened_archer_first_hit','mago':'mage.fire_ball'}[cls]
+    audio={'ALLY_HEAL':'cleric.orbs','HEAL':'cleric.orbs','HOT':'cleric.holy_summon','SANCTUARY':'cleric.holy_summon','FIREBALL':'mage.fire_explode','METEOR':'mage.meteor_explosion','LIGHTNING':'mage.thunder_strike','FROST_NOVA':'mage.ice_break','BLINK':'mage.thunder_teleport','LONG_THRUST':'warrior.warrior_pierce','HEAVY_STRIKE':'warrior.warrior_stomp','DASH':'warrior.warrior_airdash','HUNTER_STEP':'assassin.aa_dash','DISENGAGE':'assassin.aa_dash','VORTEX':'necromancer.summon'}.get(effect,audio)
+    for phase,c in phases.items():
+        if c.get('enabled') and c['sound'].get('enabled'):
+            c['sound']={'enabled':True,'id':'castigoclasses_audio:'+audio,'volume':.55,'pitch':1}
+    if cls=='arciere' and phases['cast'].get('enabled'):
+        phases['cast']['sound']={'enabled':True,'id':'castigoclasses_audio:archer.awakened_archer_arrow_shoot','volume':.5,'pitch':1}
     description=description.replace('Raggio sottile colorato e lampo nel punto colpito.','Scia intrecciata con nucleo chiaro, esplosione colorata e frammenti sul bersaglio.')
-    description+=' Texture a pixel, particelle tridimensionali e colori stratificati.'
+    description+=' Modelli energetici articolati originali, gesto dell’arma e audio dedicato.'
     return phases,description
 
 def main():
@@ -126,7 +133,7 @@ def main():
             rows.append(f'| {cls} | {name} | {description} |')
     assert len(presets)==48,len(presets)
     (ROOT/'src/main/resources/skill-vfx.json').write_text(json.dumps(presets,ensure_ascii=False,indent=2)+'\n',encoding='utf8')
-    (ROOT/'docs/VFX-48-ABILITA.md').write_text('# VFX delle 48 abilità — beta.10\n\nSigilli personali ampliati, scie intrecciate, impatti con volume e frammenti in stile Minecraft. I raggi delle aree di gioco restano autorevoli. Nessun prefab o shader Unity viene eseguito dalla mod.\n\n| Classe | Abilità | Effetto |\n|---|---|---|\n'+'\n'.join(rows)+'\n',encoding='utf8')
+    (ROOT/'docs/VFX-48-ABILITA.md').write_text('# VFX delle 48 abilità — beta.11\n\nSigilli personali ampliati, scie intrecciate, impatti con volume e frammenti in stile Minecraft. I raggi delle aree di gioco restano autorevoli. Nessun prefab o shader Unity viene eseguito dalla mod.\n\n| Classe | Abilità | Effetto |\n|---|---|---|\n'+'\n'.join(rows)+'\n',encoding='utf8')
     print('Generated 48 skill presets and visual catalog')
 
 if __name__=='__main__':main()

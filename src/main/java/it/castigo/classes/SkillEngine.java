@@ -28,7 +28,7 @@ public final class SkillEngine implements Listener {
         plugin.getServer().getPluginManager().registerEvents(disciplines,plugin);
         plugin.getServer().getScheduler().runTaskTimer(plugin,()->{disciplines.tick();visualLoops.tick();},1,1);
     }
-    public void clear(UUID id) { wards.remove(id);disciplines.clear(id); }
+    public void clear(UUID id) { wards.remove(id);disciplines.clear(id);Player p=Bukkit.getPlayer(id);if(p!=null)plugin.weaponMotion(p,null,"stop",0); }
     public void shutdown() { wards.clear();disciplines.shutdown();visualLoops.clear(); }
     void loop(Player p,Skill s,SkillPresentation.Stage stage,java.util.function.Supplier<Location> at,UUID target,boolean link,java.util.function.BooleanSupplier valid) {
         visualLoops.start(p,s,stage,p::getEyeLocation,at,target,link,valid);
@@ -37,7 +37,7 @@ public final class SkillEngine implements Listener {
     void pulse(Player p,Skill s,SkillPresentation.Stage stage,LivingEntity at) { effects.play(plugin.presentation(p,s),stage,p.getEyeLocation(),at.getLocation(),at.getUniqueId()); }
     public double defenseFactor(UUID id) { return disciplines.defenseFactor(id); }
     public com.google.gson.JsonObject casting(UUID id) { return disciplines.casting(id); }
-    void castVisual(Player p,Skill s) { effects.play(plugin.presentation(p,s),SkillPresentation.Stage.CAST,p.getLocation(),p.getLocation(),p.getUniqueId()); }
+    void castVisual(Player p,Skill s) { plugin.weaponMotion(p,s,"release",12);effects.play(plugin.presentation(p,s),SkillPresentation.Stage.CAST,p.getLocation(),p.getLocation(),p.getUniqueId()); }
     boolean allowed(Player p,Location at) { return protection.interact(p,at); }
     void visual(Player p,Skill s,Location at) {
         effects.play(plugin.presentation(p,s),SkillPresentation.Stage.IMPACT,p.getEyeLocation(),at);

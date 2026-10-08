@@ -340,6 +340,16 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
         JsonObject o=new JsonObject();o.addProperty("handle",handle.toString());
         for(Player observer:Bukkit.getOnlinePlayers())if(observer.getWorld().getUID().equals(world)&&meshEffects.contains(observer.getUniqueId()))send(observer,"vfx_stop",o);
     }
+    public void weaponMotion(Player p,it.castigo.classes.model.Skill skill,String phase,int ticks) {
+        JsonObject o=new JsonObject();o.addProperty("world",p.getWorld().getUID().toString());
+        o.addProperty("player",p.getUniqueId().toString());o.addProperty("entity",p.getEntityId());
+        o.addProperty("phase",phase);o.addProperty("duration",Math.clamp(ticks,0,600));
+        o.addProperty("style",skill==null?"CAST":WeaponMotion.style(skill.effect()));
+        boolean off=false;
+        if(skill!=null&&profile(p)!=null)off=equipment().requirement(profile(p).classId,skill,catalog.mechanics(skill)).offhand();
+        o.addProperty("offhand",off);
+        for(Player observer:p.getWorld().getPlayers())if(clientEffects.contains(observer.getUniqueId())&&observer.getLocation().distanceSquared(p.getLocation())<=64*64)send(observer,"weapon_motion",o);
+    }
     public void broadcastEffect(Location from,Location at,JsonObject effect) {
         int tick=Bukkit.getCurrentTick();if(tick!=effectTick) { effectTick=tick;effectPackets.clear(); }
         var a=(from==null?at:from).toVector();var delta=at.toVector().subtract(a);double length=delta.lengthSquared();

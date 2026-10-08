@@ -3,7 +3,7 @@
     "class": "arciere",
     "name": "Tiro preciso",
     "effect": "PRECISE_SHOT",
-    "description": "Scia verde sottile agganciata al percorso reale della freccia. Texture a pixel, particelle tridimensionali e colori stratificati.",
+    "description": "Scia verde sottile agganciata al percorso reale della freccia. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -20,7 +20,10 @@
           "size": 0.45
         },
         "sound": {
-          "enabled": false
+          "enabled": true,
+          "id": "castigoclasses_audio:archer.awakened_archer_arrow_shoot",
+          "volume": 0.5,
+          "pitch": 1
         },
         "mesh": {
           "height": 1.4,
@@ -85,8 +88,8 @@
         },
         "sound": {
           "enabled": true,
-          "id": "minecraft:entity.arrow.hit",
-          "volume": 0.45,
+          "id": "castigoclasses_audio:archer.awakened_archer_first_hit",
+          "volume": 0.55,
           "pitch": 1
         },
         "mesh": {
@@ -116,7 +119,7 @@
     "class": "arciere",
     "name": "Passo del cacciatore",
     "effect": "HUNTER_STEP",
-    "description": "Scia breve dietro il movimento reale. Texture a pixel, particelle tridimensionali e colori stratificati.",
+    "description": "Scia breve dietro il movimento reale. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -134,8 +137,8 @@
         },
         "sound": {
           "enabled": true,
-          "id": "minecraft:entity.arrow.hit",
-          "volume": 0.45,
+          "id": "castigoclasses_audio:archer.awakened_archer_arrow_shoot",
+          "volume": 0.5,
           "pitch": 1
         },
         "mesh": {
@@ -229,7 +232,7 @@
     "class": "arciere",
     "name": "Occhio del cacciatore",
     "effect": "STUDY",
-    "description": "Marchio verde di mira sopra il bersaglio studiato. Texture a pixel, particelle tridimensionali e colori stratificati.",
+    "description": "Marchio verde di mira sopra il bersaglio studiato. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -246,7 +249,10 @@
           "size": 0.45
         },
         "sound": {
-          "enabled": false
+          "enabled": true,
+          "id": "castigoclasses_audio:archer.awakened_archer_arrow_shoot",
+          "volume": 0.5,
+          "pitch": 1
         },
         "mesh": {
           "height": 2,
@@ -282,8 +288,8 @@
         },
         "sound": {
           "enabled": true,
-          "id": "minecraft:entity.arrow.hit",
-          "volume": 0.45,
+          "id": "castigoclasses_audio:archer.awakened_archer_first_hit",
+          "volume": 0.55,
           "pitch": 1
         },
         "mesh": {
@@ -342,7 +348,7 @@
     "class": "arciere",
     "name": "Disimpegno",
     "effect": "DISENGAGE",
-    "description": "Scia breve dietro il movimento reale. Texture a pixel, particelle tridimensionali e colori stratificati.",
+    "description": "Scia breve dietro il movimento reale. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -360,8 +366,8 @@
         },
         "sound": {
           "enabled": true,
-          "id": "minecraft:entity.arrow.hit",
-          "volume": 0.45,
+          "id": "castigoclasses_audio:archer.awakened_archer_arrow_shoot",
+          "volume": 0.5,
           "pitch": 1
         },
         "mesh": {
@@ -455,7 +461,7 @@
     "class": "arciere",
     "name": "Tiro ostacolante",
     "effect": "HINDERING_SHOT",
-    "description": "Scia della freccia e anello di intralcio sul nemico colpito. Texture a pixel, particelle tridimensionali e colori stratificati.",
+    "description": "Scia della freccia e anello di intralcio sul nemico colpito. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -472,7 +478,10 @@
           "size": 0.45
         },
         "sound": {
-          "enabled": false
+          "enabled": true,
+          "id": "castigoclasses_audio:archer.awakened_archer_arrow_shoot",
+          "volume": 0.5,
+          "pitch": 1
         },
         "mesh": {
           "height": 1.4,
@@ -537,8 +546,8 @@
         },
         "sound": {
           "enabled": true,
-          "id": "minecraft:entity.arrow.hit",
-          "volume": 0.45,
+          "id": "castigoclasses_audio:archer.awakened_archer_first_hit",
+          "volume": 0.55,
           "pitch": 1
         },
         "mesh": {
@@ -597,7 +606,7 @@
     "class": "arciere",
     "name": "Tiro di copertura",
     "effect": "COVER_FIRE",
-    "description": "Scie dei tiri di copertura e anelli sui nemici rallentati. Texture a pixel, particelle tridimensionali e colori stratificati.",
+    "description": "Scie dei tiri di copertura e anelli sui nemici rallentati. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -614,7 +623,10 @@
           "size": 0.45
         },
         "sound": {
-          "enabled": false
+          "enabled": true,
+          "id": "castigoclasses_audio:archer.awakened_archer_arrow_shoot",
+          "volume": 0.5,
+          "pitch": 1
         },
         "mesh": {
           "height": 1.4,
@@ -679,8 +691,8 @@
         },
         "sound": {
           "enabled": true,
-          "id": "minecraft:entity.arrow.hit",
-          "volume": 0.45,
+          "id": "castigoclasses_audio:archer.awakened_archer_first_hit",
+          "volume": 0.55,
           "pitch": 1
         },
         "mesh": {
@@ -739,7 +751,7 @@
     "class": "arciere",
     "name": "Doppio tiro",
     "effect": "DOUBLE_SHOT",
-    "description": "Due scie distinte, una per ciascuna freccia realmente scoccata. Texture a pixel, particelle tridimensionali e colori stratificati.",
+    "description": "Due scie distinte, una per ciascuna freccia realmente scoccata. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -756,7 +768,10 @@
           "size": 0.45
         },
         "sound": {
-          "enabled": false
+          "enabled": true,
+          "id": "castigoclasses_audio:archer.awakened_archer_arrow_shoot",
+          "volume": 0.5,
+          "pitch": 1
         },
         "mesh": {
           "height": 1.4,
@@ -821,8 +836,8 @@
         },
         "sound": {
           "enabled": true,
-          "id": "minecraft:entity.arrow.hit",
-          "volume": 0.45,
+          "id": "castigoclasses_audio:archer.awakened_archer_first_hit",
+          "volume": 0.55,
           "pitch": 1
         },
         "mesh": {
@@ -852,7 +867,7 @@
     "class": "arciere",
     "name": "Colpo del maestro",
     "effect": "MASTER_SHOT",
-    "description": "Scia più spessa e impatto concentrato del colpo del maestro. Texture a pixel, particelle tridimensionali e colori stratificati.",
+    "description": "Scia più spessa e impatto concentrato del colpo del maestro. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -869,7 +884,10 @@
           "size": 0.45
         },
         "sound": {
-          "enabled": false
+          "enabled": true,
+          "id": "castigoclasses_audio:archer.awakened_archer_arrow_shoot",
+          "volume": 0.5,
+          "pitch": 1
         },
         "mesh": {
           "height": 1.4,
@@ -934,8 +952,8 @@
         },
         "sound": {
           "enabled": true,
-          "id": "minecraft:entity.arrow.hit",
-          "volume": 0.45,
+          "id": "castigoclasses_audio:archer.awakened_archer_first_hit",
+          "volume": 0.55,
           "pitch": 1
         },
         "mesh": {
@@ -965,7 +983,7 @@
     "class": "guerriero_due_mani",
     "name": "Fendente pesante",
     "effect": "HEAVY_STRIKE",
-    "description": "Arco ampio più lento e impatto caldo del fendente pesante. Texture a pixel, particelle tridimensionali e colori stratificati.",
+    "description": "Arco ampio più lento e impatto caldo del fendente pesante. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -1018,8 +1036,8 @@
         },
         "sound": {
           "enabled": true,
-          "id": "minecraft:entity.player.attack.sweep",
-          "volume": 0.45,
+          "id": "castigoclasses_audio:warrior.warrior_stomp",
+          "volume": 0.55,
           "pitch": 1
         },
         "mesh": {
@@ -1049,7 +1067,7 @@
     "class": "guerriero_due_mani",
     "name": "Affondo lungo",
     "effect": "LONG_THRUST",
-    "description": "Affondo luminoso allungato frontalmente e impatto puntuale. Texture a pixel, particelle tridimensionali e colori stratificati.",
+    "description": "Affondo luminoso allungato frontalmente e impatto puntuale. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -1102,8 +1120,8 @@
         },
         "sound": {
           "enabled": true,
-          "id": "minecraft:entity.player.attack.sweep",
-          "volume": 0.45,
+          "id": "castigoclasses_audio:warrior.warrior_pierce",
+          "volume": 0.55,
           "pitch": 1
         },
         "mesh": {
@@ -1133,7 +1151,7 @@
     "class": "guerriero_due_mani",
     "name": "Carica travolgente",
     "effect": "CHARGE",
-    "description": "Scia breve dietro il movimento reale e impatto sul nemico raggiunto. Texture a pixel, particelle tridimensionali e colori stratificati.",
+    "description": "Scia breve dietro il movimento reale e impatto sul nemico raggiunto. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -1151,8 +1169,8 @@
         },
         "sound": {
           "enabled": true,
-          "id": "minecraft:entity.player.attack.sweep",
-          "volume": 0.45,
+          "id": "castigoclasses_audio:warrior.warrior_slash1",
+          "volume": 0.55,
           "pitch": 1
         },
         "mesh": {
@@ -1246,7 +1264,7 @@
     "class": "guerriero_due_mani",
     "name": "Colpo di arresto",
     "effect": "STOP_STRIKE",
-    "description": "Taglio breve e anello che permane sul nemico rallentato. Texture a pixel, particelle tridimensionali e colori stratificati.",
+    "description": "Taglio breve e anello che permane sul nemico rallentato. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -1299,8 +1317,8 @@
         },
         "sound": {
           "enabled": true,
-          "id": "minecraft:entity.player.attack.sweep",
-          "volume": 0.45,
+          "id": "castigoclasses_audio:warrior.warrior_slash1",
+          "volume": 0.55,
           "pitch": 1
         },
         "mesh": {
@@ -1359,7 +1377,7 @@
     "class": "guerriero_due_mani",
     "name": "Fendente circolare",
     "effect": "SWEEP",
-    "description": "Onda circolare al raggio della skill e lampi su ogni nemico colpito. Texture a pixel, particelle tridimensionali e colori stratificati.",
+    "description": "Onda circolare al raggio della skill e lampi su ogni nemico colpito. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -1377,8 +1395,8 @@
         },
         "sound": {
           "enabled": true,
-          "id": "minecraft:entity.player.attack.sweep",
-          "volume": 0.45,
+          "id": "castigoclasses_audio:warrior.warrior_slash1",
+          "volume": 0.55,
           "pitch": 1
         },
         "mesh": {
@@ -1443,7 +1461,7 @@
     "class": "guerriero_due_mani",
     "name": "Falciata bassa",
     "effect": "LOW_SWEEP",
-    "description": "Onda bassa e anelli sui bersagli rallentati. Texture a pixel, particelle tridimensionali e colori stratificati.",
+    "description": "Onda bassa e anelli sui bersagli rallentati. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -1461,8 +1479,8 @@
         },
         "sound": {
           "enabled": true,
-          "id": "minecraft:entity.player.attack.sweep",
-          "volume": 0.45,
+          "id": "castigoclasses_audio:warrior.warrior_slash1",
+          "volume": 0.55,
           "pitch": 1
         },
         "mesh": {
@@ -1556,7 +1574,7 @@
     "class": "guerriero_due_mani",
     "name": "Spezzaguardia",
     "effect": "GUARD_BREAK",
-    "description": "Taglio, forte impatto e marchio sul nemico reso vulnerabile. Texture a pixel, particelle tridimensionali e colori stratificati.",
+    "description": "Taglio, forte impatto e marchio sul nemico reso vulnerabile. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -1609,8 +1627,8 @@
         },
         "sound": {
           "enabled": true,
-          "id": "minecraft:entity.player.attack.sweep",
-          "volume": 0.45,
+          "id": "castigoclasses_audio:warrior.warrior_slash1",
+          "volume": 0.55,
           "pitch": 1
         },
         "mesh": {
@@ -1669,7 +1687,7 @@
     "class": "guerriero_due_mani",
     "name": "Sequenza del campione",
     "effect": "COMBO",
-    "description": "Un arco e un impatto per ciascun colpo della sequenza realmente eseguito. Texture a pixel, particelle tridimensionali e colori stratificati.",
+    "description": "Un arco e un impatto per ciascun colpo della sequenza realmente eseguito. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -1722,8 +1740,8 @@
         },
         "sound": {
           "enabled": true,
-          "id": "minecraft:entity.player.attack.sweep",
-          "volume": 0.45,
+          "id": "castigoclasses_audio:warrior.warrior_slash1",
+          "volume": 0.55,
           "pitch": 1
         },
         "mesh": {
@@ -1753,7 +1771,7 @@
     "class": "guerriero_scudo",
     "name": "Affondo disciplinato",
     "effect": "MELEE",
-    "description": "Affondo luminoso corto davanti al guerriero e lampo sulla vittima. Texture a pixel, particelle tridimensionali e colori stratificati.",
+    "description": "Affondo luminoso corto davanti al guerriero e lampo sulla vittima. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -1806,8 +1824,8 @@
         },
         "sound": {
           "enabled": true,
-          "id": "minecraft:entity.player.attack.sweep",
-          "volume": 0.45,
+          "id": "castigoclasses_audio:cleric.bash",
+          "volume": 0.55,
           "pitch": 1
         },
         "mesh": {
@@ -1837,7 +1855,7 @@
     "class": "guerriero_scudo",
     "name": "Urto di scudo",
     "effect": "SHIELD_BASH",
-    "description": "Impatto ravvicinato e anello sul nemico stordito/rallentato. Texture a pixel, particelle tridimensionali e colori stratificati.",
+    "description": "Impatto ravvicinato e anello sul nemico stordito/rallentato. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -1890,8 +1908,8 @@
         },
         "sound": {
           "enabled": true,
-          "id": "minecraft:entity.player.attack.sweep",
-          "volume": 0.45,
+          "id": "castigoclasses_audio:cleric.bash",
+          "volume": 0.55,
           "pitch": 1
         },
         "mesh": {
@@ -1950,7 +1968,7 @@
     "class": "guerriero_scudo",
     "name": "Guardia salda",
     "effect": "GUARD",
-    "description": "Barriera curva che segue la direzione del personaggio e termina con la protezione. Texture a pixel, particelle tridimensionali e colori stratificati.",
+    "description": "Barriera curva che segue la direzione del personaggio e termina con la protezione. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -1968,8 +1986,8 @@
         },
         "sound": {
           "enabled": true,
-          "id": "minecraft:entity.player.attack.sweep",
-          "volume": 0.45,
+          "id": "castigoclasses_audio:cleric.bash",
+          "volume": 0.55,
           "pitch": 1
         },
         "mesh": {
@@ -2092,7 +2110,7 @@
     "class": "guerriero_scudo",
     "name": "Passo del guardiano",
     "effect": "DASH",
-    "description": "Scia breve dietro il movimento reale. Texture a pixel, particelle tridimensionali e colori stratificati.",
+    "description": "Scia breve dietro il movimento reale. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -2110,8 +2128,8 @@
         },
         "sound": {
           "enabled": true,
-          "id": "minecraft:entity.player.attack.sweep",
-          "volume": 0.45,
+          "id": "castigoclasses_audio:warrior.warrior_airdash",
+          "volume": 0.55,
           "pitch": 1
         },
         "mesh": {
@@ -2234,7 +2252,7 @@
     "class": "guerriero_scudo",
     "name": "Difesa del compagno",
     "effect": "LINK",
-    "description": "Barriera iniziale sul protetto e filo luminoso verso il protettore mentre il vincolo è efficace. Texture a pixel, particelle tridimensionali e colori stratificati.",
+    "description": "Barriera iniziale sul protetto e filo luminoso verso il protettore mentre il vincolo è efficace. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -2287,8 +2305,8 @@
         },
         "sound": {
           "enabled": true,
-          "id": "minecraft:entity.player.attack.sweep",
-          "volume": 0.45,
+          "id": "castigoclasses_audio:cleric.bash",
+          "volume": 0.55,
           "pitch": 1
         },
         "mesh": {
@@ -2347,7 +2365,7 @@
     "class": "guerriero_scudo",
     "name": "Contrattacco del veterano",
     "effect": "COUNTER",
-    "description": "Arco inverso del contrattacco e scintilla sulla vittima. Texture a pixel, particelle tridimensionali e colori stratificati.",
+    "description": "Arco inverso del contrattacco e scintilla sulla vittima. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -2400,8 +2418,8 @@
         },
         "sound": {
           "enabled": true,
-          "id": "minecraft:entity.player.attack.sweep",
-          "volume": 0.45,
+          "id": "castigoclasses_audio:cleric.bash",
+          "volume": 0.55,
           "pitch": 1
         },
         "mesh": {
@@ -2431,7 +2449,7 @@
     "class": "guerriero_scudo",
     "name": "Riscossa",
     "effect": "RECOVER",
-    "description": "Aura azzurra alla base del personaggio durante la riscossa. Texture a pixel, particelle tridimensionali e colori stratificati.",
+    "description": "Aura azzurra alla base del personaggio durante la riscossa. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -2449,8 +2467,8 @@
         },
         "sound": {
           "enabled": true,
-          "id": "minecraft:entity.player.attack.sweep",
-          "volume": 0.45,
+          "id": "castigoclasses_audio:cleric.bash",
+          "volume": 0.55,
           "pitch": 1
         },
         "mesh": {
@@ -2573,7 +2591,7 @@
     "class": "guerriero_scudo",
     "name": "Baluardo",
     "effect": "BULWARK",
-    "description": "Barriera curva che segue la direzione del personaggio e termina con la protezione. Texture a pixel, particelle tridimensionali e colori stratificati.",
+    "description": "Barriera curva che segue la direzione del personaggio e termina con la protezione. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -2591,8 +2609,8 @@
         },
         "sound": {
           "enabled": true,
-          "id": "minecraft:entity.player.attack.sweep",
-          "volume": 0.45,
+          "id": "castigoclasses_audio:cleric.bash",
+          "volume": 0.55,
           "pitch": 1
         },
         "mesh": {
@@ -2715,7 +2733,7 @@
     "class": "mago",
     "name": "Dardo arcano",
     "effect": "BOLT",
-    "description": "Scia intrecciata con nucleo chiaro, esplosione colorata e frammenti sul bersaglio. Texture a pixel, particelle tridimensionali e colori stratificati.",
+    "description": "Scia intrecciata con nucleo chiaro, esplosione colorata e frammenti sul bersaglio. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -2797,8 +2815,8 @@
         },
         "sound": {
           "enabled": true,
-          "id": "minecraft:block.amethyst_block.chime",
-          "volume": 0.45,
+          "id": "castigoclasses_audio:mage.fire_ball",
+          "volume": 0.55,
           "pitch": 1
         },
         "mesh": {
@@ -2828,7 +2846,7 @@
     "class": "mago",
     "name": "Sfera di fuoco",
     "effect": "FIREBALL",
-    "description": "Scia incandescente e impatto espansivo arancio. Texture a pixel, particelle tridimensionali e colori stratificati.",
+    "description": "Scia incandescente e impatto espansivo arancio. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -2910,8 +2928,8 @@
         },
         "sound": {
           "enabled": true,
-          "id": "minecraft:block.amethyst_block.chime",
-          "volume": 0.45,
+          "id": "castigoclasses_audio:mage.fire_explode",
+          "volume": 0.55,
           "pitch": 1
         },
         "mesh": {
@@ -2941,7 +2959,7 @@
     "class": "mago",
     "name": "Nova glaciale",
     "effect": "FROST_NOVA",
-    "description": "Doppia onda ghiacciata azzurra attorno al mago. Texture a pixel, particelle tridimensionali e colori stratificati.",
+    "description": "Doppia onda ghiacciata azzurra attorno al mago. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -2994,8 +3012,8 @@
         },
         "sound": {
           "enabled": true,
-          "id": "minecraft:block.amethyst_block.chime",
-          "volume": 0.45,
+          "id": "castigoclasses_audio:mage.ice_break",
+          "volume": 0.55,
           "pitch": 1
         },
         "mesh": {
@@ -3025,7 +3043,7 @@
     "class": "mago",
     "name": "Passo dimensionale",
     "effect": "BLINK",
-    "description": "Traccia fra partenza e arrivo e anello sulla destinazione. Texture a pixel, particelle tridimensionali e colori stratificati.",
+    "description": "Traccia fra partenza e arrivo e anello sulla destinazione. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -3107,8 +3125,8 @@
         },
         "sound": {
           "enabled": true,
-          "id": "minecraft:block.amethyst_block.chime",
-          "volume": 0.45,
+          "id": "castigoclasses_audio:mage.thunder_teleport",
+          "volume": 0.55,
           "pitch": 1
         },
         "mesh": {
@@ -3138,7 +3156,7 @@
     "class": "mago",
     "name": "Barriera arcana",
     "effect": "WARD",
-    "description": "Barriera curva che segue la direzione del personaggio e termina con la protezione. Texture a pixel, particelle tridimensionali e colori stratificati.",
+    "description": "Barriera curva che segue la direzione del personaggio e termina con la protezione. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -3191,8 +3209,8 @@
         },
         "sound": {
           "enabled": true,
-          "id": "minecraft:block.amethyst_block.chime",
-          "volume": 0.45,
+          "id": "castigoclasses_audio:mage.fire_ball",
+          "volume": 0.55,
           "pitch": 1
         },
         "mesh": {
@@ -3280,7 +3298,7 @@
     "class": "mago",
     "name": "Ricucitura",
     "effect": "HEAL",
-    "description": "Anelli e colonna di guarigione sul destinatario. Texture a pixel, particelle tridimensionali e colori stratificati.",
+    "description": "Anelli e colonna di guarigione sul destinatario. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -3333,8 +3351,8 @@
         },
         "sound": {
           "enabled": true,
-          "id": "castigoclasses:skill.orison",
-          "volume": 0.75,
+          "id": "castigoclasses_audio:cleric.orbs",
+          "volume": 0.55,
           "pitch": 1
         },
         "mesh": {
@@ -3364,7 +3382,7 @@
     "class": "mago",
     "name": "Folgore",
     "effect": "LIGHTNING",
-    "description": "Scarica verticale azzurra sopra il bersaglio e lampo elettrico. Texture a pixel, particelle tridimensionali e colori stratificati.",
+    "description": "Scarica verticale azzurra sopra il bersaglio e lampo elettrico. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -3446,8 +3464,8 @@
         },
         "sound": {
           "enabled": true,
-          "id": "minecraft:block.amethyst_block.chime",
-          "volume": 0.45,
+          "id": "castigoclasses_audio:mage.thunder_strike",
+          "volume": 0.55,
           "pitch": 1
         },
         "mesh": {
@@ -3477,7 +3495,7 @@
     "class": "mago",
     "name": "Meteora",
     "effect": "METEOR",
-    "description": "Cerchio di avvertimento, scia verticale e grande esplosione luminosa. Texture a pixel, particelle tridimensionali e colori stratificati.",
+    "description": "Cerchio di avvertimento, scia verticale e grande esplosione luminosa. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -3559,8 +3577,8 @@
         },
         "sound": {
           "enabled": true,
-          "id": "minecraft:block.amethyst_block.chime",
-          "volume": 0.45,
+          "id": "castigoclasses_audio:mage.meteor_explosion",
+          "volume": 0.55,
           "pitch": 1
         },
         "mesh": {
@@ -3619,7 +3637,7 @@
     "class": "mago_bianco",
     "name": "Orison di cura",
     "effect": "ALLY_HEAL",
-    "description": "Anelli e colonna di guarigione sul destinatario. Texture a pixel, particelle tridimensionali e colori stratificati.",
+    "description": "Anelli e colonna di guarigione sul destinatario. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": false
@@ -3643,8 +3661,8 @@
         },
         "sound": {
           "enabled": true,
-          "id": "castigoclasses:skill.orison",
-          "volume": 0.75,
+          "id": "castigoclasses_audio:cleric.orbs",
+          "volume": 0.55,
           "pitch": 1
         },
         "mesh": {
@@ -3674,7 +3692,7 @@
     "class": "mago_bianco",
     "name": "Dardo consacrato",
     "effect": "BOLT",
-    "description": "Scia intrecciata con nucleo chiaro, esplosione colorata e frammenti sul bersaglio. Texture a pixel, particelle tridimensionali e colori stratificati.",
+    "description": "Scia intrecciata con nucleo chiaro, esplosione colorata e frammenti sul bersaglio. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -3756,8 +3774,8 @@
         },
         "sound": {
           "enabled": true,
-          "id": "minecraft:block.amethyst_block.chime",
-          "volume": 0.45,
+          "id": "castigoclasses_audio:cleric.holy_impact",
+          "volume": 0.55,
           "pitch": 1
         },
         "mesh": {
@@ -3787,7 +3805,7 @@
     "class": "mago_bianco",
     "name": "Benedizione rigenerante",
     "effect": "HOT",
-    "description": "Breve luce curativa e due sigilli orbitanti per la durata della rigenerazione. Texture a pixel, particelle tridimensionali e colori stratificati.",
+    "description": "Breve luce curativa e due sigilli orbitanti per la durata della rigenerazione. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -3840,8 +3858,8 @@
         },
         "sound": {
           "enabled": true,
-          "id": "minecraft:block.amethyst_block.chime",
-          "volume": 0.45,
+          "id": "castigoclasses_audio:cleric.holy_summon",
+          "volume": 0.55,
           "pitch": 1
         },
         "mesh": {
@@ -3929,7 +3947,7 @@
     "class": "mago_bianco",
     "name": "Purificazione",
     "effect": "CLEANSE",
-    "description": "Sigillo luminoso che si espande sul destinatario purificato. Texture a pixel, particelle tridimensionali e colori stratificati.",
+    "description": "Sigillo luminoso che si espande sul destinatario purificato. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": false
@@ -3953,8 +3971,8 @@
         },
         "sound": {
           "enabled": true,
-          "id": "minecraft:block.amethyst_block.chime",
-          "volume": 0.45,
+          "id": "castigoclasses_audio:cleric.holy_impact",
+          "volume": 0.55,
           "pitch": 1
         },
         "mesh": {
@@ -3984,7 +4002,7 @@
     "class": "mago_bianco",
     "name": "Vincolo del custode",
     "effect": "LINK",
-    "description": "Barriera iniziale sul protetto e filo luminoso verso il protettore mentre il vincolo è efficace. Texture a pixel, particelle tridimensionali e colori stratificati.",
+    "description": "Barriera iniziale sul protetto e filo luminoso verso il protettore mentre il vincolo è efficace. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -4037,8 +4055,8 @@
         },
         "sound": {
           "enabled": true,
-          "id": "minecraft:block.amethyst_block.chime",
-          "volume": 0.45,
+          "id": "castigoclasses_audio:cleric.holy_impact",
+          "volume": 0.55,
           "pitch": 1
         },
         "mesh": {
@@ -4097,7 +4115,7 @@
     "class": "mago_bianco",
     "name": "Luce respingente",
     "effect": "REPULSE",
-    "description": "Onda di luce che parte dal mago e si allarga fino al raggio della spinta. Texture a pixel, particelle tridimensionali e colori stratificati.",
+    "description": "Onda di luce che parte dal mago e si allarga fino al raggio della spinta. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -4115,8 +4133,8 @@
         },
         "sound": {
           "enabled": true,
-          "id": "minecraft:block.amethyst_block.chime",
-          "volume": 0.45,
+          "id": "castigoclasses_audio:cleric.holy_impact",
+          "volume": 0.55,
           "pitch": 1
         },
         "mesh": {
@@ -4181,7 +4199,7 @@
     "class": "mago_bianco",
     "name": "Grande intercessione",
     "effect": "ALLY_HEAL",
-    "description": "Anelli e colonna di guarigione sul destinatario, più ampia e alta per Grande intercessione. Texture a pixel, particelle tridimensionali e colori stratificati.",
+    "description": "Anelli e colonna di guarigione sul destinatario, più ampia e alta per Grande intercessione. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -4234,9 +4252,9 @@
         },
         "sound": {
           "enabled": true,
-          "id": "castigoclasses:skill.orison",
-          "volume": 0.75,
-          "pitch": 0.85
+          "id": "castigoclasses_audio:cleric.orbs",
+          "volume": 0.55,
+          "pitch": 1
         },
         "mesh": {
           "height": 4,
@@ -4265,7 +4283,7 @@
     "class": "mago_bianco",
     "name": "Santuario di luce",
     "effect": "SANCTUARY",
-    "description": "Cerchio sacro dorato che delimita la zona protetta per tutta la sua durata. Texture a pixel, particelle tridimensionali e colori stratificati.",
+    "description": "Cerchio sacro dorato che delimita la zona protetta per tutta la sua durata. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -4318,8 +4336,8 @@
         },
         "sound": {
           "enabled": true,
-          "id": "minecraft:block.amethyst_block.chime",
-          "volume": 0.45,
+          "id": "castigoclasses_audio:cleric.holy_summon",
+          "volume": 0.55,
           "pitch": 1
         },
         "mesh": {
@@ -4378,7 +4396,7 @@
     "class": "mago_nero",
     "name": "Dardo maledetto",
     "effect": "CURSED_BOLT",
-    "description": "Scia viola, impatto oscuro e sigillo della maledizione sul nemico. Texture a pixel, particelle tridimensionali e colori stratificati.",
+    "description": "Scia viola, impatto oscuro e sigillo della maledizione sul nemico. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -4460,8 +4478,8 @@
         },
         "sound": {
           "enabled": true,
-          "id": "minecraft:entity.evoker.cast_spell",
-          "volume": 0.45,
+          "id": "castigoclasses_audio:necromancer.shoot",
+          "volume": 0.55,
           "pitch": 1
         },
         "mesh": {
@@ -4549,7 +4567,7 @@
     "class": "mago_nero",
     "name": "Malocchio",
     "effect": "VULNERABILITY",
-    "description": "Marchio oscuro lento sopra il nemico vulnerabile. Texture a pixel, particelle tridimensionali e colori stratificati.",
+    "description": "Marchio oscuro lento sopra il nemico vulnerabile. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -4602,8 +4620,8 @@
         },
         "sound": {
           "enabled": true,
-          "id": "minecraft:entity.evoker.cast_spell",
-          "volume": 0.45,
+          "id": "castigoclasses_audio:necromancer.shoot",
+          "volume": 0.55,
           "pitch": 1
         },
         "mesh": {
@@ -4662,7 +4680,7 @@
     "class": "mago_nero",
     "name": "Consunzione",
     "effect": "DOT",
-    "description": "Piccolo sigillo pulsante di consunzione sul nemico. Texture a pixel, particelle tridimensionali e colori stratificati.",
+    "description": "Piccolo sigillo pulsante di consunzione sul nemico. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -4715,8 +4733,8 @@
         },
         "sound": {
           "enabled": true,
-          "id": "minecraft:entity.evoker.cast_spell",
-          "volume": 0.45,
+          "id": "castigoclasses_audio:necromancer.shoot",
+          "volume": 0.55,
           "pitch": 1
         },
         "mesh": {
@@ -4804,7 +4822,7 @@
     "class": "mago_nero",
     "name": "Terrore sussurrato",
     "effect": "FEAR",
-    "description": "Ampio sigillo oscuro in rapida rotazione sul bersaglio intimorito. Texture a pixel, particelle tridimensionali e colori stratificati.",
+    "description": "Ampio sigillo oscuro in rapida rotazione sul bersaglio intimorito. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -4857,8 +4875,8 @@
         },
         "sound": {
           "enabled": true,
-          "id": "minecraft:entity.evoker.cast_spell",
-          "volume": 0.45,
+          "id": "castigoclasses_audio:necromancer.shoot",
+          "volume": 0.55,
           "pitch": 1
         },
         "mesh": {
@@ -4917,7 +4935,7 @@
     "class": "mago_nero",
     "name": "Cerchio della rovina",
     "effect": "RUIN",
-    "description": "Sigillo oscuro a terra, controrotante, per tutta la durata della zona dannosa. Texture a pixel, particelle tridimensionali e colori stratificati.",
+    "description": "Sigillo oscuro a terra, controrotante, per tutta la durata della zona dannosa. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -4970,8 +4988,8 @@
         },
         "sound": {
           "enabled": true,
-          "id": "minecraft:entity.evoker.cast_spell",
-          "volume": 0.45,
+          "id": "castigoclasses_audio:necromancer.shoot",
+          "volume": 0.55,
           "pitch": 1
         },
         "mesh": {
@@ -5030,7 +5048,7 @@
     "class": "mago_nero",
     "name": "Sigillo del tormento",
     "effect": "HEAL_BLOCK",
-    "description": "Sigillo di interdizione fermo sul nemico con cure ridotte. Texture a pixel, particelle tridimensionali e colori stratificati.",
+    "description": "Sigillo di interdizione fermo sul nemico con cure ridotte. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -5083,8 +5101,8 @@
         },
         "sound": {
           "enabled": true,
-          "id": "minecraft:entity.evoker.cast_spell",
-          "volume": 0.45,
+          "id": "castigoclasses_audio:necromancer.shoot",
+          "volume": 0.55,
           "pitch": 1
         },
         "mesh": {
@@ -5143,7 +5161,7 @@
     "class": "mago_nero",
     "name": "Patto del sangue",
     "effect": "DRAIN",
-    "description": "Filo rosso fra mago e vittima e impulso sul bersaglio. Texture a pixel, particelle tridimensionali e colori stratificati.",
+    "description": "Filo rosso fra mago e vittima e impulso sul bersaglio. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -5225,8 +5243,8 @@
         },
         "sound": {
           "enabled": true,
-          "id": "minecraft:entity.evoker.cast_spell",
-          "volume": 0.45,
+          "id": "castigoclasses_audio:necromancer.shoot",
+          "volume": 0.55,
           "pitch": 1
         },
         "mesh": {
@@ -5256,7 +5274,7 @@
     "class": "mago_nero",
     "name": "Vortice delle tenebre",
     "effect": "VORTEX",
-    "description": "Tre nastri scuri a spirale convergono al centro della zona. Texture a pixel, particelle tridimensionali e colori stratificati.",
+    "description": "Tre nastri scuri a spirale convergono al centro della zona. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -5309,8 +5327,8 @@
         },
         "sound": {
           "enabled": true,
-          "id": "minecraft:entity.evoker.cast_spell",
-          "volume": 0.45,
+          "id": "castigoclasses_audio:necromancer.summon",
+          "volume": 0.55,
           "pitch": 1
         },
         "mesh": {
