@@ -50,8 +50,11 @@ public final class VfxSettings {
     }
     public static SkillPresentation.Cue read(JsonObject draft) {
         Set<String> keys=Set.of("enabled","shape","points","duration","radius","particlesEnabled","particle","count","spread","color","size","soundEnabled","sound","volume","pitch");
-        if(!draft.keySet().equals(keys))throw new IllegalArgumentException("Campi del preset VFX non validi");
+        var actual=new HashSet<>(draft.keySet());actual.remove("mesh");
+        if(!actual.equals(keys))throw new IllegalArgumentException("Campi del preset VFX non validi");
         var yaml=new YamlConfiguration();
+        if(draft.has("mesh"))MeshSettings.read(draft.getAsJsonObject("mesh")).json().entrySet().forEach(e->
+                yaml.set("impact.mesh."+e.getKey(),e.getValue().getAsJsonPrimitive().isNumber()?e.getValue().getAsDouble():e.getValue().getAsString()));
         for(String k:List.of("enabled","particlesEnabled","soundEnabled"))if(!draft.get(k).isJsonPrimitive()||!draft.get(k).getAsJsonPrimitive().isBoolean())throw new IllegalArgumentException("Booleano richiesto: "+k);
         for(String k:List.of("points","duration","radius","count","spread","size","volume","pitch"))if(!draft.get(k).isJsonPrimitive()||!draft.get(k).getAsJsonPrimitive().isNumber())throw new IllegalArgumentException("Numero richiesto: "+k);
         yaml.set("impact.enabled",draft.get("enabled").getAsBoolean());yaml.set("impact.shape",draft.get("shape").getAsString());
@@ -66,7 +69,7 @@ public final class VfxSettings {
         return SkillPresentation.read(yaml,sample).cues().get(SkillPresentation.Stage.IMPACT);
     }
     public static JsonObject draft(SkillPresentation.Cue c) {
-        var o=new JsonObject();o.addProperty("enabled",c.enabled());o.addProperty("shape",c.shape().name());
+        var o=new JsonObject();o.add("mesh",c.mesh().json());o.addProperty("enabled",c.enabled());o.addProperty("shape",c.shape().name());
         o.addProperty("points",c.points());o.addProperty("duration",c.durationTicks());o.addProperty("radius",c.radius());
         o.addProperty("particlesEnabled",c.particles().enabled());o.addProperty("particle",c.particles().particle().name());
         o.addProperty("count",c.particles().count());o.addProperty("spread",c.particles().spread());

@@ -157,6 +157,8 @@ public class DisciplineIntegrationTest {
         player.setSneaking(true);player.setHealth(5);use("mago_bianco",1);
         var effects=((TestClasses)plugin).effects;assertEquals(1,effects.size());var effect=effects.getFirst();
         assertEquals("HEALING_BEAM",effect.get("shape").getAsString());
+        assertEquals(2,effect.getAsJsonObject("mesh").get("rings").getAsInt());
+        assertEquals("castigoclasses:textures/vfx/healing_column.png",effect.getAsJsonObject("mesh").get("columnTexture").getAsString());
         assertEquals(player.getUniqueId().toString(),effect.get("target").getAsString());
         assertEquals(player.getLocation().getY(),effect.getAsJsonArray("at").get(1).getAsDouble());
         assertEquals("castigoclasses:skill.orison",effect.getAsJsonObject("sound").get("id").getAsString());

@@ -37,7 +37,7 @@ public final class SkillEngine implements Listener {
     }
     void visual(Player p,Skill s,LivingEntity target) {
         var fx=plugin.presentation(p,s);
-        boolean beam=fx.cues().get(SkillPresentation.Stage.IMPACT).shape()==SkillPresentation.Shape.HEALING_BEAM;
+        boolean beam=fx.cues().get(SkillPresentation.Stage.IMPACT).hasMesh();
         Location at=target.getLocation().add(0,beam?0:1,0);
         effects.play(fx,SkillPresentation.Stage.IMPACT,beam?at:p.getEyeLocation(),at,target.getUniqueId());
     }

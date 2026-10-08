@@ -11,9 +11,11 @@ import java.util.*;
 /** Server-only cosmetic definitions: never serialized into the gameplay protocol. */
 public record SkillPresentation(boolean enabled, Map<Stage,Cue> cues) {
     public enum Stage { CAST, TRAIL, IMPACT, TELEGRAPH, HIT }
-    public enum Shape { BURST, LINE, RING, SPIRAL, HEALING_BEAM }
+    public enum Shape { BURST, LINE, RING, SPIRAL, HEALING_BEAM, MESH_RING, MESH_COLUMN }
     public record Audio(boolean enabled,String id,SoundCategory category,float volume,float pitch) {}
-    public record Cue(boolean enabled,Shape shape,int points,int durationTicks,double radius,ParticleStyle particles,Audio sound) {}
+    public record Cue(boolean enabled,Shape shape,int points,int durationTicks,double radius,ParticleStyle particles,Audio sound,MeshSettings mesh) {
+        public boolean hasMesh() { return shape==Shape.HEALING_BEAM||shape==Shape.MESH_RING||shape==Shape.MESH_COLUMN; }
+    }
     public SkillPresentation { cues=Map.copyOf(cues); }
 
     public static SkillPresentation read(ConfigurationSection section,Skill skill) {
@@ -62,7 +64,8 @@ public record SkillPresentation(boolean enabled, Map<Stage,Cue> cues) {
             result.put(stage,new Cue(bool(c,"enabled",true),Shape.valueOf(c.getString("shape","BURST").toUpperCase(Locale.ROOT)),
                     integer(c,"points",24,2,32),integer(c,"duration-ticks",8,1,40),ClassCatalog.number(c,"radius",skill.radius(),0.1,12),ParticleStyle.read(particles),
                     new Audio(bool(audio,"enabled",false),soundId,SoundCategory.valueOf(audio.getString("category","PLAYERS").toUpperCase(Locale.ROOT)),
-                            (float)ClassCatalog.number(audio,"volume",0.7,0,2),(float)ClassCatalog.number(audio,"pitch",1,0.5,2))));
+                            (float)ClassCatalog.number(audio,"volume",0.7,0,2),(float)ClassCatalog.number(audio,"pitch",1,0.5,2)),
+                    MeshSettings.read(c.isConfigurationSection("mesh")?new com.google.gson.Gson().toJsonTree(c.getConfigurationSection("mesh").getValues(false)).getAsJsonObject():null)));
         }
         return new SkillPresentation(bool(defaults,"enabled",true),result);
     }

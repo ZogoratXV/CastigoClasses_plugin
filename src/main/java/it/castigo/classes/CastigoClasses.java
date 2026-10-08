@@ -27,6 +27,7 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
     private final Set<UUID> connected=new HashSet<>();
     private final Set<UUID> clientEffects=new HashSet<>();
     private final Set<UUID> healingEffects=new HashSet<>();
+    private final Set<UUID> meshEffects=new HashSet<>();
     private final Map<UUID,Integer> effectPackets=new HashMap<>();
     private int effectTick=-1;
     private final Map<UUID,Long> lastRequest=new HashMap<>();
@@ -132,14 +133,14 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
             if(connected.contains(p.getUniqueId())) send(p,"disabled",new JsonObject());
             removeModifiers(p);
         }
-        profiles.clear(); connected.clear();clientEffects.clear();effectPackets.clear();
+        profiles.clear(); connected.clear();clientEffects.clear();healingEffects.clear();meshEffects.clear();effectPackets.clear();
     }
     @EventHandler public void join(PlayerJoinEvent e) { load(e.getPlayer()); }
     @EventHandler public void quit(PlayerQuitEvent e) {
         Player p=e.getPlayer(); Profile data=profiles.remove(p.getUniqueId()); if(data!=null) save(data);
         connected.remove(p.getUniqueId()); lastRequest.remove(p.getUniqueId()); lastCatalog.remove(p.getUniqueId()); removeModifiers(p);
         clientEffects.remove(p.getUniqueId());effectPackets.remove(p.getUniqueId());
-        healingEffects.remove(p.getUniqueId());
+        healingEffects.remove(p.getUniqueId());meshEffects.remove(p.getUniqueId());
         engine.clear(p.getUniqueId());
     }
     @EventHandler public void respawn(PlayerRespawnEvent e) {
@@ -293,6 +294,7 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
                 if(vfx==1||vfx==2)clientEffects.add(player.getUniqueId());
                 else clientEffects.remove(player.getUniqueId());
                 if(o.has("healingBeam")&&o.get("healingBeam").getAsInt()==1)healingEffects.add(player.getUniqueId());else healingEffects.remove(player.getUniqueId());
+                if(o.has("meshVfx")&&o.get("meshVfx").getAsInt()==1)meshEffects.add(player.getUniqueId());else meshEffects.remove(player.getUniqueId());
                 lastCatalog.put(player.getUniqueId(),now);connected.add(player.getUniqueId()); catalog(player); return;
             }
             if(!connected.contains(player.getUniqueId())||!player.hasPermission("castigo.classes.use"))return;
@@ -346,6 +348,10 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
             if(effect.get("shape").getAsString().equals("HEALING_BEAM")&&!healingEffects.contains(id)) {
                 outgoing=effect.deepCopy();outgoing.addProperty("shape","SPIRAL");outgoing.remove("target");
                 outgoing.getAsJsonObject("sound").addProperty("id","minecraft:block.amethyst_block.chime");
+            }
+            if(effect.get("shape").getAsString().startsWith("MESH_")&&!meshEffects.contains(id)) {
+                outgoing=effect.deepCopy();outgoing.addProperty("shape","RING");outgoing.remove("mesh");
+                outgoing.getAsJsonObject("particles").addProperty("enabled",true);
             }
             send(observer,"vfx",outgoing);
         }
@@ -454,3 +460,4 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
         String prefix=args[args.length-1].toLowerCase(Locale.ROOT);return choices.stream().filter(x->x.startsWith(prefix)).toList();
     }
 }
+

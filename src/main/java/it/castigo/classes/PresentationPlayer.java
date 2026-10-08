@@ -16,7 +16,7 @@ public final class PresentationPlayer {
     public void play(SkillPresentation fx,SkillPresentation.Stage stage,Location from,Location at,java.util.UUID target) {
         if(fx==null||!fx.enabled()||at==null||at.getWorld()==null||!at.getWorld().isChunkLoaded(at.getBlockX()>>4,at.getBlockZ()>>4))return;
         var cue=fx.cues().get(stage);if(cue==null||!cue.enabled())return;
-        if(!cue.particles().enabled()&&!cue.sound().enabled())return;
+        if(!cue.hasMesh()&&!cue.particles().enabled()&&!cue.sound().enabled())return;
         try {
             JsonObject packet=packet(cue,from,at);
             if(target!=null)packet.addProperty("target",target.toString());
@@ -35,6 +35,7 @@ public final class PresentationPlayer {
         o.addProperty("world",at.getWorld().getUID().toString());
         o.addProperty("shape",cue.shape().name());o.addProperty("points",cue.points());
         o.addProperty("durationTicks",cue.durationTicks());o.addProperty("radius",cue.radius());
+        if(cue.hasMesh())o.add("mesh",cue.mesh().json());
         o.add("from",position(from==null?at:from));o.add("at",position(at));
         JsonObject particles=new JsonObject();var p=cue.particles();
         particles.addProperty("enabled",p.enabled());particles.addProperty("id",p.particle().getKey().toString());

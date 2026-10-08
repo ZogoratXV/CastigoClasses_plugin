@@ -24,4 +24,24 @@ class VfxSettingsTest {
         assertEquals(base,settings.resolve("mage",skill(),base));
         draft.addProperty("count",1);draft.addProperty("command","op player");assertThrows(IllegalArgumentException.class,()->VfxSettings.read(draft));
     }
+    @Test void texturedGeometrySurvivesSavingAndRestartWithoutChangingGameplay() throws Exception {
+        var file=directory.resolve("vfx.json").toFile();var base=SkillPresentation.read(null,skill());
+        var draft=VfxSettings.draft(base.cues().get(SkillPresentation.Stage.IMPACT));draft.addProperty("shape","MESH_COLUMN");
+        var mesh=draft.getAsJsonObject("mesh");mesh.addProperty("height",5);mesh.addProperty("rotation",-180);
+        mesh.addProperty("columnTexture","serverpack:textures/vfx/holy.png");draft.addProperty("particlesEnabled",false);
+        new VfxSettings(file).save("mage","test",SkillPresentation.Stage.IMPACT,draft);
+        var cue=new VfxSettings(file).resolve("mage",skill(),base).cues().get(SkillPresentation.Stage.IMPACT);
+        assertTrue(cue.hasMesh());assertEquals(5,cue.mesh().height());assertEquals(-180,cue.mesh().rotation());
+        assertEquals("serverpack:textures/vfx/holy.png",cue.mesh().columnTexture());assertFalse(cue.particles().enabled());
+        assertEquals(draft,VfxSettings.draft(cue));
+    }
+    @Test void legacyPresetsReceiveDefaultsAndInvalidMeshesCannotOverwriteThem() throws Exception {
+        var file=directory.resolve("vfx.json").toFile();var settings=new VfxSettings(file);
+        var draft=VfxSettings.draft(SkillPresentation.read(null,skill()).cues().get(SkillPresentation.Stage.IMPACT));
+        draft.remove("mesh");settings.save("mage","test",SkillPresentation.Stage.IMPACT,draft);
+        assertEquals(MeshSettings.DEFAULT,VfxSettings.read(draft).mesh());
+        var bad=draft.deepCopy();bad.add("mesh",MeshSettings.DEFAULT.json());bad.getAsJsonObject("mesh").addProperty("height",100000);
+        assertThrows(IllegalArgumentException.class,()->settings.save("mage","test",SkillPresentation.Stage.IMPACT,bad));
+        var base=SkillPresentation.read(null,skill());assertEquals(MeshSettings.DEFAULT,new VfxSettings(file).resolve("mage",skill(),base).cues().get(SkillPresentation.Stage.IMPACT).mesh());
+    }
 }
