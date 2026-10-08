@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.0-beta.7 — 2026-10-08
+
+- Stato casting con durata totale/rimanente e aggiornamenti su completamento/interruzione.
+- Editor VFX client: lettura preset e salvataggio/ripristino di override cosmetici con permessi e validazione server.
+- Override per classe/skill/fase persistenti; CAST disponibile al rilascio delle nuove discipline.
+- Evitato invio messaggi da plugin disabilitato; 64 test plugin.
+
 ## 0.1.0-beta.6 — 2026-10-07
 
 - Preset Orison HEALING_BEAM, UUID del destinatario e origine ai suoi piedi, solo a cura riuscita.

@@ -29,12 +29,14 @@ public final class SkillEngine implements Listener {
     public void clear(UUID id) { wards.remove(id);disciplines.clear(id); }
     public void shutdown() { wards.clear();disciplines.shutdown(); }
     public double defenseFactor(UUID id) { return disciplines.defenseFactor(id); }
+    public com.google.gson.JsonObject casting(UUID id) { return disciplines.casting(id); }
+    void castVisual(Player p,Skill s) { effects.play(plugin.presentation(p,s),SkillPresentation.Stage.CAST,p.getLocation(),p.getLocation(),p.getUniqueId()); }
     boolean allowed(Player p,Location at) { return protection.interact(p,at); }
     void visual(Player p,Skill s,Location at) {
-        effects.play(plugin.catalog().presentation(s),SkillPresentation.Stage.IMPACT,p.getEyeLocation(),at);
+        effects.play(plugin.presentation(p,s),SkillPresentation.Stage.IMPACT,p.getEyeLocation(),at);
     }
     void visual(Player p,Skill s,LivingEntity target) {
-        var fx=plugin.catalog().presentation(s);
+        var fx=plugin.presentation(p,s);
         boolean beam=fx.cues().get(SkillPresentation.Stage.IMPACT).shape()==SkillPresentation.Shape.HEALING_BEAM;
         Location at=target.getLocation().add(0,beam?0:1,0);
         effects.play(fx,SkillPresentation.Stage.IMPACT,beam?at:p.getEyeLocation(),at,target.getUniqueId());
@@ -100,7 +102,7 @@ public final class SkillEngine implements Listener {
     }
     private boolean execute(Player p,Skill s,double power) {
         Location from=p.getEyeLocation();
-        SkillPresentation fx=plugin.catalog().presentation(s);
+        SkillPresentation fx=plugin.presentation(p,s);
         switch(s.effect()) {
             case BOLT,LIGHTNING -> {
                 RayTraceResult hit=ray(p,s.range());

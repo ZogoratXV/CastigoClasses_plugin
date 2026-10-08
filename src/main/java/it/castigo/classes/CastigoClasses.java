@@ -37,6 +37,7 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
     private StatPointRules statPoints;
     private SkillEngine engine;
     private SkillEquipment equipment;
+    private VfxSettings vfxSettings;
     private SkillAdminGui adminGui;
     private int ticks;
 
@@ -84,7 +85,9 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
                 pointGain("mana",5),pointGain("intelligence",1),pointGain("attack",1),pointGain("defense",1));
         StatPointRules pointRules=new StatPointRules(interval,amount,gain);
         SkillEquipment nextEquipment=new SkillEquipment(new File(getDataFolder(),"skill-equipment.yml"));
+        VfxSettings nextVfx=new VfxSettings(new File(getDataFolder(),"vfx-overrides.json"));
         catalog=next; progression=curve; statPoints=pointRules;equipment=nextEquipment;
+        vfxSettings=nextVfx;
     }
     private int configInteger(String key,int fallback,int min,int max) {
         double value=ClassCatalog.number(getConfig(),key,fallback,min,max);
@@ -98,6 +101,8 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
     public ClassDefinition definition(Profile p) { return catalog.get(p.classId); }
     public ClassCatalog catalog() { return catalog; }
     public SkillEquipment equipment() { return equipment; }
+    public SkillPresentation presentation(Player p,Skill skill) { return vfxSettings.resolve(profile(p).classId,skill,catalog.presentation(skill)); }
+    public JsonObject casting(Player p) { return engine.casting(p.getUniqueId()); }
     public boolean equipped(Player p,Skill skill) {
         return profile(p)!=null&&equipment.matches(p,profile(p).classId,skill,catalog.mechanics(skill));
     }
@@ -216,6 +221,7 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
         if(!p.isDead()) p.setHealth(Math.min(hp,p.getAttribute(Attribute.MAX_HEALTH).getValue()));
     }
     public void send(Player player,String type,JsonObject body) {
+        if(!isEnabled())return;
         body.addProperty("v",1); body.addProperty("type",type);
         byte[] bytes=gson.toJson(body).getBytes(StandardCharsets.UTF_8);
         if(bytes.length<=30000) player.sendPluginMessage(this,CHANNEL,bytes);
@@ -234,6 +240,7 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
         if(!connected.contains(player.getUniqueId()))return;
         Profile p=profile(player); if(p==null)return;
         JsonObject obj=new JsonObject();
+        obj.add("casting",engine.casting(player.getUniqueId()));obj.addProperty("vfxAdmin",player.hasPermission("castigo.classes.admin"));
         obj.addProperty("world",player.getWorld().getUID().toString());
         obj.addProperty("name",net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer.plainText().serialize(player.displayName())); obj.addProperty("classId",p.classId);
         obj.addProperty("level",p.level); obj.addProperty("xp",p.xp); obj.addProperty("xpNext",progression.required(p.level));
@@ -289,6 +296,7 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
                 lastCatalog.put(player.getUniqueId(),now);connected.add(player.getUniqueId()); catalog(player); return;
             }
             if(!connected.contains(player.getUniqueId())||!player.hasPermission("castigo.classes.use"))return;
+            if(type.startsWith("vfx_")) { editVfx(player,type,o);return; }
             switch(type) {
                 case "cast" -> cast(player,o.get("slot").getAsInt());
                 case "allocate" -> allocate(player,StatAttribute.parse(o.get("attribute").getAsString()));
@@ -306,6 +314,25 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
     private void cast(Player p,int slot) {
         if(slot<0||slot>=8||profile(p)==null||!p.hasPermission("castigo.classes.use"))return;
         engine.cast(p,definition(profile(p)).skill(profile(p).slots.get(slot)));
+    }
+    private void editVfx(Player p,String type,JsonObject input) {
+        JsonObject reply=new JsonObject();
+        try {
+            String c=input.get("classId").getAsString(),sid=input.get("skillId").getAsString();
+            var stage=SkillPresentation.Stage.valueOf(input.get("stage").getAsString());
+            reply.addProperty("classId",c);reply.addProperty("skillId",sid);reply.addProperty("stage",stage.name());
+            var definition=catalog.get(c);var skill=definition==null?null:definition.skill(sid);
+            if(skill==null)throw new IllegalArgumentException("Skill sconosciuta");
+            if(!Set.of("vfx_get","vfx_save","vfx_reset").contains(type))throw new IllegalArgumentException("Azione VFX sconosciuta");
+            if(!type.equals("vfx_get")) {
+                if(!p.hasPermission("castigo.classes.admin"))throw new IllegalArgumentException("Serve castigo.classes.admin per modificare il server");
+                vfxSettings.save(c,sid,stage,type.equals("vfx_reset")?null:input.getAsJsonObject("draft"));
+            }
+            reply.add("draft",VfxSettings.draft(vfxSettings.resolve(c,skill,catalog.presentation(skill)).cues().get(stage)));
+            reply.addProperty("message",type.equals("vfx_get")?"Preset caricato dal server":type.equals("vfx_reset")?"Ripristinato il preset della classe":"Preset salvato sul server");
+            reply.addProperty("ok",true);
+        } catch(Exception e) { reply.addProperty("ok",false);reply.addProperty("message","Preset non applicato: "+e.getMessage()); }
+        send(p,"vfx_editor",reply);
     }
     public void broadcastEffect(Location from,Location at,JsonObject effect) {
         int tick=Bukkit.getCurrentTick();if(tick!=effectTick) { effectTick=tick;effectPackets.clear(); }

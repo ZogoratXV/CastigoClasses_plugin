@@ -178,4 +178,26 @@ public class DisciplineIntegrationTest {
         plugin.onCommand(player,plugin.getCommand("classe"),"classe",new String[]{"skill","1"});
         assertTrue(((TestClasses)plugin).effects.isEmpty());
     }
+    @Test void castingStateTracksPreparationAndClearsOnMovementAndCompletion() {
+        player.setSneaking(true);player.setHealth(5);use("mago_bianco",7);
+        assertEquals(1500,plugin.casting(player).get("totalMs").getAsInt());
+        server.getScheduler().performTicks(10);assertEquals(1000,plugin.casting(player).get("remainingMs").getAsInt());
+        player.teleport(player.getLocation().add(1,0,0));server.getScheduler().performTicks(1);assertTrue(plugin.casting(player).isEmpty());
+        plugin.profile(player).cooldowns.clear();use("mago_bianco",7);
+        server.getScheduler().performTicks(30);assertTrue(plugin.casting(player).isEmpty());
+    }
+    @Test void clientCannotPublishVfxWithoutAdminPermission() throws Exception {
+        var field=CastigoClasses.class.getDeclaredField("connected");field.setAccessible(true);
+        ((java.util.Set<java.util.UUID>)field.get(plugin)).add(player.getUniqueId());
+        var skill=plugin.catalog().get("mago_bianco").skills().getFirst();
+        var draft=VfxSettings.draft(plugin.presentation(player,skill).cues().get(SkillPresentation.Stage.CAST));draft.addProperty("shape","RING");draft.addProperty("particlesEnabled",true);
+        var o=new com.google.gson.JsonObject();o.addProperty("v",1);o.addProperty("type","vfx_save");o.addProperty("classId","mago_bianco");o.addProperty("skillId",skill.id());o.addProperty("stage","CAST");o.add("draft",draft);
+        plugin.onPluginMessageReceived(CastigoClasses.CHANNEL,player,o.toString().getBytes(java.nio.charset.StandardCharsets.UTF_8));
+        assertFalse(new java.io.File(plugin.getDataFolder(),"vfx-overrides.json").exists());
+        player.addAttachment(plugin,"castigo.classes.admin",true);
+        var rate=CastigoClasses.class.getDeclaredField("lastRequest");rate.setAccessible(true);((java.util.Map<?,?>)rate.get(plugin)).clear();
+        plugin.onPluginMessageReceived(CastigoClasses.CHANNEL,player,o.toString().getBytes(java.nio.charset.StandardCharsets.UTF_8));
+        assertTrue(new java.io.File(plugin.getDataFolder(),"vfx-overrides.json").exists());
+        assertEquals(SkillPresentation.Shape.RING,plugin.presentation(player,skill).cues().get(SkillPresentation.Stage.CAST).shape());
+    }
 }

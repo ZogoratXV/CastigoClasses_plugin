@@ -24,7 +24,7 @@ public final class DisciplineEngine implements Listener {
             end=now+skill.durationTicks();next=now+20;
         }
     }
-    private record Preparation(Source source,Skill skill,double power,Location start,ItemStack weapon,long ready) {}
+    private record Preparation(Source source,Skill skill,double power,Location start,ItemStack weapon,long ready,int total) {}
     private static final class Sequence {
         final Source source;final Skill skill;final double power;final LivingEntity target;final Location at;
         int left;long next;
@@ -55,6 +55,16 @@ public final class DisciplineEngine implements Listener {
     private boolean redirecting;
     public DisciplineEngine(CastigoClasses plugin,SkillEngine engine) { this.plugin=plugin;this.engine=engine; }
     public boolean busy(Player p) { UUID id=p.getUniqueId();return preparing.containsKey(id)||sequences.containsKey(id)||dashes.containsKey(id); }
+    public com.google.gson.JsonObject casting(UUID id) {
+        var result=new com.google.gson.JsonObject();var prep=preparing.get(id);
+        if(prep!=null) { result.addProperty("name",prep.skill().name());result.addProperty("totalMs",prep.total()*50);result.addProperty("remainingMs",Math.max(0,prep.ready()-tick)*50); }
+        return result;
+    }
+    private boolean endPreparation(UUID id) {
+        boolean removed=preparing.remove(id)!=null;
+        if(removed) { Player p=Bukkit.getPlayer(id);if(p!=null)plugin.sync(p); }
+        return removed;
+    }
     private Source source(Player p) { return new Source(p.getUniqueId(),p.getWorld().getUID(),plugin.profile(p).classId,generations.getOrDefault(p.getUniqueId(),0L)); }
     private Player resolve(Source source) {
         Player p=Bukkit.getPlayer(source.player());
@@ -71,7 +81,7 @@ public final class DisciplineEngine implements Listener {
         if(skill.effect()==Skill.Effect.COUNTER&&counters.getOrDefault(p.getUniqueId(),Long.MIN_VALUE)<tick) { plugin.feedback(p,"Serve una parata riuscita negli ultimi 2 secondi.");return false; }
         int delay=rules.preparationTicks();if(buff(p,Kind.FEAR)!=null)delay=(int)Math.ceil(delay*1.5);
         if(delay>0) {
-            preparing.put(p.getUniqueId(),new Preparation(source(p),skill,power,p.getLocation().clone(),p.getInventory().getItemInMainHand().clone(),tick+delay));
+            preparing.put(p.getUniqueId(),new Preparation(source(p),skill,power,p.getLocation().clone(),p.getInventory().getItemInMainHand().clone(),tick+delay,delay));
             plugin.feedback(p,"Preparazione: "+skill.name()+" — resta fermo");return true;
         }
         return execute(p,skill,power);
@@ -82,8 +92,8 @@ public final class DisciplineEngine implements Listener {
             var prep=entry.getValue();Player p=resolve(prep.source());
             boolean valid=p!=null&&DisciplineRules.prepared(true,true,equipped(p,prep.skill()),p.getLocation().distanceSquared(prep.start()))
                     &&p.getInventory().getItemInMainHand().isSimilar(prep.weapon())&&engine.allowed(p,p.getLocation());
-            if(!valid) { preparing.remove(entry.getKey());if(p!=null)plugin.feedback(p,"Preparazione interrotta.");continue; }
-            if(tick>=prep.ready()) { preparing.remove(entry.getKey());if(!execute(p,prep.skill(),prep.power()))plugin.feedback(p,"Tecnica fallita: bersaglio o requisiti non più validi."); }
+            if(!valid) { endPreparation(entry.getKey());if(p!=null)plugin.feedback(p,"Preparazione interrotta.");continue; }
+            if(tick>=prep.ready()) { endPreparation(entry.getKey());if(!execute(p,prep.skill(),prep.power()))plugin.feedback(p,"Tecnica fallita: bersaglio o requisiti non più validi."); }
         }
         for(Buff b:List.copyOf(buffs.values())) {
             if(buffs.get(b.key)!=b)continue;
@@ -198,6 +208,7 @@ public final class DisciplineEngine implements Listener {
             }
             default -> { return false; }
         }
+        engine.castVisual(p,s);
         return true;
     }
     private boolean fail(Player p,String message) { plugin.feedback(p,message);return false; }
@@ -322,11 +333,11 @@ public final class DisciplineEngine implements Listener {
         shots.put(arrow.getUniqueId(),new Shot(source(p),skill,power,p.getEyeLocation().clone(),tick+100,arrow));
     }
     private void interrupt(LivingEntity entity) {
-        UUID id=entity.getUniqueId();boolean cancelled=preparing.remove(id)!=null;cancelled|=sequences.remove(id)!=null;
+        UUID id=entity.getUniqueId();boolean cancelled=endPreparation(id);cancelled|=sequences.remove(id)!=null;
         if(entity instanceof Player p) { stopDash(id,p);if(cancelled)plugin.feedback(p,"Tecnica interrotta."); }
     }
     public void clear(UUID id) {
-        generations.merge(id,1L,Long::sum);preparing.remove(id);sequences.remove(id);stopDash(id,Bukkit.getPlayer(id));counters.remove(id);
+        generations.merge(id,1L,Long::sum);endPreparation(id);sequences.remove(id);stopDash(id,Bukkit.getPlayer(id));counters.remove(id);
         for(Buff b:List.copyOf(buffs.values()))if(b.key.target().equals(id)||b.source.player().equals(id))remove(b);
         zones.removeIf(z->z.source().player().equals(id));
         for(var entry:List.copyOf(shots.entrySet()))if(entry.getValue().source().player().equals(id)) { entry.getValue().arrow().remove();shots.remove(entry.getKey()); }
@@ -334,7 +345,7 @@ public final class DisciplineEngine implements Listener {
     public void shutdown() {
         for(Buff b:List.copyOf(buffs.values()))remove(b);
         for(var id:List.copyOf(dashes.keySet()))stopDash(id,Bukkit.getPlayer(id));
-        shots.values().forEach(s->s.arrow().remove());shots.clear();preparing.clear();sequences.clear();zones.clear();counters.clear();generations.clear();
+        shots.values().forEach(s->s.arrow().remove());shots.clear();for(var id:List.copyOf(preparing.keySet()))endPreparation(id);sequences.clear();zones.clear();counters.clear();generations.clear();
     }
     @EventHandler(priority=EventPriority.LOWEST,ignoreCancelled=true) public void damageInput(EntityDamageByEntityEvent e) {
         if(e.getDamager() instanceof Player p&&busy(p)&&attempts.isEmpty()) { e.setCancelled(true);return; }
