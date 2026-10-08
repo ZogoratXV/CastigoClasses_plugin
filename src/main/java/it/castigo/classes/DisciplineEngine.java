@@ -37,7 +37,7 @@ public final class DisciplineEngine implements Listener {
         final Source source;final Skill skill;final double power;final Vector direction;double left;int ticks;
         Dash(Source source,Skill skill,double power,Vector direction) { this.source=source;this.skill=skill;this.power=power;this.direction=direction;left=skill.range(); }
     }
-    private record Shot(Source source,Skill skill,double power,Location origin,long end,Arrow arrow) {}
+    private record Shot(Source source,Skill skill,double power,Location origin,long end,Arrow arrow,Location previous) {}
     private static final class Attempt { final LivingEntity target;final Player source;boolean accepted,blocked;Attempt(LivingEntity t,Player p){target=t;source=p;} }
     private record Hit(boolean accepted,double healthLost,boolean blocked) {}
     private final CastigoClasses plugin;
@@ -82,6 +82,8 @@ public final class DisciplineEngine implements Listener {
         int delay=rules.preparationTicks();if(buff(p,Kind.FEAR)!=null)delay=(int)Math.ceil(delay*1.5);
         if(delay>0) {
             preparing.put(p.getUniqueId(),new Preparation(source(p),skill,power,p.getLocation().clone(),p.getInventory().getItemInMainHand().clone(),tick+delay,delay));
+            var preparation=preparing.get(p.getUniqueId());
+            engine.loop(p,skill,SkillPresentation.Stage.CAST,p::getLocation,p.getUniqueId(),false,()->preparing.get(p.getUniqueId())==preparation&&resolve(preparation.source())!=null);
             plugin.feedback(p,"Preparazione: "+skill.name()+" — resta fermo");return true;
         }
         return execute(p,skill,power);
@@ -102,8 +104,8 @@ public final class DisciplineEngine implements Listener {
             if((b.key.kind()==Kind.GUARD)&&!equipped(caster,b.skill)) { remove(b);continue; }
             if(tick>=b.next) {
                 b.next=tick+20;
-                if(b.key.kind()==Kind.HOT) { if(ally(caster,target)&&caster.getLocation().distanceSquared(target.getLocation())<=b.skill.range()*b.skill.range()&&(caster.equals(target)||caster.hasLineOfSight(target)))heal(caster,target,b.power); }
-                if(b.key.kind()==Kind.DOT&&engine.targetAllowed(caster,target))hit(caster,target,b.power);
+                if(b.key.kind()==Kind.HOT) { if(ally(caster,target)&&caster.getLocation().distanceSquared(target.getLocation())<=b.skill.range()*b.skill.range()&&(caster.equals(target)||caster.hasLineOfSight(target))&&heal(caster,target,b.power))engine.pulse(caster,b.skill,SkillPresentation.Stage.HIT,target); }
+                if(b.key.kind()==Kind.DOT&&engine.targetAllowed(caster,target)&&hit(caster,target,b.power).accepted())engine.pulse(caster,b.skill,SkillPresentation.Stage.HIT,target);
             }
         }
         if(tick%10==0)for(Zone zone:List.copyOf(zones))pulse(zone);
@@ -114,13 +116,18 @@ public final class DisciplineEngine implements Listener {
             seq.next=tick+12;
             if(seq.skill.effect()==Skill.Effect.COMBO) {
                 if(seq.target==null||!engine.targetAllowed(p,seq.target)||!p.hasLineOfSight(seq.target)||p.getLocation().distanceSquared(seq.target.getLocation())>seq.skill.range()*seq.skill.range()) { sequences.remove(entry.getKey());continue; }
-                hit(p,seq.target,seq.power);
+                if(hit(p,seq.target,seq.power).accepted())engine.visual(p,seq.skill,seq.target);
+                engine.castVisual(p,seq.skill);
             } else fire(p,seq.skill,seq.power,seq.at);
             if(--seq.left<=0)sequences.remove(entry.getKey());
         }
         for(var entry:List.copyOf(dashes.entrySet()))move(entry.getKey(),entry.getValue());
         for(var entry:List.copyOf(shots.entrySet())) {
-            Shot shot=entry.getValue();Arrow arrow=shot.arrow();
+            Shot shot=entry.getValue();Arrow arrow=shot.arrow();Player shooter=resolve(shot.source());
+            if(shooter!=null&&arrow.isValid()&&arrow.getWorld().getUID().equals(shot.source().world())&&tick%2==0) {
+                if(arrow.getLocation().distanceSquared(shot.previous())<=128*128)engine.trail(shooter,shot.skill(),shot.previous(),arrow.getLocation());
+                shots.put(entry.getKey(),new Shot(shot.source(),shot.skill(),shot.power(),shot.origin(),shot.end(),arrow,arrow.getLocation().clone()));
+            }
             if(tick>=shot.end()||!arrow.isValid()||arrow.isOnGround()||resolve(shot.source())==null||!arrow.getWorld().getUID().equals(shot.source().world())
                     ||arrow.getLocation().distanceSquared(shot.origin())>shot.skill().range()*shot.skill().range()) { arrow.remove();shots.remove(entry.getKey()); }
         }
@@ -146,7 +153,8 @@ public final class DisciplineEngine implements Listener {
                 center=s.effect()==Skill.Effect.SANCTUARY?p.getLocation():ground(p,s.range());
                 if(center==null||!engine.allowed(p,center)||zones.size()>=64)return fail(p,"Zona non disponibile: mira a una superficie libera.");
                 zones.removeIf(z->z.source().player().equals(p.getUniqueId())&&z.skill().id().equals(s.id()));
-                zones.add(new Zone(source(p),s,power,center.clone(),tick+s.durationTicks()));engine.visual(p,s,center);
+                Zone zone=new Zone(source(p),s,power,center.clone(),tick+s.durationTicks());zones.add(zone);engine.visual(p,s,center);
+                engine.loop(p,s,SkillPresentation.Stage.TELEGRAPH,zone::center,null,false,()->zones.contains(zone)&&tick<zone.end()&&resolve(zone.source())!=null);
             }
             case CURSED_BOLT,VULNERABILITY,DOT,FEAR,HEAL_BLOCK,DRAIN -> {
                 target=enemy(p,s.range());if(target==null)return fail(p,"Nessun nemico visibile entro portata.");
@@ -159,7 +167,7 @@ public final class DisciplineEngine implements Listener {
                     case DRAIN -> heal(p,p,hit.healthLost()*mechanics(s).fraction());
                     default -> { }
                 }
-                engine.visual(p,s,target.getLocation());
+                if(hit.accepted()) { engine.trail(p,s,p.getEyeLocation(),target.getEyeLocation());engine.visual(p,s,target); }
             }
             case GUARD,BULWARK -> put(p,p,Kind.GUARD,s,0,mechanics(s).fraction());
             case RECOVER -> {
@@ -187,7 +195,9 @@ public final class DisciplineEngine implements Listener {
             }
             case SWEEP,LOW_SWEEP -> {
                 if(s.effect()==Skill.Effect.LOW_SWEEP)put(p,p,Kind.EXPOSED,s,0,0.15);
-                for(LivingEntity e:engine.area(p,p.getLocation(),s.radius()))if(hit(p,e,power).accepted()&&s.effect()==Skill.Effect.LOW_SWEEP)put(p,e,Kind.SLOW,s,0,0.45);
+                for(LivingEntity e:engine.area(p,p.getLocation(),s.radius()))if(hit(p,e,power).accepted()) {
+                    engine.visual(p,s,e);if(s.effect()==Skill.Effect.LOW_SWEEP)put(p,e,Kind.SLOW,s,0,0.45);
+                }
             }
             case MELEE,SHIELD_BASH,COUNTER,HEAVY_STRIKE,LONG_THRUST,STOP_STRIKE,GUARD_BREAK,COMBO -> {
                 if(s.effect()==Skill.Effect.HEAVY_STRIKE)put(p,p,Kind.EXPOSED,s,0,0.2);
@@ -204,11 +214,11 @@ public final class DisciplineEngine implements Listener {
                     default -> { }
                 }
                 if(s.effect()==Skill.Effect.COMBO)sequences.put(p.getUniqueId(),new Sequence(source(p),s,power,target,null,2,tick+12));
-                engine.visual(p,s,target.getLocation());
+                if(strike.accepted()||strike.blocked())engine.visual(p,s,target);
             }
             default -> { return false; }
         }
-        engine.castVisual(p,s);
+        if(DisciplineRules.arrows(s.effect())==0)engine.castVisual(p,s);
         return true;
     }
     private boolean fail(Player p,String message) { plugin.feedback(p,message);return false; }
@@ -249,7 +259,10 @@ public final class DisciplineEngine implements Listener {
     private Buff buff(Entity e,Kind kind) { Buff b=buffs.get(new Key(e.getUniqueId(),kind));return b!=null&&b.end>tick?b:null; }
     private void put(Player p,LivingEntity target,Kind kind,Skill s,double power,double fraction) {
         Key key=new Key(target.getUniqueId(),kind);if(buffs.size()>=4096&&!buffs.containsKey(key))return;
-        buffs.put(key,new Buff(key,source(p),s,power,fraction,tick));refresh(target);
+        Buff added=new Buff(key,source(p),s,power,fraction,tick);buffs.put(key,added);refresh(target);
+        if(kind!=Kind.EXPOSED)engine.loop(p,s,SkillPresentation.Stage.TELEGRAPH,
+                ()->target.getLocation().add(0,kind==Kind.LINK?1:0,0),target.getUniqueId(),kind==Kind.LINK,
+                ()->buffs.get(key)==added&&tick<added.end&&target.isValid()&&!target.isDead()&&resolve(added.source)!=null&&target.getWorld().equals(p.getWorld()));
     }
     private void remove(Buff b) { if(buffs.remove(b.key,b)) { LivingEntity target=living(b.key.target());if(target!=null)refresh(target); } }
     private void refresh(LivingEntity target) {
@@ -309,9 +322,10 @@ public final class DisciplineEngine implements Listener {
         if(dash.skill.effect()==Skill.Effect.CHARGE) {
             var trace=p.getWorld().rayTrace(p.getEyeLocation(),dash.direction,1.6,FluidCollisionMode.NEVER,true,0.3,e->e instanceof LivingEntity&&!e.equals(p));
             if(trace!=null&&trace.getHitEntity() instanceof LivingEntity target) {
-                if(engine.targetAllowed(p,target))hit(p,target,dash.power);stopDash(id,p);return;
+                if(engine.targetAllowed(p,target)&&hit(p,target,dash.power).accepted())engine.visual(p,dash.skill,target);stopDash(id,p);return;
             }
         }
+        if(dash.ticks%2==0)engine.trail(p,dash.skill,p.getLocation().clone().subtract(dash.direction.clone().multiply(.7)),p.getLocation());
         p.setVelocity(dash.direction.clone().multiply(step).setY(Math.min(0,p.getVelocity().getY())));dash.left-=step;
     }
     private void stopDash(UUID id,Player p) { if(dashes.remove(id)!=null&&p!=null)p.setVelocity(new Vector(0,Math.min(0,p.getVelocity().getY()),0)); }
@@ -330,7 +344,8 @@ public final class DisciplineEngine implements Listener {
         var event=new EntityShootBowEvent(p,p.getInventory().getItemInMainHand(),new ItemStack(Material.ARROW),arrow,EquipmentSlot.HAND,1,false);
         Bukkit.getPluginManager().callEvent(event);
         if(event.isCancelled()||event.getProjectile()!=arrow) { arrow.remove();return; }
-        shots.put(arrow.getUniqueId(),new Shot(source(p),skill,power,p.getEyeLocation().clone(),tick+100,arrow));
+        shots.put(arrow.getUniqueId(),new Shot(source(p),skill,power,p.getEyeLocation().clone(),tick+100,arrow,p.getEyeLocation().clone()));
+        engine.castVisual(p,skill);
     }
     private void interrupt(LivingEntity entity) {
         UUID id=entity.getUniqueId();boolean cancelled=endPreparation(id);cancelled|=sequences.remove(id)!=null;
@@ -399,11 +414,15 @@ public final class DisciplineEngine implements Listener {
         Shot shot=shots.get(e.getDamager().getUniqueId());
         if(shot!=null&&accepted&&e.getEntity() instanceof LivingEntity target) {
             Player source=resolve(shot.source());
+            if(source!=null)engine.visual(source,shot.skill(),target);
             if(source!=null&&(shot.skill().effect()==Skill.Effect.HINDERING_SHOT||shot.skill().effect()==Skill.Effect.COVER_FIRE))put(source,target,Kind.SLOW,shot.skill(),0,0.4);
         }
         if(!e.isCancelled()&&e.getEntity() instanceof Player p) {
             boolean blocked=e.isApplicable(EntityDamageEvent.DamageModifier.BLOCKING)&&e.getDamage(EntityDamageEvent.DamageModifier.BLOCKING)<0;
-            if(blocked||(buff(p,Kind.GUARD)!=null&&front(p,e.getDamager())&&accepted))counters.put(p.getUniqueId(),tick+40);
+            if(blocked||(buff(p,Kind.GUARD)!=null&&front(p,e.getDamager())&&accepted)) {
+                counters.put(p.getUniqueId(),tick+40);var guard=buff(p,Kind.GUARD);
+                if(guard!=null)engine.pulse(p,guard.skill,SkillPresentation.Stage.HIT,p);
+            }
         }
     }
     @EventHandler(priority=EventPriority.MONITOR,ignoreCancelled=true) public void interruptOnDamage(EntityDamageEvent e) {

@@ -11,10 +11,10 @@ import java.util.*;
 /** Server-only cosmetic definitions: never serialized into the gameplay protocol. */
 public record SkillPresentation(boolean enabled, Map<Stage,Cue> cues) {
     public enum Stage { CAST, TRAIL, IMPACT, TELEGRAPH, HIT }
-    public enum Shape { BURST, LINE, RING, SPIRAL, HEALING_BEAM, MESH_RING, MESH_COLUMN }
+    public enum Shape { BURST, LINE, RING, SPIRAL, HEALING_BEAM, MESH_RING, MESH_COLUMN, MESH_SLASH, MESH_SHIELD, MESH_BEAM, MESH_BURST, MESH_VORTEX, MESH_SIGIL, MESH_WAVE, MESH_THRUST }
     public record Audio(boolean enabled,String id,SoundCategory category,float volume,float pitch) {}
     public record Cue(boolean enabled,Shape shape,int points,int durationTicks,double radius,ParticleStyle particles,Audio sound,MeshSettings mesh) {
-        public boolean hasMesh() { return shape==Shape.HEALING_BEAM||shape==Shape.MESH_RING||shape==Shape.MESH_COLUMN; }
+        public boolean hasMesh() { return shape==Shape.HEALING_BEAM||shape.name().startsWith("MESH_"); }
     }
     public SkillPresentation { cues=Map.copyOf(cues); }
 
@@ -43,6 +43,7 @@ public record SkillPresentation(boolean enabled, Map<Stage,Cue> cues) {
             defaults.set("impact.radius",0.85);defaults.set("impact.particles.color","55FF66");defaults.set("impact.particles.size",0.65);
             sound(defaults,"impact","castigoclasses:skill.orison",0.75,1);
         }
+        BuiltinVfx.apply(defaults,skill);
         // Overlay only explicitly supplied keys, so a color-only edit retains all other defaults.
         if(section!=null) {
             for(String key:section.getKeys(false))

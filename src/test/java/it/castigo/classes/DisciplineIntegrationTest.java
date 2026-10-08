@@ -13,7 +13,9 @@ public class DisciplineIntegrationTest {
     // bridge is substituted; ParticleStyle and atomic profile writes use the real core JAR.
     public static class TestClasses extends CastigoClasses {
         final java.util.List<com.google.gson.JsonObject> effects=new java.util.ArrayList<>();
+        final java.util.List<java.util.UUID> stopped=new java.util.ArrayList<>();
         @Override public void broadcastEffect(Location from,Location at,com.google.gson.JsonObject effect) { effects.add(effect.deepCopy()); }
+        @Override public void stopEffect(java.util.UUID world,java.util.UUID handle) { stopped.add(handle); }
         @Override protected void scheduleTick(Runnable task) { getServer().getScheduler().runTaskTimer(this,task,5,5); }
         @Override protected void cancelTicks() { getServer().getScheduler().cancelTasks(this); }
     }
@@ -54,6 +56,27 @@ public class DisciplineIntegrationTest {
         double before=player.getAttribute(Attribute.MOVEMENT_SPEED).getValue();use("guerriero_scudo",3);
         assertTrue(player.getAttribute(Attribute.MOVEMENT_SPEED).getValue()<before);
         command("set",player.getName(),"mago_bianco");assertEquals(before,player.getAttribute(Attribute.MOVEMENT_SPEED).getValue(),1e-9);
+    }
+    @Test void guardVfxRenewsOneHandleAndStopsWhenClassChanges() {
+        player.getWorld().loadChunk(player.getLocation().getChunk());
+        player.getInventory().setItemInMainHand(new ItemStack(Material.IRON_SWORD));player.getInventory().setItemInOffHand(new ItemStack(Material.SHIELD));
+        use("guerriero_scudo",3);var test=(TestClasses)plugin;
+        var first=test.effects.stream().filter(e->e.has("handle")).findFirst().orElseThrow();
+        assertEquals("MESH_SHIELD",first.get("shape").getAsString());
+        assertEquals(player.getEntityId(),first.get("targetEntity").getAsInt());
+        server.getScheduler().performTicks(21);
+        var renewed=test.effects.stream().filter(e->e.has("handle")).toList();assertTrue(renewed.size()>=2);
+        assertEquals(first.get("handle"),renewed.getLast().get("handle"));
+        assertFalse(renewed.getLast().getAsJsonObject("sound").get("enabled").getAsBoolean());
+        command("set",player.getName(),"mago_bianco");server.getScheduler().performTicks(1);
+        assertTrue(test.stopped.contains(java.util.UUID.fromString(first.get("handle").getAsString())));
+    }
+    @Test void regenerationVfxStopsAtActualExpiry() {
+        player.getWorld().loadChunk(player.getLocation().getChunk());player.setSneaking(true);player.setHealth(5);use("mago_bianco",3);
+        var test=(TestClasses)plugin;var first=test.effects.stream().filter(e->e.has("handle")).findFirst().orElseThrow();
+        assertEquals("MESH_RING",first.get("shape").getAsString());
+        server.getScheduler().performTicks(121);
+        assertTrue(test.stopped.contains(java.util.UUID.fromString(first.get("handle").getAsString())));
     }
     @Test void preparedHealWaitsBeforeChangingHealth() {
         player.setSneaking(true);player.setHealth(5);use("mago_bianco",7);

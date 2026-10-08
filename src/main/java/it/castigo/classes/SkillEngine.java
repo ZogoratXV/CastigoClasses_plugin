@@ -16,6 +16,7 @@ public final class SkillEngine implements Listener {
     private final AbilityProtection protection;
     private final PresentationPlayer effects;
     private final DisciplineEngine disciplines;
+    private final VfxLoops visualLoops;
     private final Map<UUID,Ward> wards=new HashMap<>();
     private LivingEntity damageTarget;
     private Player damageSource;
@@ -23,11 +24,17 @@ public final class SkillEngine implements Listener {
     public SkillEngine(CastigoClasses plugin) {
         this.plugin=plugin;this.protection=new AbilityProtection(plugin.getLogger());this.effects=new PresentationPlayer(plugin);
         this.disciplines=new DisciplineEngine(plugin,this);
+        this.visualLoops=new VfxLoops(plugin);
         plugin.getServer().getPluginManager().registerEvents(disciplines,plugin);
-        plugin.getServer().getScheduler().runTaskTimer(plugin,disciplines::tick,1,1);
+        plugin.getServer().getScheduler().runTaskTimer(plugin,()->{disciplines.tick();visualLoops.tick();},1,1);
     }
     public void clear(UUID id) { wards.remove(id);disciplines.clear(id); }
-    public void shutdown() { wards.clear();disciplines.shutdown(); }
+    public void shutdown() { wards.clear();disciplines.shutdown();visualLoops.clear(); }
+    void loop(Player p,Skill s,SkillPresentation.Stage stage,java.util.function.Supplier<Location> at,UUID target,boolean link,java.util.function.BooleanSupplier valid) {
+        visualLoops.start(p,s,stage,p::getEyeLocation,at,target,link,valid);
+    }
+    void trail(Player p,Skill s,Location from,Location at) { effects.play(plugin.presentation(p,s),SkillPresentation.Stage.TRAIL,from,at); }
+    void pulse(Player p,Skill s,SkillPresentation.Stage stage,LivingEntity at) { effects.play(plugin.presentation(p,s),stage,p.getEyeLocation(),at.getLocation(),at.getUniqueId()); }
     public double defenseFactor(UUID id) { return disciplines.defenseFactor(id); }
     public com.google.gson.JsonObject casting(UUID id) { return disciplines.casting(id); }
     void castVisual(Player p,Skill s) { effects.play(plugin.presentation(p,s),SkillPresentation.Stage.CAST,p.getLocation(),p.getLocation(),p.getUniqueId()); }
@@ -107,9 +114,9 @@ public final class SkillEngine implements Listener {
             case BOLT,LIGHTNING -> {
                 RayTraceResult hit=ray(p,s.range());
                 if(hit==null||!(hit.getHitEntity() instanceof LivingEntity target)) { plugin.feedback(p,"Nessun bersaglio valido nella linea di mira.");return false; }
-                target.damage(power,p);
-                effects.play(fx,SkillPresentation.Stage.TRAIL,from,hit.getHitPosition().toLocation(p.getWorld()));
-                effects.play(fx,SkillPresentation.Stage.IMPACT,from,target.getLocation().add(0,1,0));
+                boolean accepted=damageAccepted(target,p,power);
+                effects.play(fx,SkillPresentation.Stage.TRAIL,s.effect()==Skill.Effect.LIGHTNING?target.getLocation().add(0,8,0):from,hit.getHitPosition().toLocation(p.getWorld()));
+                if(accepted)visual(p,s,target);
             }
             case FIREBALL -> {
                 Location center=point(p,s);
@@ -146,16 +153,18 @@ public final class SkillEngine implements Listener {
                 effects.play(fx,SkillPresentation.Stage.IMPACT,from,best);
             }
             case WARD -> {
-                wards.put(p.getUniqueId(),new Ward(power,System.currentTimeMillis()+s.durationTicks()*50L,fx));
+                Ward ward=new Ward(power,System.currentTimeMillis()+s.durationTicks()*50L,fx);wards.put(p.getUniqueId(),ward);
+                var world=p.getWorld();loop(p,s,SkillPresentation.Stage.TELEGRAPH,p::getLocation,p.getUniqueId(),false,
+                        ()->p.isOnline()&&!p.isDead()&&p.getWorld().equals(world)&&wards.containsKey(p.getUniqueId())&&wards.get(p.getUniqueId()).expires()==ward.expires()&&System.currentTimeMillis()<ward.expires());
                 effects.play(fx,SkillPresentation.Stage.IMPACT,from,p.getLocation());
             }
             case HEAL -> {
                 double missing=p.getAttribute(org.bukkit.attribute.Attribute.MAX_HEALTH).getValue()-p.getHealth();
                 if(missing<=0) { plugin.feedback(p,"La vita è già al massimo.");return false; }
                 EntityRegainHealthEvent event=new EntityRegainHealthEvent(p,Math.min(missing,power),EntityRegainHealthEvent.RegainReason.CUSTOM);
-                Bukkit.getPluginManager().callEvent(event);if(event.isCancelled())return false;
+                Bukkit.getPluginManager().callEvent(event);if(event.isCancelled()||event.getAmount()<=0)return false;
                 p.setHealth(Math.min(p.getAttribute(org.bukkit.attribute.Attribute.MAX_HEALTH).getValue(),p.getHealth()+Math.max(0,event.getAmount())));
-                effects.play(fx,SkillPresentation.Stage.IMPACT,from,p.getLocation().add(0,1,0));
+                visual(p,s,p);
             }
             case METEOR -> {
                 var block=p.getWorld().rayTraceBlocks(from,from.getDirection(),s.range(),FluidCollisionMode.NEVER,true);
@@ -171,7 +180,7 @@ public final class SkillEngine implements Listener {
                 },20);
             }
         }
-        effects.play(fx,SkillPresentation.Stage.CAST,from,from);
+        castVisual(p,s);
         return true;
     }
     private boolean damageAccepted(LivingEntity target,Player source,double amount) {

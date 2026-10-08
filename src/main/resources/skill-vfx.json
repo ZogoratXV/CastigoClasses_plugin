@@ -1,0 +1,5368 @@
+{
+  "arciere_tiro_preciso": {
+    "class": "arciere",
+    "name": "Tiro preciso",
+    "effect": "PRECISE_SHOT",
+    "description": "Scia verde sottile agganciata al percorso reale della freccia.",
+    "presentation": {
+      "cast": {
+        "enabled": true,
+        "shape": "MESH_BURST",
+        "duration-ticks": 6,
+        "radius": 0.3,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "9BEAB2",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 1.4,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/flare.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "9BEAB2"
+        }
+      },
+      "trail": {
+        "enabled": true,
+        "shape": "MESH_BEAM",
+        "duration-ticks": 6,
+        "radius": 0.12,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "9BEAB2",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "9BEAB2"
+        }
+      },
+      "impact": {
+        "enabled": true,
+        "shape": "MESH_BURST",
+        "duration-ticks": 12,
+        "radius": 0.35,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "9BEAB2",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": true,
+          "id": "minecraft:entity.arrow.hit",
+          "volume": 0.45,
+          "pitch": 1
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/flare.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "9BEAB2"
+        }
+      },
+      "telegraph": {
+        "enabled": false
+      },
+      "hit": {
+        "enabled": false
+      }
+    }
+  },
+  "arciere_passo_cacciatore": {
+    "class": "arciere",
+    "name": "Passo del cacciatore",
+    "effect": "HUNTER_STEP",
+    "description": "Scia breve dietro il movimento reale.",
+    "presentation": {
+      "cast": {
+        "enabled": true,
+        "shape": "MESH_WAVE",
+        "duration-ticks": 12,
+        "radius": 0.85,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "9BEAB2",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": true,
+          "id": "minecraft:entity.arrow.hit",
+          "volume": 0.45,
+          "pitch": 1
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/wave.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "9BEAB2"
+        }
+      },
+      "trail": {
+        "enabled": true,
+        "shape": "MESH_BEAM",
+        "duration-ticks": 6,
+        "radius": 0.3,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "9BEAB2",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "9BEAB2"
+        }
+      },
+      "impact": {
+        "enabled": true,
+        "shape": "MESH_BURST",
+        "duration-ticks": 12,
+        "radius": 0.65,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "9BEAB2",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 1.8,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/flare.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "9BEAB2"
+        }
+      },
+      "telegraph": {
+        "enabled": false
+      },
+      "hit": {
+        "enabled": false
+      }
+    }
+  },
+  "arciere_occhio_cacciatore": {
+    "class": "arciere",
+    "name": "Occhio del cacciatore",
+    "effect": "STUDY",
+    "description": "Marchio verde di mira sopra il bersaglio studiato.",
+    "presentation": {
+      "cast": {
+        "enabled": true,
+        "shape": "MESH_RING",
+        "duration-ticks": 10,
+        "radius": 0.55,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "9BEAB2",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/nature_seal.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "9BEAB2"
+        }
+      },
+      "trail": {
+        "enabled": false
+      },
+      "impact": {
+        "enabled": true,
+        "shape": "MESH_SIGIL",
+        "duration-ticks": 18,
+        "radius": 0.6,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "9BEAB2",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": true,
+          "id": "minecraft:entity.arrow.hit",
+          "volume": 0.45,
+          "pitch": 1
+        },
+        "mesh": {
+          "height": 2.1,
+          "opacity": 0.75,
+          "rotation": -90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/nature_seal.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "9BEAB2"
+        }
+      },
+      "telegraph": {
+        "enabled": true,
+        "shape": "MESH_SIGIL",
+        "duration-ticks": 22,
+        "radius": 0.45,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "9BEAB2",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2.2,
+          "opacity": 0.75,
+          "rotation": 30,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/nature_seal.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "9BEAB2"
+        }
+      },
+      "hit": {
+        "enabled": false
+      }
+    }
+  },
+  "arciere_disimpegno": {
+    "class": "arciere",
+    "name": "Disimpegno",
+    "effect": "DISENGAGE",
+    "description": "Scia breve dietro il movimento reale.",
+    "presentation": {
+      "cast": {
+        "enabled": true,
+        "shape": "MESH_WAVE",
+        "duration-ticks": 12,
+        "radius": 0.85,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "9BEAB2",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": true,
+          "id": "minecraft:entity.arrow.hit",
+          "volume": 0.45,
+          "pitch": 1
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/wave.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "9BEAB2"
+        }
+      },
+      "trail": {
+        "enabled": true,
+        "shape": "MESH_BEAM",
+        "duration-ticks": 6,
+        "radius": 0.3,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "9BEAB2",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "9BEAB2"
+        }
+      },
+      "impact": {
+        "enabled": true,
+        "shape": "MESH_BURST",
+        "duration-ticks": 12,
+        "radius": 0.65,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "9BEAB2",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 1.8,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/flare.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "9BEAB2"
+        }
+      },
+      "telegraph": {
+        "enabled": false
+      },
+      "hit": {
+        "enabled": false
+      }
+    }
+  },
+  "arciere_tiro_ostacolante": {
+    "class": "arciere",
+    "name": "Tiro ostacolante",
+    "effect": "HINDERING_SHOT",
+    "description": "Scia della freccia e anello di intralcio sul nemico colpito.",
+    "presentation": {
+      "cast": {
+        "enabled": true,
+        "shape": "MESH_BURST",
+        "duration-ticks": 6,
+        "radius": 0.3,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "9BEAB2",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 1.4,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/flare.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "9BEAB2"
+        }
+      },
+      "trail": {
+        "enabled": true,
+        "shape": "MESH_BEAM",
+        "duration-ticks": 6,
+        "radius": 0.12,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "9BEAB2",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "9BEAB2"
+        }
+      },
+      "impact": {
+        "enabled": true,
+        "shape": "MESH_BURST",
+        "duration-ticks": 12,
+        "radius": 0.35,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "9BEAB2",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": true,
+          "id": "minecraft:entity.arrow.hit",
+          "volume": 0.45,
+          "pitch": 1
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/flare.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "9BEAB2"
+        }
+      },
+      "telegraph": {
+        "enabled": true,
+        "shape": "MESH_RING",
+        "duration-ticks": 22,
+        "radius": 0.65,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "9BEAB2",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": -60,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/nature_seal.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "9BEAB2"
+        }
+      },
+      "hit": {
+        "enabled": false
+      }
+    }
+  },
+  "arciere_tiro_copertura": {
+    "class": "arciere",
+    "name": "Tiro di copertura",
+    "effect": "COVER_FIRE",
+    "description": "Scie dei tiri di copertura e anelli sui nemici rallentati.",
+    "presentation": {
+      "cast": {
+        "enabled": true,
+        "shape": "MESH_BURST",
+        "duration-ticks": 6,
+        "radius": 0.3,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "9BEAB2",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 1.4,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/flare.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "9BEAB2"
+        }
+      },
+      "trail": {
+        "enabled": true,
+        "shape": "MESH_BEAM",
+        "duration-ticks": 6,
+        "radius": 0.12,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "9BEAB2",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "9BEAB2"
+        }
+      },
+      "impact": {
+        "enabled": true,
+        "shape": "MESH_BURST",
+        "duration-ticks": 12,
+        "radius": 0.35,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "9BEAB2",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": true,
+          "id": "minecraft:entity.arrow.hit",
+          "volume": 0.45,
+          "pitch": 1
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/flare.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "9BEAB2"
+        }
+      },
+      "telegraph": {
+        "enabled": true,
+        "shape": "MESH_RING",
+        "duration-ticks": 22,
+        "radius": 0.65,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "9BEAB2",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": -60,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/nature_seal.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "9BEAB2"
+        }
+      },
+      "hit": {
+        "enabled": false
+      }
+    }
+  },
+  "arciere_doppio_tiro": {
+    "class": "arciere",
+    "name": "Doppio tiro",
+    "effect": "DOUBLE_SHOT",
+    "description": "Due scie distinte, una per ciascuna freccia realmente scoccata.",
+    "presentation": {
+      "cast": {
+        "enabled": true,
+        "shape": "MESH_BURST",
+        "duration-ticks": 6,
+        "radius": 0.3,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "9BEAB2",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 1.4,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/flare.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "9BEAB2"
+        }
+      },
+      "trail": {
+        "enabled": true,
+        "shape": "MESH_BEAM",
+        "duration-ticks": 6,
+        "radius": 0.12,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "9BEAB2",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "9BEAB2"
+        }
+      },
+      "impact": {
+        "enabled": true,
+        "shape": "MESH_BURST",
+        "duration-ticks": 12,
+        "radius": 0.35,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "9BEAB2",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": true,
+          "id": "minecraft:entity.arrow.hit",
+          "volume": 0.45,
+          "pitch": 1
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/flare.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "9BEAB2"
+        }
+      },
+      "telegraph": {
+        "enabled": false
+      },
+      "hit": {
+        "enabled": false
+      }
+    }
+  },
+  "arciere_colpo_maestro": {
+    "class": "arciere",
+    "name": "Colpo del maestro",
+    "effect": "MASTER_SHOT",
+    "description": "Scia più spessa e impatto concentrato del colpo del maestro.",
+    "presentation": {
+      "cast": {
+        "enabled": true,
+        "shape": "MESH_BURST",
+        "duration-ticks": 6,
+        "radius": 0.3,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "9BEAB2",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 1.4,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/flare.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "9BEAB2"
+        }
+      },
+      "trail": {
+        "enabled": true,
+        "shape": "MESH_BEAM",
+        "duration-ticks": 6,
+        "radius": 0.3,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "9BEAB2",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "9BEAB2"
+        }
+      },
+      "impact": {
+        "enabled": true,
+        "shape": "MESH_BURST",
+        "duration-ticks": 12,
+        "radius": 1,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "9BEAB2",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": true,
+          "id": "minecraft:entity.arrow.hit",
+          "volume": 0.45,
+          "pitch": 1
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/flare.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "9BEAB2"
+        }
+      },
+      "telegraph": {
+        "enabled": false
+      },
+      "hit": {
+        "enabled": false
+      }
+    }
+  },
+  "guerriero_due_mani_fendente_pesante": {
+    "class": "guerriero_due_mani",
+    "name": "Fendente pesante",
+    "effect": "HEAVY_STRIKE",
+    "description": "Arco ampio più lento e impatto caldo del fendente pesante.",
+    "presentation": {
+      "cast": {
+        "enabled": true,
+        "shape": "MESH_SLASH",
+        "duration-ticks": 18,
+        "radius": 1.3,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "FFAF68",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 1.7,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/wave.png",
+          "columnTexture": "castigoclasses:textures/vfx/slash.png",
+          "tint": "FFAF68"
+        }
+      },
+      "trail": {
+        "enabled": false
+      },
+      "impact": {
+        "enabled": true,
+        "shape": "MESH_BURST",
+        "duration-ticks": 12,
+        "radius": 0.4,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "FFAF68",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": true,
+          "id": "minecraft:entity.player.attack.sweep",
+          "volume": 0.45,
+          "pitch": 1
+        },
+        "mesh": {
+          "height": 1.2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/flare.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "FFAF68"
+        }
+      },
+      "telegraph": {
+        "enabled": false
+      },
+      "hit": {
+        "enabled": false
+      }
+    }
+  },
+  "guerriero_due_mani_affondo_lungo": {
+    "class": "guerriero_due_mani",
+    "name": "Affondo lungo",
+    "effect": "LONG_THRUST",
+    "description": "Affondo luminoso allungato frontalmente e impatto puntuale.",
+    "presentation": {
+      "cast": {
+        "enabled": true,
+        "shape": "MESH_THRUST",
+        "duration-ticks": 10,
+        "radius": 2.8,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "FFAF68",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 1.7,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "FFAF68"
+        }
+      },
+      "trail": {
+        "enabled": false
+      },
+      "impact": {
+        "enabled": true,
+        "shape": "MESH_BURST",
+        "duration-ticks": 12,
+        "radius": 0.4,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "FFAF68",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": true,
+          "id": "minecraft:entity.player.attack.sweep",
+          "volume": 0.45,
+          "pitch": 1
+        },
+        "mesh": {
+          "height": 1.2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/flare.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "FFAF68"
+        }
+      },
+      "telegraph": {
+        "enabled": false
+      },
+      "hit": {
+        "enabled": false
+      }
+    }
+  },
+  "guerriero_due_mani_carica": {
+    "class": "guerriero_due_mani",
+    "name": "Carica travolgente",
+    "effect": "CHARGE",
+    "description": "Scia breve dietro il movimento reale e impatto sul nemico raggiunto.",
+    "presentation": {
+      "cast": {
+        "enabled": true,
+        "shape": "MESH_WAVE",
+        "duration-ticks": 12,
+        "radius": 0.85,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "FFAF68",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": true,
+          "id": "minecraft:entity.player.attack.sweep",
+          "volume": 0.45,
+          "pitch": 1
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/wave.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "FFAF68"
+        }
+      },
+      "trail": {
+        "enabled": true,
+        "shape": "MESH_BEAM",
+        "duration-ticks": 6,
+        "radius": 0.6,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "FFAF68",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "FFAF68"
+        }
+      },
+      "impact": {
+        "enabled": true,
+        "shape": "MESH_BURST",
+        "duration-ticks": 12,
+        "radius": 0.65,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "FFAF68",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 1.8,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/flare.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "FFAF68"
+        }
+      },
+      "telegraph": {
+        "enabled": false
+      },
+      "hit": {
+        "enabled": false
+      }
+    }
+  },
+  "guerriero_due_mani_arresto": {
+    "class": "guerriero_due_mani",
+    "name": "Colpo di arresto",
+    "effect": "STOP_STRIKE",
+    "description": "Taglio breve e anello che permane sul nemico rallentato.",
+    "presentation": {
+      "cast": {
+        "enabled": true,
+        "shape": "MESH_SLASH",
+        "duration-ticks": 10,
+        "radius": 1.3,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "FFAF68",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 1.7,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/wave.png",
+          "columnTexture": "castigoclasses:textures/vfx/slash.png",
+          "tint": "FFAF68"
+        }
+      },
+      "trail": {
+        "enabled": false
+      },
+      "impact": {
+        "enabled": true,
+        "shape": "MESH_BURST",
+        "duration-ticks": 12,
+        "radius": 0.4,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "FFAF68",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": true,
+          "id": "minecraft:entity.player.attack.sweep",
+          "volume": 0.45,
+          "pitch": 1
+        },
+        "mesh": {
+          "height": 1.2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/flare.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "FFAF68"
+        }
+      },
+      "telegraph": {
+        "enabled": true,
+        "shape": "MESH_RING",
+        "duration-ticks": 22,
+        "radius": 0.5,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "FFAF68",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": -45,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/wave.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "FFAF68"
+        }
+      },
+      "hit": {
+        "enabled": false
+      }
+    }
+  },
+  "guerriero_due_mani_circolare": {
+    "class": "guerriero_due_mani",
+    "name": "Fendente circolare",
+    "effect": "SWEEP",
+    "description": "Onda circolare al raggio della skill e lampi su ogni nemico colpito.",
+    "presentation": {
+      "cast": {
+        "enabled": true,
+        "shape": "MESH_WAVE",
+        "duration-ticks": 10,
+        "radius": 3.0,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "FFAF68",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": true,
+          "id": "minecraft:entity.player.attack.sweep",
+          "volume": 0.45,
+          "pitch": 1
+        },
+        "mesh": {
+          "height": 1.7,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 2,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/wave.png",
+          "columnTexture": "castigoclasses:textures/vfx/slash.png",
+          "tint": "FFAF68"
+        }
+      },
+      "trail": {
+        "enabled": false
+      },
+      "impact": {
+        "enabled": true,
+        "shape": "MESH_BURST",
+        "duration-ticks": 12,
+        "radius": 0.4,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "FFAF68",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 1.2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/flare.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "FFAF68"
+        }
+      },
+      "telegraph": {
+        "enabled": false
+      },
+      "hit": {
+        "enabled": false
+      }
+    }
+  },
+  "guerriero_due_mani_falciata": {
+    "class": "guerriero_due_mani",
+    "name": "Falciata bassa",
+    "effect": "LOW_SWEEP",
+    "description": "Onda bassa e anelli sui bersagli rallentati.",
+    "presentation": {
+      "cast": {
+        "enabled": true,
+        "shape": "MESH_WAVE",
+        "duration-ticks": 10,
+        "radius": 3.0,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "FFAF68",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": true,
+          "id": "minecraft:entity.player.attack.sweep",
+          "volume": 0.45,
+          "pitch": 1
+        },
+        "mesh": {
+          "height": 0.4,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 2,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/wave.png",
+          "columnTexture": "castigoclasses:textures/vfx/slash.png",
+          "tint": "FFAF68"
+        }
+      },
+      "trail": {
+        "enabled": false
+      },
+      "impact": {
+        "enabled": true,
+        "shape": "MESH_BURST",
+        "duration-ticks": 12,
+        "radius": 0.4,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "FFAF68",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 1.2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/flare.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "FFAF68"
+        }
+      },
+      "telegraph": {
+        "enabled": true,
+        "shape": "MESH_RING",
+        "duration-ticks": 22,
+        "radius": 0.5,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "FFAF68",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": -45,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/wave.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "FFAF68"
+        }
+      },
+      "hit": {
+        "enabled": false
+      }
+    }
+  },
+  "guerriero_due_mani_spezzaguardia": {
+    "class": "guerriero_due_mani",
+    "name": "Spezzaguardia",
+    "effect": "GUARD_BREAK",
+    "description": "Taglio, forte impatto e marchio sul nemico reso vulnerabile.",
+    "presentation": {
+      "cast": {
+        "enabled": true,
+        "shape": "MESH_SLASH",
+        "duration-ticks": 10,
+        "radius": 1.3,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "FFAF68",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 1.7,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/wave.png",
+          "columnTexture": "castigoclasses:textures/vfx/slash.png",
+          "tint": "FFAF68"
+        }
+      },
+      "trail": {
+        "enabled": false
+      },
+      "impact": {
+        "enabled": true,
+        "shape": "MESH_BURST",
+        "duration-ticks": 12,
+        "radius": 0.8,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "FFAF68",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": true,
+          "id": "minecraft:entity.player.attack.sweep",
+          "volume": 0.45,
+          "pitch": 1
+        },
+        "mesh": {
+          "height": 1.2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/flare.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "FFAF68"
+        }
+      },
+      "telegraph": {
+        "enabled": true,
+        "shape": "MESH_SIGIL",
+        "duration-ticks": 22,
+        "radius": 0.45,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "FFAF68",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/dark_seal.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "FFAF68"
+        }
+      },
+      "hit": {
+        "enabled": false
+      }
+    }
+  },
+  "guerriero_due_mani_sequenza": {
+    "class": "guerriero_due_mani",
+    "name": "Sequenza del campione",
+    "effect": "COMBO",
+    "description": "Un arco e un impatto per ciascun colpo della sequenza realmente eseguito.",
+    "presentation": {
+      "cast": {
+        "enabled": true,
+        "shape": "MESH_SLASH",
+        "duration-ticks": 10,
+        "radius": 1.3,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "FFAF68",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 1.7,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/wave.png",
+          "columnTexture": "castigoclasses:textures/vfx/slash.png",
+          "tint": "FFAF68"
+        }
+      },
+      "trail": {
+        "enabled": false
+      },
+      "impact": {
+        "enabled": true,
+        "shape": "MESH_BURST",
+        "duration-ticks": 12,
+        "radius": 0.4,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "FFAF68",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": true,
+          "id": "minecraft:entity.player.attack.sweep",
+          "volume": 0.45,
+          "pitch": 1
+        },
+        "mesh": {
+          "height": 1.2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/flare.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "FFAF68"
+        }
+      },
+      "telegraph": {
+        "enabled": false
+      },
+      "hit": {
+        "enabled": false
+      }
+    }
+  },
+  "guerriero_scudo_affondo_disciplinato": {
+    "class": "guerriero_scudo",
+    "name": "Affondo disciplinato",
+    "effect": "MELEE",
+    "description": "Affondo luminoso corto davanti al guerriero e lampo sulla vittima.",
+    "presentation": {
+      "cast": {
+        "enabled": true,
+        "shape": "MESH_THRUST",
+        "duration-ticks": 10,
+        "radius": 1.6,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "83CFFF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 1.7,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "83CFFF"
+        }
+      },
+      "trail": {
+        "enabled": false
+      },
+      "impact": {
+        "enabled": true,
+        "shape": "MESH_BURST",
+        "duration-ticks": 12,
+        "radius": 0.4,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "83CFFF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": true,
+          "id": "minecraft:entity.player.attack.sweep",
+          "volume": 0.45,
+          "pitch": 1
+        },
+        "mesh": {
+          "height": 1.2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/flare.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "83CFFF"
+        }
+      },
+      "telegraph": {
+        "enabled": false
+      },
+      "hit": {
+        "enabled": false
+      }
+    }
+  },
+  "guerriero_scudo_urto_scudo": {
+    "class": "guerriero_scudo",
+    "name": "Urto di scudo",
+    "effect": "SHIELD_BASH",
+    "description": "Impatto ravvicinato e anello sul nemico stordito/rallentato.",
+    "presentation": {
+      "cast": {
+        "enabled": true,
+        "shape": "MESH_SHIELD",
+        "duration-ticks": 10,
+        "radius": 0.8,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "83CFFF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 1.3,
+          "opacity": 0.6,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
+          "columnTexture": "castigoclasses:textures/vfx/shield_grid.png",
+          "tint": "83CFFF"
+        }
+      },
+      "trail": {
+        "enabled": false
+      },
+      "impact": {
+        "enabled": true,
+        "shape": "MESH_BURST",
+        "duration-ticks": 12,
+        "radius": 0.4,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "83CFFF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": true,
+          "id": "minecraft:entity.player.attack.sweep",
+          "volume": 0.45,
+          "pitch": 1
+        },
+        "mesh": {
+          "height": 1.2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/flare.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "83CFFF"
+        }
+      },
+      "telegraph": {
+        "enabled": true,
+        "shape": "MESH_RING",
+        "duration-ticks": 22,
+        "radius": 0.5,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "83CFFF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": -45,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/wave.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "83CFFF"
+        }
+      },
+      "hit": {
+        "enabled": false
+      }
+    }
+  },
+  "guerriero_scudo_guardia_salda": {
+    "class": "guerriero_scudo",
+    "name": "Guardia salda",
+    "effect": "GUARD",
+    "description": "Barriera curva che segue la direzione del personaggio e termina con la protezione.",
+    "presentation": {
+      "cast": {
+        "enabled": true,
+        "shape": "MESH_SHIELD",
+        "duration-ticks": 18,
+        "radius": 1,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "83CFFF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": true,
+          "id": "minecraft:entity.player.attack.sweep",
+          "volume": 0.45,
+          "pitch": 1
+        },
+        "mesh": {
+          "height": 2.3,
+          "opacity": 0.5,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/holy_seal.png",
+          "columnTexture": "castigoclasses:textures/vfx/shield_grid.png",
+          "tint": "83CFFF"
+        }
+      },
+      "trail": {
+        "enabled": false
+      },
+      "impact": {
+        "enabled": true,
+        "shape": "MESH_BURST",
+        "duration-ticks": 12,
+        "radius": 0.65,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "83CFFF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 1.8,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/flare.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "83CFFF"
+        }
+      },
+      "telegraph": {
+        "enabled": true,
+        "shape": "MESH_SHIELD",
+        "duration-ticks": 22,
+        "radius": 1,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "83CFFF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 1.8,
+          "opacity": 0.32,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/holy_seal.png",
+          "columnTexture": "castigoclasses:textures/vfx/shield_grid.png",
+          "tint": "83CFFF"
+        }
+      },
+      "hit": {
+        "enabled": true,
+        "shape": "MESH_BURST",
+        "duration-ticks": 8,
+        "radius": 0.65,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "83CFFF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 1.2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/flare.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "83CFFF"
+        }
+      }
+    }
+  },
+  "guerriero_scudo_passo_guardiano": {
+    "class": "guerriero_scudo",
+    "name": "Passo del guardiano",
+    "effect": "DASH",
+    "description": "Scia breve dietro il movimento reale.",
+    "presentation": {
+      "cast": {
+        "enabled": true,
+        "shape": "MESH_WAVE",
+        "duration-ticks": 12,
+        "radius": 0.85,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "83CFFF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": true,
+          "id": "minecraft:entity.player.attack.sweep",
+          "volume": 0.45,
+          "pitch": 1
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/wave.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "83CFFF"
+        }
+      },
+      "trail": {
+        "enabled": true,
+        "shape": "MESH_BEAM",
+        "duration-ticks": 6,
+        "radius": 0.3,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "83CFFF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "83CFFF"
+        }
+      },
+      "impact": {
+        "enabled": true,
+        "shape": "MESH_BURST",
+        "duration-ticks": 12,
+        "radius": 0.65,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "83CFFF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 1.8,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/flare.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "83CFFF"
+        }
+      },
+      "telegraph": {
+        "enabled": true,
+        "shape": "MESH_SHIELD",
+        "duration-ticks": 22,
+        "radius": 1,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "83CFFF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 1.8,
+          "opacity": 0.3,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
+          "columnTexture": "castigoclasses:textures/vfx/shield_grid.png",
+          "tint": "83CFFF"
+        }
+      },
+      "hit": {
+        "enabled": false
+      }
+    }
+  },
+  "guerriero_scudo_difesa_compagno": {
+    "class": "guerriero_scudo",
+    "name": "Difesa del compagno",
+    "effect": "LINK",
+    "description": "Barriera iniziale sul protetto e filo luminoso verso il protettore mentre il vincolo è efficace.",
+    "presentation": {
+      "cast": {
+        "enabled": true,
+        "shape": "MESH_RING",
+        "duration-ticks": 10,
+        "radius": 0.55,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "83CFFF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "83CFFF"
+        }
+      },
+      "trail": {
+        "enabled": false
+      },
+      "impact": {
+        "enabled": true,
+        "shape": "MESH_SHIELD",
+        "duration-ticks": 16,
+        "radius": 0.9,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "83CFFF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": true,
+          "id": "minecraft:entity.player.attack.sweep",
+          "volume": 0.45,
+          "pitch": 1
+        },
+        "mesh": {
+          "height": 1.8,
+          "opacity": 0.45,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
+          "columnTexture": "castigoclasses:textures/vfx/shield_grid.png",
+          "tint": "83CFFF"
+        }
+      },
+      "telegraph": {
+        "enabled": true,
+        "shape": "MESH_BEAM",
+        "duration-ticks": 22,
+        "radius": 0.25,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "83CFFF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.55,
+          "rotation": 0,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "83CFFF"
+        }
+      },
+      "hit": {
+        "enabled": false
+      }
+    }
+  },
+  "guerriero_scudo_contrattacco": {
+    "class": "guerriero_scudo",
+    "name": "Contrattacco del veterano",
+    "effect": "COUNTER",
+    "description": "Arco inverso del contrattacco e scintilla sulla vittima.",
+    "presentation": {
+      "cast": {
+        "enabled": true,
+        "shape": "MESH_SLASH",
+        "duration-ticks": 10,
+        "radius": 1.3,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "83CFFF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 1.7,
+          "opacity": 0.75,
+          "rotation": -90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/wave.png",
+          "columnTexture": "castigoclasses:textures/vfx/slash.png",
+          "tint": "83CFFF"
+        }
+      },
+      "trail": {
+        "enabled": false
+      },
+      "impact": {
+        "enabled": true,
+        "shape": "MESH_BURST",
+        "duration-ticks": 12,
+        "radius": 0.4,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "83CFFF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": true,
+          "id": "minecraft:entity.player.attack.sweep",
+          "volume": 0.45,
+          "pitch": 1
+        },
+        "mesh": {
+          "height": 1.2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/flare.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "83CFFF"
+        }
+      },
+      "telegraph": {
+        "enabled": false
+      },
+      "hit": {
+        "enabled": false
+      }
+    }
+  },
+  "guerriero_scudo_riscossa": {
+    "class": "guerriero_scudo",
+    "name": "Riscossa",
+    "effect": "RECOVER",
+    "description": "Aura azzurra alla base del personaggio durante la riscossa.",
+    "presentation": {
+      "cast": {
+        "enabled": true,
+        "shape": "MESH_RING",
+        "duration-ticks": 18,
+        "radius": 1,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "83CFFF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": true,
+          "id": "minecraft:entity.player.attack.sweep",
+          "volume": 0.45,
+          "pitch": 1
+        },
+        "mesh": {
+          "height": 2.3,
+          "opacity": 0.5,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/holy_seal.png",
+          "columnTexture": "castigoclasses:textures/vfx/shield_grid.png",
+          "tint": "83CFFF"
+        }
+      },
+      "trail": {
+        "enabled": false
+      },
+      "impact": {
+        "enabled": true,
+        "shape": "MESH_BURST",
+        "duration-ticks": 12,
+        "radius": 0.65,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "83CFFF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 1.8,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/flare.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "83CFFF"
+        }
+      },
+      "telegraph": {
+        "enabled": true,
+        "shape": "MESH_RING",
+        "duration-ticks": 22,
+        "radius": 1,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "83CFFF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 1.8,
+          "opacity": 0.32,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/holy_seal.png",
+          "columnTexture": "castigoclasses:textures/vfx/shield_grid.png",
+          "tint": "83CFFF"
+        }
+      },
+      "hit": {
+        "enabled": true,
+        "shape": "MESH_BURST",
+        "duration-ticks": 8,
+        "radius": 0.65,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "83CFFF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 1.2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/flare.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "83CFFF"
+        }
+      }
+    }
+  },
+  "guerriero_scudo_baluardo": {
+    "class": "guerriero_scudo",
+    "name": "Baluardo",
+    "effect": "BULWARK",
+    "description": "Barriera curva che segue la direzione del personaggio e termina con la protezione.",
+    "presentation": {
+      "cast": {
+        "enabled": true,
+        "shape": "MESH_SHIELD",
+        "duration-ticks": 18,
+        "radius": 1.5,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "83CFFF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": true,
+          "id": "minecraft:entity.player.attack.sweep",
+          "volume": 0.45,
+          "pitch": 1
+        },
+        "mesh": {
+          "height": 2.3,
+          "opacity": 0.5,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/holy_seal.png",
+          "columnTexture": "castigoclasses:textures/vfx/shield_grid.png",
+          "tint": "83CFFF"
+        }
+      },
+      "trail": {
+        "enabled": false
+      },
+      "impact": {
+        "enabled": true,
+        "shape": "MESH_BURST",
+        "duration-ticks": 12,
+        "radius": 0.65,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "83CFFF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 1.8,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/flare.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "83CFFF"
+        }
+      },
+      "telegraph": {
+        "enabled": true,
+        "shape": "MESH_SHIELD",
+        "duration-ticks": 22,
+        "radius": 1.5,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "83CFFF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2.3,
+          "opacity": 0.32,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/holy_seal.png",
+          "columnTexture": "castigoclasses:textures/vfx/shield_grid.png",
+          "tint": "83CFFF"
+        }
+      },
+      "hit": {
+        "enabled": true,
+        "shape": "MESH_BURST",
+        "duration-ticks": 8,
+        "radius": 0.65,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "83CFFF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 1.2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/flare.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "83CFFF"
+        }
+      }
+    }
+  },
+  "dardo_arcano": {
+    "class": "mago",
+    "name": "Dardo arcano",
+    "effect": "BOLT",
+    "description": "Raggio sottile colorato e lampo nel punto colpito.",
+    "presentation": {
+      "cast": {
+        "enabled": true,
+        "shape": "MESH_RING",
+        "duration-ticks": 10,
+        "radius": 0.55,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "BB88FF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "BB88FF"
+        }
+      },
+      "trail": {
+        "enabled": true,
+        "shape": "MESH_BEAM",
+        "duration-ticks": 8,
+        "radius": 0.2,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "BB88FF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "BB88FF"
+        }
+      },
+      "impact": {
+        "enabled": true,
+        "shape": "MESH_BURST",
+        "duration-ticks": 12,
+        "radius": 0.8,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "BB88FF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": true,
+          "id": "minecraft:block.amethyst_block.chime",
+          "volume": 0.45,
+          "pitch": 1
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/flare.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "BB88FF"
+        }
+      },
+      "telegraph": {
+        "enabled": false
+      },
+      "hit": {
+        "enabled": false
+      }
+    }
+  },
+  "sfera_di_fuoco": {
+    "class": "mago",
+    "name": "Sfera di fuoco",
+    "effect": "FIREBALL",
+    "description": "Scia incandescente e impatto espansivo arancio.",
+    "presentation": {
+      "cast": {
+        "enabled": true,
+        "shape": "MESH_RING",
+        "duration-ticks": 10,
+        "radius": 0.55,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "BB88FF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "BB88FF"
+        }
+      },
+      "trail": {
+        "enabled": true,
+        "shape": "MESH_BEAM",
+        "duration-ticks": 8,
+        "radius": 0.45,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "FFD069",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "FFD069"
+        }
+      },
+      "impact": {
+        "enabled": true,
+        "shape": "MESH_BURST",
+        "duration-ticks": 12,
+        "radius": 3.0,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "FFD069",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": true,
+          "id": "minecraft:block.amethyst_block.chime",
+          "volume": 0.45,
+          "pitch": 1
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/flare.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "FFD069"
+        }
+      },
+      "telegraph": {
+        "enabled": false
+      },
+      "hit": {
+        "enabled": false
+      }
+    }
+  },
+  "nova_glaciale": {
+    "class": "mago",
+    "name": "Nova glaciale",
+    "effect": "FROST_NOVA",
+    "description": "Doppia onda ghiacciata azzurra attorno al mago.",
+    "presentation": {
+      "cast": {
+        "enabled": true,
+        "shape": "MESH_WAVE",
+        "duration-ticks": 18,
+        "radius": 5.0,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "BB88FF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 0.2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 2,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/wave.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "BB88FF"
+        }
+      },
+      "trail": {
+        "enabled": false
+      },
+      "impact": {
+        "enabled": true,
+        "shape": "MESH_WAVE",
+        "duration-ticks": 24,
+        "radius": 5.0,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "BB88FF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": true,
+          "id": "minecraft:block.amethyst_block.chime",
+          "volume": 0.45,
+          "pitch": 1
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 2,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/wave.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "A4EDFF"
+        }
+      },
+      "telegraph": {
+        "enabled": false
+      },
+      "hit": {
+        "enabled": false
+      }
+    }
+  },
+  "passo_dimensionale": {
+    "class": "mago",
+    "name": "Passo dimensionale",
+    "effect": "BLINK",
+    "description": "Traccia fra partenza e arrivo e anello sulla destinazione.",
+    "presentation": {
+      "cast": {
+        "enabled": true,
+        "shape": "MESH_RING",
+        "duration-ticks": 10,
+        "radius": 0.55,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "BB88FF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "BB88FF"
+        }
+      },
+      "trail": {
+        "enabled": true,
+        "shape": "MESH_BEAM",
+        "duration-ticks": 8,
+        "radius": 0.2,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "BB88FF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "BB88FF"
+        }
+      },
+      "impact": {
+        "enabled": true,
+        "shape": "MESH_WAVE",
+        "duration-ticks": 16,
+        "radius": 1.3,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "BB88FF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": true,
+          "id": "minecraft:block.amethyst_block.chime",
+          "volume": 0.45,
+          "pitch": 1
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/wave.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "BB88FF"
+        }
+      },
+      "telegraph": {
+        "enabled": false
+      },
+      "hit": {
+        "enabled": false
+      }
+    }
+  },
+  "barriera_arcana": {
+    "class": "mago",
+    "name": "Barriera arcana",
+    "effect": "WARD",
+    "description": "Barriera curva che segue la direzione del personaggio e termina con la protezione.",
+    "presentation": {
+      "cast": {
+        "enabled": true,
+        "shape": "MESH_SHIELD",
+        "duration-ticks": 18,
+        "radius": 1,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "BB88FF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2.3,
+          "opacity": 0.5,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/holy_seal.png",
+          "columnTexture": "castigoclasses:textures/vfx/shield_grid.png",
+          "tint": "BB88FF"
+        }
+      },
+      "trail": {
+        "enabled": false
+      },
+      "impact": {
+        "enabled": true,
+        "shape": "MESH_BURST",
+        "duration-ticks": 12,
+        "radius": 0.65,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "BB88FF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": true,
+          "id": "minecraft:block.amethyst_block.chime",
+          "volume": 0.45,
+          "pitch": 1
+        },
+        "mesh": {
+          "height": 1.8,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/flare.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "BB88FF"
+        }
+      },
+      "telegraph": {
+        "enabled": true,
+        "shape": "MESH_SHIELD",
+        "duration-ticks": 22,
+        "radius": 1,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "BB88FF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 1.8,
+          "opacity": 0.32,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/holy_seal.png",
+          "columnTexture": "castigoclasses:textures/vfx/shield_grid.png",
+          "tint": "BB88FF"
+        }
+      },
+      "hit": {
+        "enabled": true,
+        "shape": "MESH_BURST",
+        "duration-ticks": 8,
+        "radius": 0.65,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "BB88FF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 1.2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/flare.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "BB88FF"
+        }
+      }
+    }
+  },
+  "ricucitura": {
+    "class": "mago",
+    "name": "Ricucitura",
+    "effect": "HEAL",
+    "description": "Anelli e colonna di guarigione sul destinatario.",
+    "presentation": {
+      "cast": {
+        "enabled": true,
+        "shape": "MESH_RING",
+        "duration-ticks": 10,
+        "radius": 0.55,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "BB88FF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "BB88FF"
+        }
+      },
+      "trail": {
+        "enabled": false
+      },
+      "impact": {
+        "enabled": true,
+        "shape": "HEALING_BEAM",
+        "duration-ticks": 36,
+        "radius": 0.85,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "55FF66",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": true,
+          "id": "castigoclasses:skill.orison",
+          "volume": 0.75,
+          "pitch": 1
+        },
+        "mesh": {
+          "height": 2.8,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 2,
+          "ringGap": 0.3,
+          "columnRadius": 0.42,
+          "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
+          "columnTexture": "castigoclasses:textures/vfx/healing_column.png",
+          "tint": "55FF66"
+        }
+      },
+      "telegraph": {
+        "enabled": false
+      },
+      "hit": {
+        "enabled": false
+      }
+    }
+  },
+  "folgore": {
+    "class": "mago",
+    "name": "Folgore",
+    "effect": "LIGHTNING",
+    "description": "Scarica verticale azzurra sopra il bersaglio e lampo elettrico.",
+    "presentation": {
+      "cast": {
+        "enabled": true,
+        "shape": "MESH_RING",
+        "duration-ticks": 10,
+        "radius": 0.55,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "BB88FF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "BB88FF"
+        }
+      },
+      "trail": {
+        "enabled": true,
+        "shape": "MESH_BEAM",
+        "duration-ticks": 8,
+        "radius": 0.2,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "AEE9FF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
+          "columnTexture": "castigoclasses:textures/vfx/lightning.png",
+          "tint": "AEE9FF"
+        }
+      },
+      "impact": {
+        "enabled": true,
+        "shape": "MESH_BURST",
+        "duration-ticks": 12,
+        "radius": 0.8,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "AEE9FF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": true,
+          "id": "minecraft:block.amethyst_block.chime",
+          "volume": 0.45,
+          "pitch": 1
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/flare.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "AEE9FF"
+        }
+      },
+      "telegraph": {
+        "enabled": false
+      },
+      "hit": {
+        "enabled": false
+      }
+    }
+  },
+  "meteora": {
+    "class": "mago",
+    "name": "Meteora",
+    "effect": "METEOR",
+    "description": "Cerchio di avvertimento, scia verticale e grande esplosione luminosa.",
+    "presentation": {
+      "cast": {
+        "enabled": true,
+        "shape": "MESH_RING",
+        "duration-ticks": 10,
+        "radius": 0.55,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "BB88FF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "BB88FF"
+        }
+      },
+      "trail": {
+        "enabled": true,
+        "shape": "MESH_BEAM",
+        "duration-ticks": 8,
+        "radius": 0.45,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "FFD069",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "FFD069"
+        }
+      },
+      "impact": {
+        "enabled": true,
+        "shape": "MESH_BURST",
+        "duration-ticks": 24,
+        "radius": 4,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "FFD069",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": true,
+          "id": "minecraft:block.amethyst_block.chime",
+          "volume": 0.45,
+          "pitch": 1
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/flare.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "FFD069"
+        }
+      },
+      "telegraph": {
+        "enabled": true,
+        "shape": "MESH_RING",
+        "duration-ticks": 24,
+        "radius": 5.0,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "BB88FF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": -60,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/dark_seal.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "BB88FF"
+        }
+      },
+      "hit": {
+        "enabled": false
+      }
+    }
+  },
+  "mago_bianco_orison": {
+    "class": "mago_bianco",
+    "name": "Orison di cura",
+    "effect": "ALLY_HEAL",
+    "description": "Anelli e colonna di guarigione sul destinatario.",
+    "presentation": {
+      "cast": {
+        "enabled": false
+      },
+      "trail": {
+        "enabled": false
+      },
+      "impact": {
+        "enabled": true,
+        "shape": "HEALING_BEAM",
+        "duration-ticks": 36,
+        "radius": 0.85,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "55FF66",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": true,
+          "id": "castigoclasses:skill.orison",
+          "volume": 0.75,
+          "pitch": 1
+        },
+        "mesh": {
+          "height": 2.8,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 2,
+          "ringGap": 0.3,
+          "columnRadius": 0.42,
+          "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
+          "columnTexture": "castigoclasses:textures/vfx/healing_column.png",
+          "tint": "55FF66"
+        }
+      },
+      "telegraph": {
+        "enabled": false
+      },
+      "hit": {
+        "enabled": false
+      }
+    }
+  },
+  "mago_bianco_dardo_consacrato": {
+    "class": "mago_bianco",
+    "name": "Dardo consacrato",
+    "effect": "BOLT",
+    "description": "Raggio sottile colorato e lampo nel punto colpito.",
+    "presentation": {
+      "cast": {
+        "enabled": true,
+        "shape": "MESH_RING",
+        "duration-ticks": 10,
+        "radius": 0.55,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "FFF2BD",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/holy_seal.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "FFF2BD"
+        }
+      },
+      "trail": {
+        "enabled": true,
+        "shape": "MESH_BEAM",
+        "duration-ticks": 8,
+        "radius": 0.2,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "FFF2BD",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "FFF2BD"
+        }
+      },
+      "impact": {
+        "enabled": true,
+        "shape": "MESH_BURST",
+        "duration-ticks": 12,
+        "radius": 0.8,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "FFF2BD",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": true,
+          "id": "minecraft:block.amethyst_block.chime",
+          "volume": 0.45,
+          "pitch": 1
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/flare.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "FFF2BD"
+        }
+      },
+      "telegraph": {
+        "enabled": false
+      },
+      "hit": {
+        "enabled": false
+      }
+    }
+  },
+  "mago_bianco_benedizione": {
+    "class": "mago_bianco",
+    "name": "Benedizione rigenerante",
+    "effect": "HOT",
+    "description": "Breve luce curativa e due sigilli orbitanti per la durata della rigenerazione.",
+    "presentation": {
+      "cast": {
+        "enabled": true,
+        "shape": "MESH_RING",
+        "duration-ticks": 10,
+        "radius": 0.55,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "FFF2BD",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/holy_seal.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "FFF2BD"
+        }
+      },
+      "trail": {
+        "enabled": false
+      },
+      "impact": {
+        "enabled": true,
+        "shape": "HEALING_BEAM",
+        "duration-ticks": 24,
+        "radius": 0.65,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "FFF2BD",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": true,
+          "id": "minecraft:block.amethyst_block.chime",
+          "volume": 0.45,
+          "pitch": 1
+        },
+        "mesh": {
+          "height": 1.8,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/holy_seal.png",
+          "columnTexture": "castigoclasses:textures/vfx/healing_column.png",
+          "tint": "FFF2BD"
+        }
+      },
+      "telegraph": {
+        "enabled": true,
+        "shape": "MESH_RING",
+        "duration-ticks": 22,
+        "radius": 0.7,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "FFF2BD",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 35,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 2,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/holy_seal.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "FFF2BD"
+        }
+      },
+      "hit": {
+        "enabled": true,
+        "shape": "MESH_WAVE",
+        "duration-ticks": 12,
+        "radius": 0.65,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "FFF2BD",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/holy_seal.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "FFF2BD"
+        }
+      }
+    }
+  },
+  "mago_bianco_purificazione": {
+    "class": "mago_bianco",
+    "name": "Purificazione",
+    "effect": "CLEANSE",
+    "description": "Sigillo luminoso che si espande sul destinatario purificato.",
+    "presentation": {
+      "cast": {
+        "enabled": false
+      },
+      "trail": {
+        "enabled": false
+      },
+      "impact": {
+        "enabled": true,
+        "shape": "MESH_WAVE",
+        "duration-ticks": 24,
+        "radius": 2,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "FFF2BD",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": true,
+          "id": "minecraft:block.amethyst_block.chime",
+          "volume": 0.45,
+          "pitch": 1
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 2,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/holy_seal.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "FFF2BD"
+        }
+      },
+      "telegraph": {
+        "enabled": false
+      },
+      "hit": {
+        "enabled": false
+      }
+    }
+  },
+  "mago_bianco_vincolo_custode": {
+    "class": "mago_bianco",
+    "name": "Vincolo del custode",
+    "effect": "LINK",
+    "description": "Barriera iniziale sul protetto e filo luminoso verso il protettore mentre il vincolo è efficace.",
+    "presentation": {
+      "cast": {
+        "enabled": true,
+        "shape": "MESH_RING",
+        "duration-ticks": 10,
+        "radius": 0.55,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "FFF2BD",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/holy_seal.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "FFF2BD"
+        }
+      },
+      "trail": {
+        "enabled": false
+      },
+      "impact": {
+        "enabled": true,
+        "shape": "MESH_SHIELD",
+        "duration-ticks": 16,
+        "radius": 0.9,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "FFF2BD",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": true,
+          "id": "minecraft:block.amethyst_block.chime",
+          "volume": 0.45,
+          "pitch": 1
+        },
+        "mesh": {
+          "height": 1.8,
+          "opacity": 0.45,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
+          "columnTexture": "castigoclasses:textures/vfx/shield_grid.png",
+          "tint": "FFF2BD"
+        }
+      },
+      "telegraph": {
+        "enabled": true,
+        "shape": "MESH_BEAM",
+        "duration-ticks": 22,
+        "radius": 0.25,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "FFF2BD",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.55,
+          "rotation": 0,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "FFF2BD"
+        }
+      },
+      "hit": {
+        "enabled": false
+      }
+    }
+  },
+  "mago_bianco_luce_respingente": {
+    "class": "mago_bianco",
+    "name": "Luce respingente",
+    "effect": "REPULSE",
+    "description": "Onda di luce che parte dal mago e si allarga fino al raggio della spinta.",
+    "presentation": {
+      "cast": {
+        "enabled": true,
+        "shape": "MESH_WAVE",
+        "duration-ticks": 18,
+        "radius": 4.0,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "FFF2BD",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": true,
+          "id": "minecraft:block.amethyst_block.chime",
+          "volume": 0.45,
+          "pitch": 1
+        },
+        "mesh": {
+          "height": 0.2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 2,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/wave.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "FFF2BD"
+        }
+      },
+      "trail": {
+        "enabled": false
+      },
+      "impact": {
+        "enabled": true,
+        "shape": "MESH_WAVE",
+        "duration-ticks": 24,
+        "radius": 4.0,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "FFF2BD",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 2,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/wave.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "FFF2BD"
+        }
+      },
+      "telegraph": {
+        "enabled": false
+      },
+      "hit": {
+        "enabled": false
+      }
+    }
+  },
+  "mago_bianco_intercessione": {
+    "class": "mago_bianco",
+    "name": "Grande intercessione",
+    "effect": "ALLY_HEAL",
+    "description": "Anelli e colonna di guarigione sul destinatario, più ampia e alta per Grande intercessione.",
+    "presentation": {
+      "cast": {
+        "enabled": true,
+        "shape": "MESH_RING",
+        "duration-ticks": 10,
+        "radius": 0.55,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "FFF2BD",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/holy_seal.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "FFF2BD"
+        }
+      },
+      "trail": {
+        "enabled": false
+      },
+      "impact": {
+        "enabled": true,
+        "shape": "HEALING_BEAM",
+        "duration-ticks": 36,
+        "radius": 1.4,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "FFF1AE",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": true,
+          "id": "castigoclasses:skill.orison",
+          "volume": 0.75,
+          "pitch": 0.85
+        },
+        "mesh": {
+          "height": 4,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 3,
+          "ringGap": 0.3,
+          "columnRadius": 0.42,
+          "ringTexture": "castigoclasses:textures/vfx/holy_seal.png",
+          "columnTexture": "castigoclasses:textures/vfx/healing_column.png",
+          "tint": "FFF1AE"
+        }
+      },
+      "telegraph": {
+        "enabled": false
+      },
+      "hit": {
+        "enabled": false
+      }
+    }
+  },
+  "mago_bianco_santuario": {
+    "class": "mago_bianco",
+    "name": "Santuario di luce",
+    "effect": "SANCTUARY",
+    "description": "Cerchio sacro dorato che delimita la zona protetta per tutta la sua durata.",
+    "presentation": {
+      "cast": {
+        "enabled": true,
+        "shape": "MESH_RING",
+        "duration-ticks": 10,
+        "radius": 0.55,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "FFF2BD",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/holy_seal.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "FFF2BD"
+        }
+      },
+      "trail": {
+        "enabled": false
+      },
+      "impact": {
+        "enabled": true,
+        "shape": "MESH_WAVE",
+        "duration-ticks": 24,
+        "radius": 5.0,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "FFF2BD",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": true,
+          "id": "minecraft:block.amethyst_block.chime",
+          "volume": 0.45,
+          "pitch": 1
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 2,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/holy_seal.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "FFF2BD"
+        }
+      },
+      "telegraph": {
+        "enabled": true,
+        "shape": "MESH_RING",
+        "duration-ticks": 22,
+        "radius": 5.0,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "FFF2BD",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 0.3,
+          "opacity": 0.6,
+          "rotation": 20,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 2,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/holy_seal.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "FFF2BD"
+        }
+      },
+      "hit": {
+        "enabled": false
+      }
+    }
+  },
+  "mago_nero_dardo_maledetto": {
+    "class": "mago_nero",
+    "name": "Dardo maledetto",
+    "effect": "CURSED_BOLT",
+    "description": "Scia viola, impatto oscuro e sigillo della maledizione sul nemico.",
+    "presentation": {
+      "cast": {
+        "enabled": true,
+        "shape": "MESH_RING",
+        "duration-ticks": 10,
+        "radius": 0.55,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "B24FFF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/dark_seal.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "B24FFF"
+        }
+      },
+      "trail": {
+        "enabled": true,
+        "shape": "MESH_BEAM",
+        "duration-ticks": 8,
+        "radius": 0.2,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "B24FFF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "B24FFF"
+        }
+      },
+      "impact": {
+        "enabled": true,
+        "shape": "MESH_BURST",
+        "duration-ticks": 12,
+        "radius": 0.8,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "B24FFF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": true,
+          "id": "minecraft:entity.evoker.cast_spell",
+          "volume": 0.45,
+          "pitch": 1
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/flare.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "B24FFF"
+        }
+      },
+      "telegraph": {
+        "enabled": true,
+        "shape": "MESH_SIGIL",
+        "duration-ticks": 22,
+        "radius": 0.4,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "B24FFF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2.2,
+          "opacity": 0.75,
+          "rotation": -40,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/dark_seal.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "B24FFF"
+        }
+      },
+      "hit": {
+        "enabled": true,
+        "shape": "MESH_BURST",
+        "duration-ticks": 8,
+        "radius": 0.3,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "B24FFF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 1,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/flare.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "B24FFF"
+        }
+      }
+    }
+  },
+  "mago_nero_malocchio": {
+    "class": "mago_nero",
+    "name": "Malocchio",
+    "effect": "VULNERABILITY",
+    "description": "Marchio oscuro lento sopra il nemico vulnerabile.",
+    "presentation": {
+      "cast": {
+        "enabled": true,
+        "shape": "MESH_RING",
+        "duration-ticks": 10,
+        "radius": 0.55,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "B24FFF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/dark_seal.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "B24FFF"
+        }
+      },
+      "trail": {
+        "enabled": false
+      },
+      "impact": {
+        "enabled": true,
+        "shape": "MESH_SIGIL",
+        "duration-ticks": 18,
+        "radius": 0.6,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "B24FFF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": true,
+          "id": "minecraft:entity.evoker.cast_spell",
+          "volume": 0.45,
+          "pitch": 1
+        },
+        "mesh": {
+          "height": 2.1,
+          "opacity": 0.75,
+          "rotation": -90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/dark_seal.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "B24FFF"
+        }
+      },
+      "telegraph": {
+        "enabled": true,
+        "shape": "MESH_SIGIL",
+        "duration-ticks": 22,
+        "radius": 0.5,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "B24FFF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2.2,
+          "opacity": 0.75,
+          "rotation": -35,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/dark_seal.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "B24FFF"
+        }
+      },
+      "hit": {
+        "enabled": false
+      }
+    }
+  },
+  "mago_nero_consunzione": {
+    "class": "mago_nero",
+    "name": "Consunzione",
+    "effect": "DOT",
+    "description": "Piccolo sigillo pulsante di consunzione sul nemico.",
+    "presentation": {
+      "cast": {
+        "enabled": true,
+        "shape": "MESH_RING",
+        "duration-ticks": 10,
+        "radius": 0.55,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "B24FFF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/dark_seal.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "B24FFF"
+        }
+      },
+      "trail": {
+        "enabled": false
+      },
+      "impact": {
+        "enabled": true,
+        "shape": "MESH_SIGIL",
+        "duration-ticks": 18,
+        "radius": 0.6,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "B24FFF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": true,
+          "id": "minecraft:entity.evoker.cast_spell",
+          "volume": 0.45,
+          "pitch": 1
+        },
+        "mesh": {
+          "height": 2.1,
+          "opacity": 0.75,
+          "rotation": -90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/dark_seal.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "B24FFF"
+        }
+      },
+      "telegraph": {
+        "enabled": true,
+        "shape": "MESH_SIGIL",
+        "duration-ticks": 22,
+        "radius": 0.35,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "B24FFF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2.2,
+          "opacity": 0.75,
+          "rotation": 80,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/dark_seal.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "B24FFF"
+        }
+      },
+      "hit": {
+        "enabled": true,
+        "shape": "MESH_BURST",
+        "duration-ticks": 8,
+        "radius": 0.3,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "B24FFF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 1,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/flare.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "B24FFF"
+        }
+      }
+    }
+  },
+  "mago_nero_terrore": {
+    "class": "mago_nero",
+    "name": "Terrore sussurrato",
+    "effect": "FEAR",
+    "description": "Ampio sigillo oscuro in rapida rotazione sul bersaglio intimorito.",
+    "presentation": {
+      "cast": {
+        "enabled": true,
+        "shape": "MESH_RING",
+        "duration-ticks": 10,
+        "radius": 0.55,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "B24FFF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/dark_seal.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "B24FFF"
+        }
+      },
+      "trail": {
+        "enabled": false
+      },
+      "impact": {
+        "enabled": true,
+        "shape": "MESH_SIGIL",
+        "duration-ticks": 18,
+        "radius": 0.6,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "B24FFF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": true,
+          "id": "minecraft:entity.evoker.cast_spell",
+          "volume": 0.45,
+          "pitch": 1
+        },
+        "mesh": {
+          "height": 2.1,
+          "opacity": 0.75,
+          "rotation": -90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/dark_seal.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "B24FFF"
+        }
+      },
+      "telegraph": {
+        "enabled": true,
+        "shape": "MESH_SIGIL",
+        "duration-ticks": 22,
+        "radius": 0.7,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "B24FFF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2.2,
+          "opacity": 0.75,
+          "rotation": -130,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/dark_seal.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "B24FFF"
+        }
+      },
+      "hit": {
+        "enabled": false
+      }
+    }
+  },
+  "mago_nero_cerchio_rovina": {
+    "class": "mago_nero",
+    "name": "Cerchio della rovina",
+    "effect": "RUIN",
+    "description": "Sigillo oscuro a terra, controrotante, per tutta la durata della zona dannosa.",
+    "presentation": {
+      "cast": {
+        "enabled": true,
+        "shape": "MESH_RING",
+        "duration-ticks": 10,
+        "radius": 0.55,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "B24FFF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/dark_seal.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "B24FFF"
+        }
+      },
+      "trail": {
+        "enabled": false
+      },
+      "impact": {
+        "enabled": true,
+        "shape": "MESH_WAVE",
+        "duration-ticks": 24,
+        "radius": 4.0,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "B24FFF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": true,
+          "id": "minecraft:entity.evoker.cast_spell",
+          "volume": 0.45,
+          "pitch": 1
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 2,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/dark_seal.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "B24FFF"
+        }
+      },
+      "telegraph": {
+        "enabled": true,
+        "shape": "MESH_RING",
+        "duration-ticks": 22,
+        "radius": 4.0,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "B24FFF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 0.3,
+          "opacity": 0.6,
+          "rotation": -25,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 2,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/dark_seal.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "B24FFF"
+        }
+      },
+      "hit": {
+        "enabled": false
+      }
+    }
+  },
+  "mago_nero_sigillo_tormento": {
+    "class": "mago_nero",
+    "name": "Sigillo del tormento",
+    "effect": "HEAL_BLOCK",
+    "description": "Sigillo di interdizione fermo sul nemico con cure ridotte.",
+    "presentation": {
+      "cast": {
+        "enabled": true,
+        "shape": "MESH_RING",
+        "duration-ticks": 10,
+        "radius": 0.55,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "B24FFF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/dark_seal.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "B24FFF"
+        }
+      },
+      "trail": {
+        "enabled": false
+      },
+      "impact": {
+        "enabled": true,
+        "shape": "MESH_SIGIL",
+        "duration-ticks": 18,
+        "radius": 0.6,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "B24FFF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": true,
+          "id": "minecraft:entity.evoker.cast_spell",
+          "volume": 0.45,
+          "pitch": 1
+        },
+        "mesh": {
+          "height": 2.1,
+          "opacity": 0.75,
+          "rotation": -90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/dark_seal.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "B24FFF"
+        }
+      },
+      "telegraph": {
+        "enabled": true,
+        "shape": "MESH_SIGIL",
+        "duration-ticks": 22,
+        "radius": 0.6,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "B24FFF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2.2,
+          "opacity": 0.75,
+          "rotation": 0,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/dark_seal.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "B24FFF"
+        }
+      },
+      "hit": {
+        "enabled": false
+      }
+    }
+  },
+  "mago_nero_patto_sangue": {
+    "class": "mago_nero",
+    "name": "Patto del sangue",
+    "effect": "DRAIN",
+    "description": "Filo rosso fra mago e vittima e impulso sul bersaglio.",
+    "presentation": {
+      "cast": {
+        "enabled": true,
+        "shape": "MESH_RING",
+        "duration-ticks": 10,
+        "radius": 0.55,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "B24FFF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/dark_seal.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "B24FFF"
+        }
+      },
+      "trail": {
+        "enabled": true,
+        "shape": "MESH_BEAM",
+        "duration-ticks": 8,
+        "radius": 0.2,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "E25771",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "E25771"
+        }
+      },
+      "impact": {
+        "enabled": true,
+        "shape": "MESH_BURST",
+        "duration-ticks": 12,
+        "radius": 0.8,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "E25771",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": true,
+          "id": "minecraft:entity.evoker.cast_spell",
+          "volume": 0.45,
+          "pitch": 1
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/flare.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "E25771"
+        }
+      },
+      "telegraph": {
+        "enabled": false
+      },
+      "hit": {
+        "enabled": false
+      }
+    }
+  },
+  "mago_nero_vortice_tenebre": {
+    "class": "mago_nero",
+    "name": "Vortice delle tenebre",
+    "effect": "VORTEX",
+    "description": "Tre nastri scuri a spirale convergono al centro della zona.",
+    "presentation": {
+      "cast": {
+        "enabled": true,
+        "shape": "MESH_RING",
+        "duration-ticks": 10,
+        "radius": 0.55,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "B24FFF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 1,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/dark_seal.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "B24FFF"
+        }
+      },
+      "trail": {
+        "enabled": false
+      },
+      "impact": {
+        "enabled": true,
+        "shape": "MESH_WAVE",
+        "duration-ticks": 24,
+        "radius": 5.0,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "B24FFF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": true,
+          "id": "minecraft:entity.evoker.cast_spell",
+          "volume": 0.45,
+          "pitch": 1
+        },
+        "mesh": {
+          "height": 2,
+          "opacity": 0.75,
+          "rotation": 90,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 2,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/dark_seal.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "B24FFF"
+        }
+      },
+      "telegraph": {
+        "enabled": true,
+        "shape": "MESH_VORTEX",
+        "duration-ticks": 22,
+        "radius": 5.0,
+        "points": 24,
+        "particles": {
+          "enabled": false,
+          "particle": "DUST",
+          "count": 1,
+          "spread": 0,
+          "color": "B24FFF",
+          "size": 0.45
+        },
+        "sound": {
+          "enabled": false
+        },
+        "mesh": {
+          "height": 3,
+          "opacity": 0.6,
+          "rotation": -120,
+          "scroll": 0.8,
+          "fadeIn": 0.08,
+          "fadeOut": 0.4,
+          "rings": 2,
+          "ringGap": 0.3,
+          "columnRadius": 0.22,
+          "ringTexture": "castigoclasses:textures/vfx/dark_seal.png",
+          "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
+          "tint": "B24FFF"
+        }
+      },
+      "hit": {
+        "enabled": false
+      }
+    }
+  }
+}

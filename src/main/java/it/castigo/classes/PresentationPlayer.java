@@ -19,7 +19,7 @@ public final class PresentationPlayer {
         if(!cue.hasMesh()&&!cue.particles().enabled()&&!cue.sound().enabled())return;
         try {
             JsonObject packet=packet(cue,from,at);
-            if(target!=null)packet.addProperty("target",target.toString());
+            target(packet,target);
             plugin.broadcastEffect(from,at,packet);
         }
         catch(RuntimeException ex) {
@@ -37,6 +37,7 @@ public final class PresentationPlayer {
         o.addProperty("durationTicks",cue.durationTicks());o.addProperty("radius",cue.radius());
         if(cue.hasMesh())o.add("mesh",cue.mesh().json());
         o.add("from",position(from==null?at:from));o.add("at",position(at));
+        var direction=(from==null?at:from).getDirection();var facing=new JsonArray();facing.add(direction.getX());facing.add(direction.getY());facing.add(direction.getZ());o.add("direction",facing);
         JsonObject particles=new JsonObject();var p=cue.particles();
         particles.addProperty("enabled",p.enabled());particles.addProperty("id",p.particle().getKey().toString());
         particles.addProperty("count",p.count());particles.addProperty("spread",p.spread());
@@ -48,6 +49,11 @@ public final class PresentationPlayer {
         audio.addProperty("enabled",s.enabled());audio.addProperty("id",s.id());audio.addProperty("category",s.category().name());
         audio.addProperty("volume",s.volume());audio.addProperty("pitch",s.pitch());o.add("sound",audio);
         return o;
+    }
+    static void target(JsonObject packet,java.util.UUID target) {
+        if(target==null)return;
+        packet.addProperty("target",target.toString());var entity=org.bukkit.Bukkit.getEntity(target);
+        if(entity!=null)packet.addProperty("targetEntity",entity.getEntityId());
     }
     private static JsonArray position(Location p) {
         JsonArray a=new JsonArray();a.add(p.getX());a.add(p.getY());a.add(p.getZ());return a;

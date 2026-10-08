@@ -294,7 +294,7 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
                 if(vfx==1||vfx==2)clientEffects.add(player.getUniqueId());
                 else clientEffects.remove(player.getUniqueId());
                 if(o.has("healingBeam")&&o.get("healingBeam").getAsInt()==1)healingEffects.add(player.getUniqueId());else healingEffects.remove(player.getUniqueId());
-                if(o.has("meshVfx")&&o.get("meshVfx").getAsInt()==1)meshEffects.add(player.getUniqueId());else meshEffects.remove(player.getUniqueId());
+                if(o.has("meshVfx")&&o.get("meshVfx").getAsInt()==2)meshEffects.add(player.getUniqueId());else meshEffects.remove(player.getUniqueId());
                 lastCatalog.put(player.getUniqueId(),now);connected.add(player.getUniqueId()); catalog(player); return;
             }
             if(!connected.contains(player.getUniqueId())||!player.hasPermission("castigo.classes.use"))return;
@@ -335,6 +335,10 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
             reply.addProperty("ok",true);
         } catch(Exception e) { reply.addProperty("ok",false);reply.addProperty("message","Preset non applicato: "+e.getMessage()); }
         send(p,"vfx_editor",reply);
+    }
+    public void stopEffect(UUID world,UUID handle) {
+        JsonObject o=new JsonObject();o.addProperty("handle",handle.toString());
+        for(Player observer:Bukkit.getOnlinePlayers())if(observer.getWorld().getUID().equals(world)&&meshEffects.contains(observer.getUniqueId()))send(observer,"vfx_stop",o);
     }
     public void broadcastEffect(Location from,Location at,JsonObject effect) {
         int tick=Bukkit.getCurrentTick();if(tick!=effectTick) { effectTick=tick;effectPackets.clear(); }
@@ -460,4 +464,5 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
         String prefix=args[args.length-1].toLowerCase(Locale.ROOT);return choices.stream().filter(x->x.startsWith(prefix)).toList();
     }
 }
+
 
