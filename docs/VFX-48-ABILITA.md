@@ -1,31 +1,31 @@
-# VFX delle 48 abilità — beta.11
+# VFX delle 48 abilità — beta.12
 
-Sigilli personali ampliati, scie intrecciate, impatti con volume e frammenti in stile Minecraft. I raggi delle aree di gioco restano autorevoli. Nessun prefab o shader Unity viene eseguito dalla mod.
+Lame stratificate, affondi con punta e scia, barriere leggibili e colori distinti per gli otto tiri/tecniche dell’arciere. I raggi delle aree di gioco restano autorevoli.
 
 | Classe | Abilità | Effetto |
 |---|---|---|
-| arciere | Tiro preciso | Scia verde sottile agganciata al percorso reale della freccia. Modelli energetici articolati originali, gesto dell’arma e audio dedicato. |
+| arciere | Tiro preciso | Scia ciano agganciata al percorso reale della freccia. Modelli energetici articolati originali, gesto dell’arma e audio dedicato. |
 | arciere | Passo del cacciatore | Scia breve dietro il movimento reale. Modelli energetici articolati originali, gesto dell’arma e audio dedicato. |
 | arciere | Occhio del cacciatore | Marchio verde di mira sopra il bersaglio studiato. Modelli energetici articolati originali, gesto dell’arma e audio dedicato. |
 | arciere | Disimpegno | Scia breve dietro il movimento reale. Modelli energetici articolati originali, gesto dell’arma e audio dedicato. |
-| arciere | Tiro ostacolante | Scia della freccia e anello di intralcio sul nemico colpito. Modelli energetici articolati originali, gesto dell’arma e audio dedicato. |
-| arciere | Tiro di copertura | Scie dei tiri di copertura e anelli sui nemici rallentati. Modelli energetici articolati originali, gesto dell’arma e audio dedicato. |
-| arciere | Doppio tiro | Due scie distinte, una per ciascuna freccia realmente scoccata. Modelli energetici articolati originali, gesto dell’arma e audio dedicato. |
-| arciere | Colpo del maestro | Scia più spessa e impatto concentrato del colpo del maestro. Modelli energetici articolati originali, gesto dell’arma e audio dedicato. |
-| guerriero_due_mani | Fendente pesante | Arco ampio più lento e impatto caldo del fendente pesante. Modelli energetici articolati originali, gesto dell’arma e audio dedicato. |
-| guerriero_due_mani | Affondo lungo | Affondo luminoso allungato frontalmente e impatto puntuale. Modelli energetici articolati originali, gesto dell’arma e audio dedicato. |
+| arciere | Tiro ostacolante | Scia viola e anello di intralcio sul nemico colpito. Modelli energetici articolati originali, gesto dell’arma e audio dedicato. |
+| arciere | Tiro di copertura | Scie arancio dei tiri di copertura e anelli sui nemici rallentati. Modelli energetici articolati originali, gesto dell’arma e audio dedicato. |
+| arciere | Doppio tiro | Due scie cremisi, una per ciascuna freccia realmente scoccata. Modelli energetici articolati originali, gesto dell’arma e audio dedicato. |
+| arciere | Colpo del maestro | Scia dorata più spessa e impatto concentrato. Modelli energetici articolati originali, gesto dell’arma e audio dedicato. |
+| guerriero_due_mani | Fendente pesante | Arco ampio più lento e impatto caldo del fendente pesante. Lame stratificate o punta di energia, scie e frammenti tridimensionali; altezza e ritmo specifici del colpo. Modelli energetici articolati originali, gesto dell’arma e audio dedicato. |
+| guerriero_due_mani | Affondo lungo | Affondo luminoso allungato frontalmente e impatto puntuale. Lame stratificate o punta di energia, scie e frammenti tridimensionali; altezza e ritmo specifici del colpo. Modelli energetici articolati originali, gesto dell’arma e audio dedicato. |
 | guerriero_due_mani | Carica travolgente | Scia breve dietro il movimento reale e impatto sul nemico raggiunto. Modelli energetici articolati originali, gesto dell’arma e audio dedicato. |
-| guerriero_due_mani | Colpo di arresto | Taglio breve e anello che permane sul nemico rallentato. Modelli energetici articolati originali, gesto dell’arma e audio dedicato. |
-| guerriero_due_mani | Fendente circolare | Onda circolare al raggio della skill e lampi su ogni nemico colpito. Modelli energetici articolati originali, gesto dell’arma e audio dedicato. |
-| guerriero_due_mani | Falciata bassa | Onda bassa e anelli sui bersagli rallentati. Modelli energetici articolati originali, gesto dell’arma e audio dedicato. |
-| guerriero_due_mani | Spezzaguardia | Taglio, forte impatto e marchio sul nemico reso vulnerabile. Modelli energetici articolati originali, gesto dell’arma e audio dedicato. |
-| guerriero_due_mani | Sequenza del campione | Un arco e un impatto per ciascun colpo della sequenza realmente eseguito. Modelli energetici articolati originali, gesto dell’arma e audio dedicato. |
-| guerriero_scudo | Affondo disciplinato | Affondo luminoso corto davanti al guerriero e lampo sulla vittima. Modelli energetici articolati originali, gesto dell’arma e audio dedicato. |
+| guerriero_due_mani | Colpo di arresto | Taglio breve e anello che permane sul nemico rallentato. Lame stratificate o punta di energia, scie e frammenti tridimensionali; altezza e ritmo specifici del colpo. Modelli energetici articolati originali, gesto dell’arma e audio dedicato. |
+| guerriero_due_mani | Fendente circolare | Onda circolare al raggio della skill e lampi su ogni nemico colpito. Lame stratificate o punta di energia, scie e frammenti tridimensionali; altezza e ritmo specifici del colpo. Modelli energetici articolati originali, gesto dell’arma e audio dedicato. |
+| guerriero_due_mani | Falciata bassa | Onda bassa e anelli sui bersagli rallentati. Lame stratificate o punta di energia, scie e frammenti tridimensionali; altezza e ritmo specifici del colpo. Modelli energetici articolati originali, gesto dell’arma e audio dedicato. |
+| guerriero_due_mani | Spezzaguardia | Taglio, forte impatto e marchio sul nemico reso vulnerabile. Lame stratificate o punta di energia, scie e frammenti tridimensionali; altezza e ritmo specifici del colpo. Modelli energetici articolati originali, gesto dell’arma e audio dedicato. |
+| guerriero_due_mani | Sequenza del campione | Un arco e un impatto per ciascun colpo della sequenza realmente eseguito. Lame stratificate o punta di energia, scie e frammenti tridimensionali; altezza e ritmo specifici del colpo. Modelli energetici articolati originali, gesto dell’arma e audio dedicato. |
+| guerriero_scudo | Affondo disciplinato | Affondo luminoso corto davanti al guerriero e lampo sulla vittima. Lame stratificate o punta di energia, scie e frammenti tridimensionali; altezza e ritmo specifici del colpo. Modelli energetici articolati originali, gesto dell’arma e audio dedicato. |
 | guerriero_scudo | Urto di scudo | Impatto ravvicinato e anello sul nemico stordito/rallentato. Modelli energetici articolati originali, gesto dell’arma e audio dedicato. |
 | guerriero_scudo | Guardia salda | Barriera curva che segue la direzione del personaggio e termina con la protezione. Modelli energetici articolati originali, gesto dell’arma e audio dedicato. |
 | guerriero_scudo | Passo del guardiano | Scia breve dietro il movimento reale. Modelli energetici articolati originali, gesto dell’arma e audio dedicato. |
 | guerriero_scudo | Difesa del compagno | Barriera iniziale sul protetto e filo luminoso verso il protettore mentre il vincolo è efficace. Modelli energetici articolati originali, gesto dell’arma e audio dedicato. |
-| guerriero_scudo | Contrattacco del veterano | Arco inverso del contrattacco e scintilla sulla vittima. Modelli energetici articolati originali, gesto dell’arma e audio dedicato. |
+| guerriero_scudo | Contrattacco del veterano | Arco inverso del contrattacco e scintilla sulla vittima. Lame stratificate o punta di energia, scie e frammenti tridimensionali; altezza e ritmo specifici del colpo. Modelli energetici articolati originali, gesto dell’arma e audio dedicato. |
 | guerriero_scudo | Riscossa | Aura azzurra alla base del personaggio durante la riscossa. Modelli energetici articolati originali, gesto dell’arma e audio dedicato. |
 | guerriero_scudo | Baluardo | Barriera curva che segue la direzione del personaggio e termina con la protezione. Modelli energetici articolati originali, gesto dell’arma e audio dedicato. |
 | mago | Dardo arcano | Scia intrecciata con nucleo chiaro, esplosione colorata e frammenti sul bersaglio. Modelli energetici articolati originali, gesto dell’arma e audio dedicato. |

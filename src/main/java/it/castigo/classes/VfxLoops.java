@@ -9,8 +9,8 @@ import it.castigo.classes.model.Skill;
 /** Server-owned visual lifetimes. No tasks per effect and no client gameplay authority. */
 final class VfxLoops {
     private record Loop(UUID id,UUID world,Player owner,Skill skill,SkillPresentation.Stage stage,
-                        Supplier<Location> from,Supplier<Location> at,UUID target,boolean link,BooleanSupplier valid,long next) {
-        Loop next(long time){return new Loop(id,world,owner,skill,stage,from,at,target,link,valid,time);}
+                        Supplier<Location> from,Supplier<Location> at,UUID target,boolean link,BooleanSupplier valid,long next,SkillPresentation.Cue custom) {
+        Loop next(long time){return new Loop(id,world,owner,skill,stage,from,at,target,link,valid,time,custom);}
     }
     private final CastigoClasses plugin;
     private final Map<UUID,Loop> loops=new LinkedHashMap<>();
@@ -18,11 +18,14 @@ final class VfxLoops {
     private long nextWarning;
     VfxLoops(CastigoClasses plugin){this.plugin=plugin;}
     void start(Player owner,Skill skill,SkillPresentation.Stage stage,Supplier<Location> from,Supplier<Location> at,UUID target,boolean link,BooleanSupplier valid) {
+        start(owner,skill,stage,from,at,target,link,valid,null);
+    }
+    void start(Player owner,Skill skill,SkillPresentation.Stage stage,Supplier<Location> from,Supplier<Location> at,UUID target,boolean link,BooleanSupplier valid,SkillPresentation.Cue custom) {
         if(loops.size()>=512||!valid.getAsBoolean())return;
         var fx=plugin.presentation(owner,skill);if(fx==null||!fx.enabled())return;
-        var cue=fx.cues().get(stage);
+        var cue=custom==null?fx.cues().get(stage):custom;
         if(cue==null||!cue.enabled()||!cue.hasMesh())return;
-        var loop=new Loop(UUID.randomUUID(),owner.getWorld().getUID(),owner,skill,stage,from,at,target,link,valid,tick+20);
+        var loop=new Loop(UUID.randomUUID(),owner.getWorld().getUID(),owner,skill,stage,from,at,target,link,valid,tick+20,custom);
         loops.put(loop.id,loop);safeEmit(loop);
     }
     void tick() {
@@ -40,7 +43,7 @@ final class VfxLoops {
     }
     private void emit(Loop loop) {
         var fx=plugin.presentation(loop.owner,loop.skill);if(fx==null){plugin.stopEffect(loop.world,loop.id);return;}
-        var cue=fx.cues().get(loop.stage);
+        var cue=loop.custom==null?fx.cues().get(loop.stage):loop.custom;
         if(!fx.enabled()||cue==null||!cue.enabled()) { plugin.stopEffect(loop.world,loop.id);return; }
         var from=loop.from.get();var at=loop.at.get();
         if(from==null||at==null||!from.getWorld().equals(at.getWorld())||!at.getWorld().isChunkLoaded(at.getBlockX()>>4,at.getBlockZ()>>4))return;

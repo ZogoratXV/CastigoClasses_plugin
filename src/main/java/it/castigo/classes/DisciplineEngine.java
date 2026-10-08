@@ -24,7 +24,7 @@ public final class DisciplineEngine implements Listener {
             end=now+skill.durationTicks();next=now+20;
         }
     }
-    private record Preparation(Source source,Skill skill,double power,Location start,ItemStack weapon,long ready,int total) {}
+    private record Preparation(Source source,Skill skill,double power,Location start,ItemStack weapon,long ready,int total,LivingEntity target) {}
     private static final class Sequence {
         final Source source;final Skill skill;final double power;final LivingEntity target;final Location at;
         int left;long next;
@@ -42,6 +42,7 @@ public final class DisciplineEngine implements Listener {
     private record Hit(boolean accepted,double healthLost,boolean blocked) {}
     private final CastigoClasses plugin;
     private final SkillEngine engine;
+    private final java.util.function.BiFunction<Player,Double,LivingEntity> targetRay;
     private final Map<UUID,Long> generations=new HashMap<>();
     private final Map<Key,Buff> buffs=new HashMap<>();
     private final Map<UUID,Preparation> preparing=new HashMap<>();
@@ -53,7 +54,10 @@ public final class DisciplineEngine implements Listener {
     private final Deque<Attempt> attempts=new ArrayDeque<>();
     private long tick;
     private boolean redirecting;
-    public DisciplineEngine(CastigoClasses plugin,SkillEngine engine) { this.plugin=plugin;this.engine=engine; }
+    public DisciplineEngine(CastigoClasses plugin,SkillEngine engine) { this(plugin,engine,DisciplineEngine::ray); }
+    DisciplineEngine(CastigoClasses plugin,SkillEngine engine,java.util.function.BiFunction<Player,Double,LivingEntity> targetRay) {
+        this.plugin=plugin;this.engine=engine;this.targetRay=targetRay;
+    }
     public boolean busy(Player p) { UUID id=p.getUniqueId();return preparing.containsKey(id)||sequences.containsKey(id)||dashes.containsKey(id); }
     public com.google.gson.JsonObject casting(UUID id) {
         var result=new com.google.gson.JsonObject();var prep=preparing.get(id);
@@ -81,10 +85,13 @@ public final class DisciplineEngine implements Listener {
         if(skill.effect()==Skill.Effect.COUNTER&&counters.getOrDefault(p.getUniqueId(),Long.MIN_VALUE)<tick) { plugin.feedback(p,"Serve una parata riuscita negli ultimi 2 secondi.");return false; }
         int delay=rules.preparationTicks();if(buff(p,Kind.FEAR)!=null)delay=(int)Math.ceil(delay*1.5);
         if(delay>0) {
-            preparing.put(p.getUniqueId(),new Preparation(source(p),skill,power,p.getLocation().clone(),p.getInventory().getItemInMainHand().clone(),tick+delay,delay));
+            LivingEntity selected=preparationTarget(p,skill);
+            if(requiresTarget(skill.effect())&&selected==null)return fail(p,"Nessun bersaglio valido entro portata.");
+            preparing.put(p.getUniqueId(),new Preparation(source(p),skill,power,p.getLocation().clone(),p.getInventory().getItemInMainHand().clone(),tick+delay,delay,selected));
             var preparation=preparing.get(p.getUniqueId());
             plugin.weaponMotion(p,skill,"prepare",delay);
             engine.loop(p,skill,SkillPresentation.Stage.CAST,p::getLocation,p.getUniqueId(),false,()->preparing.get(p.getUniqueId())==preparation&&resolve(preparation.source())!=null);
+            if(selected!=null)engine.targetAura(p,skill,selected,()->preparing.get(p.getUniqueId())==preparation&&resolve(preparation.source())!=null&&validPreparedTarget(p,skill,selected));
             plugin.feedback(p,"Preparazione: "+skill.name()+" — resta fermo");return true;
         }
         return execute(p,skill,power);
@@ -94,9 +101,10 @@ public final class DisciplineEngine implements Listener {
         for(var entry:List.copyOf(preparing.entrySet())) {
             var prep=entry.getValue();Player p=resolve(prep.source());
             boolean valid=p!=null&&DisciplineRules.prepared(true,true,equipped(p,prep.skill()),p.getLocation().distanceSquared(prep.start()))
-                    &&p.getInventory().getItemInMainHand().isSimilar(prep.weapon())&&engine.allowed(p,p.getLocation());
+                    &&p.getInventory().getItemInMainHand().isSimilar(prep.weapon())&&engine.allowed(p,p.getLocation())
+                    &&(prep.target()==null||validPreparedTarget(p,prep.skill(),prep.target()));
             if(!valid) { endPreparation(entry.getKey());if(p!=null)plugin.feedback(p,"Preparazione interrotta.");continue; }
-            if(tick>=prep.ready()) { endPreparation(entry.getKey());if(!execute(p,prep.skill(),prep.power()))plugin.feedback(p,"Tecnica fallita: bersaglio o requisiti non più validi."); }
+            if(tick>=prep.ready()) { endPreparation(entry.getKey());if(!execute(p,prep.skill(),prep.power(),prep.target()))plugin.feedback(p,"Tecnica fallita: bersaglio o requisiti non più validi."); }
         }
         for(Buff b:List.copyOf(buffs.values())) {
             if(buffs.get(b.key)!=b)continue;
@@ -135,11 +143,14 @@ public final class DisciplineEngine implements Listener {
         counters.entrySet().removeIf(e->e.getValue()<tick);
     }
     private boolean execute(Player p,Skill s,double power) {
+        return execute(p,s,power,null);
+    }
+    private boolean execute(Player p,Skill s,double power,LivingEntity locked) {
         if(!equipped(p,s)||!engine.allowed(p,p.getLocation()))return false;
         LivingEntity target;Location center;
         switch(s.effect()) {
             case ALLY_HEAL,HOT,CLEANSE,LINK -> {
-                target=friend(p,s.range());if(target==null)return fail(p,"Mira a un giocatore oppure abbassati per selezionare te stesso.");
+                target=locked!=null?locked:friend(p,s.range());if(target==null)return fail(p,"Mira a un giocatore oppure abbassati per selezionare te stesso.");
                 if(s.effect()==Skill.Effect.ALLY_HEAL) { if(!heal(p,target,power))return fail(p,"Cura non possibile o vita già al massimo."); }
                 if(s.effect()==Skill.Effect.HOT)put(p,target,Kind.HOT,s,power,0);
                 if(s.effect()==Skill.Effect.CLEANSE)cleanse(target);
@@ -158,7 +169,7 @@ public final class DisciplineEngine implements Listener {
                 engine.loop(p,s,SkillPresentation.Stage.TELEGRAPH,zone::center,null,false,()->zones.contains(zone)&&tick<zone.end()&&resolve(zone.source())!=null);
             }
             case CURSED_BOLT,VULNERABILITY,DOT,FEAR,HEAL_BLOCK,DRAIN -> {
-                target=enemy(p,s.range());if(target==null)return fail(p,"Nessun nemico visibile entro portata.");
+                target=locked!=null?locked:enemy(p,s.range());if(target==null)return fail(p,"Nessun nemico visibile entro portata.");
                 Hit hit=hit(p,target,power);if(hit.accepted())switch(s.effect()) {
                     case CURSED_BOLT -> put(p,target,Kind.DOT,s,Math.max(0.5,power*0.2),0);
                     case VULNERABILITY -> put(p,target,Kind.VULNERABLE,s,0,mechanics(s).fraction());
@@ -184,12 +195,12 @@ public final class DisciplineEngine implements Listener {
                 dashes.put(p.getUniqueId(),new Dash(source(p),s,power,direction));
             }
             case STUDY -> {
-                target=enemy(p,s.range());if(target==null)return fail(p,"Nessun bersaglio visibile.");
+                target=locked!=null?locked:enemy(p,s.range());if(target==null)return fail(p,"Nessun bersaglio visibile.");
                 put(p,target,Kind.STUDY,s,0,mechanics(s).fraction());plugin.feedback(p,"Studiato: "+target.getName()+". Bonus ai tiri finché è visibile.");
             }
             case PRECISE_SHOT,HINDERING_SHOT,DOUBLE_SHOT,MASTER_SHOT,COVER_FIRE -> {
                 int needed=DisciplineRules.arrows(s.effect());if(ammo(p)<needed||shots.size()+needed>256)return false;
-                center=s.effect()==Skill.Effect.COVER_FIRE?ground(p,s.range()):null;
+                center=s.effect()==Skill.Effect.COVER_FIRE?ground(p,s.range()):locked!=null?locked.getEyeLocation():null;
                 if(s.effect()==Skill.Effect.COVER_FIRE&&center==null)return fail(p,"Mira al terreno per il tiro di copertura.");
                 consumeAmmo(p,needed);fire(p,s,power,center);
                 if(needed>1)sequences.put(p.getUniqueId(),new Sequence(source(p),s,power,null,center,needed-1,tick+12));
@@ -202,7 +213,7 @@ public final class DisciplineEngine implements Listener {
             }
             case MELEE,SHIELD_BASH,COUNTER,HEAVY_STRIKE,LONG_THRUST,STOP_STRIKE,GUARD_BREAK,COMBO -> {
                 if(s.effect()==Skill.Effect.HEAVY_STRIKE)put(p,p,Kind.EXPOSED,s,0,0.2);
-                target=enemy(p,s.range());if(target==null)return fail(p,"Il colpo non raggiunge un bersaglio valido.");
+                target=locked!=null?locked:enemy(p,s.range());if(target==null)return fail(p,"Il colpo non raggiunge un bersaglio valido.");
                 if(s.effect()==Skill.Effect.COUNTER) { if(counters.getOrDefault(p.getUniqueId(),Long.MIN_VALUE)<tick)return false;counters.remove(p.getUniqueId()); }
                 Hit strike=hit(p,target,power);
                 if(strike.accepted()||(s.effect()==Skill.Effect.GUARD_BREAK&&strike.blocked()))switch(s.effect()) {
@@ -223,21 +234,41 @@ public final class DisciplineEngine implements Listener {
         return true;
     }
     private boolean fail(Player p,String message) { plugin.feedback(p,message);return false; }
+    private static boolean friendly(Skill.Effect effect) {
+        return switch(effect) { case ALLY_HEAL,HOT,CLEANSE,LINK -> true;default -> false; };
+    }
+    private static boolean requiresTarget(Skill.Effect effect) {
+        return friendly(effect)||switch(effect) {
+            case CURSED_BOLT,VULNERABILITY,DOT,FEAR,HEAL_BLOCK,DRAIN,STUDY,MELEE,SHIELD_BASH,COUNTER,HEAVY_STRIKE,LONG_THRUST,STOP_STRIKE,GUARD_BREAK,COMBO -> true;
+            default -> false;
+        };
+    }
+    private LivingEntity preparationTarget(Player p,Skill skill) {
+        if(friendly(skill.effect()))return friend(p,skill.range());
+        if(requiresTarget(skill.effect())||switch(skill.effect()) { case PRECISE_SHOT,HINDERING_SHOT,DOUBLE_SHOT,MASTER_SHOT -> true;default -> false; })return enemy(p,skill.range());
+        return null; // Ground areas and self-centered abilities do not select an entity.
+    }
+    private boolean validPreparedTarget(Player p,Skill skill,LivingEntity target) {
+        return target.isValid()&&!target.isDead()&&p.getWorld().equals(target.getWorld())
+                &&p.getLocation().distanceSquared(target.getLocation())<=skill.range()*skill.range()
+                &&(target.equals(p)||p.hasLineOfSight(target))
+                &&(friendly(skill.effect())?ally(p,target):engine.targetAllowed(p,target));
+    }
     private boolean equipped(Player p,Skill skill) { return plugin.equipped(p,skill); }
     private LivingEntity living(UUID id) { Entity e=Bukkit.getEntity(id);return e instanceof LivingEntity l&&l.isValid()?l:null; }
     boolean ally(Player p,LivingEntity e) {
         if(!(e instanceof Player friend)||friend.isDead()||friend.getGameMode()==GameMode.SPECTATOR||!p.getWorld().equals(friend.getWorld())||!engine.allowed(p,friend.getLocation()))return false;
         return p.equals(friend)||p.canSee(friend);
     }
-    private LivingEntity ray(Player p,double range) {
+    private static LivingEntity ray(Player p,double range) {
         var result=p.getWorld().rayTrace(p.getEyeLocation(),p.getEyeLocation().getDirection(),range,FluidCollisionMode.NEVER,true,0.25,
                 e->e instanceof LivingEntity&&!e.equals(p)&&!(e instanceof Player player&&player.getGameMode()==GameMode.SPECTATOR));
         return result!=null&&result.getHitEntity() instanceof LivingEntity e?e:null;
     }
-    private LivingEntity enemy(Player p,double range) { LivingEntity e=ray(p,range);return e!=null&&engine.targetAllowed(p,e)?e:null; }
+    private LivingEntity enemy(Player p,double range) { LivingEntity e=targetRay.apply(p,range);return e!=null&&engine.targetAllowed(p,e)?e:null; }
     private LivingEntity friend(Player p,double range) {
         if(p.isSneaking())return p;
-        LivingEntity e=ray(p,range);return e==null?p:ally(p,e)?e:null;
+        LivingEntity e=targetRay.apply(p,range);return e==null?p:ally(p,e)?e:null;
     }
     private Location ground(Player p,double range) {
         var result=p.getWorld().rayTraceBlocks(p.getEyeLocation(),p.getEyeLocation().getDirection(),range,FluidCollisionMode.NEVER,true);

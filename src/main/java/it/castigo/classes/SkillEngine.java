@@ -34,6 +34,25 @@ public final class SkillEngine implements Listener {
         visualLoops.start(p,s,stage,p::getEyeLocation,at,target,link,valid);
     }
     void trail(Player p,Skill s,Location from,Location at) { effects.play(plugin.presentation(p,s),SkillPresentation.Stage.TRAIL,from,at); }
+    void targetAura(Player p,Skill skill,LivingEntity target,java.util.function.BooleanSupplier valid) {
+        String color=switch(plugin.profile(p).classId) {
+            case "mago_bianco" -> "FFFFD8";
+            case "mago_nero" -> "59209B";
+            case "arciere" -> "43D66D";
+            default -> null;
+        };
+        if(color==null)return;
+        var config=new org.bukkit.configuration.file.YamlConfiguration();
+        config.set("cast.enabled",true);config.set("cast.shape","MESH_COLUMN");
+        config.set("cast.radius",Math.clamp(target.getWidth()*.7+.3,.65,6));
+        config.set("cast.particles.enabled",false);config.set("cast.sound.enabled",false);
+        config.set("cast.mesh.height",Math.clamp(target.getHeight()+.25,1,8));
+        config.set("cast.mesh.tint",color);config.set("cast.mesh.opacity",.55);
+        config.set("cast.mesh.columnRadius",1);config.set("cast.mesh.rotation",35);
+        config.set("cast.mesh.columnTexture","castigoclasses:textures/vfx/healing_column.png");
+        var cue=SkillPresentation.read(config,skill).cues().get(SkillPresentation.Stage.CAST);
+        visualLoops.start(p,skill,SkillPresentation.Stage.CAST,target::getLocation,target::getLocation,target.getUniqueId(),false,valid,cue);
+    }
     void pulse(Player p,Skill s,SkillPresentation.Stage stage,LivingEntity at) { effects.play(plugin.presentation(p,s),stage,p.getEyeLocation(),at.getLocation(),at.getUniqueId()); }
     public double defenseFactor(UUID id) { return disciplines.defenseFactor(id); }
     public com.google.gson.JsonObject casting(UUID id) { return disciplines.casting(id); }

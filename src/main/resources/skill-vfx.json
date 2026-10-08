@@ -3,7 +3,7 @@
     "class": "arciere",
     "name": "Tiro preciso",
     "effect": "PRECISE_SHOT",
-    "description": "Scia verde sottile agganciata al percorso reale della freccia. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
+    "description": "Scia ciano agganciata al percorso reale della freccia. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -16,7 +16,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "45E7A3",
+          "color": "42CFFF",
           "size": 0.45
         },
         "sound": {
@@ -37,7 +37,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "45E7A3"
+          "tint": "42CFFF"
         }
       },
       "trail": {
@@ -51,7 +51,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "45E7A3",
+          "color": "42CFFF",
           "size": 0.45
         },
         "sound": {
@@ -69,7 +69,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "45E7A3"
+          "tint": "42CFFF"
         }
       },
       "impact": {
@@ -83,7 +83,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "45E7A3",
+          "color": "42CFFF",
           "size": 0.45
         },
         "sound": {
@@ -104,7 +104,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "45E7A3"
+          "tint": "42CFFF"
         }
       },
       "telegraph": {
@@ -132,7 +132,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "45E7A3",
+          "color": "64F59A",
           "size": 0.45
         },
         "sound": {
@@ -153,7 +153,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/wave.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "45E7A3"
+          "tint": "64F59A"
         }
       },
       "trail": {
@@ -167,7 +167,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "45E7A3",
+          "color": "64F59A",
           "size": 0.45
         },
         "sound": {
@@ -185,7 +185,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "45E7A3"
+          "tint": "64F59A"
         }
       },
       "impact": {
@@ -199,7 +199,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "45E7A3",
+          "color": "64F59A",
           "size": 0.45
         },
         "sound": {
@@ -217,7 +217,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "45E7A3"
+          "tint": "64F59A"
         }
       },
       "telegraph": {
@@ -245,7 +245,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "45E7A3",
+          "color": "FFE070",
           "size": 0.45
         },
         "sound": {
@@ -266,7 +266,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/nature_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "45E7A3"
+          "tint": "FFE070"
         }
       },
       "trail": {
@@ -283,7 +283,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "45E7A3",
+          "color": "FFE070",
           "size": 0.45
         },
         "sound": {
@@ -304,7 +304,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/nature_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "45E7A3"
+          "tint": "FFE070"
         }
       },
       "telegraph": {
@@ -318,7 +318,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "45E7A3",
+          "color": "FFE070",
           "size": 0.45
         },
         "sound": {
@@ -336,7 +336,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/nature_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "45E7A3"
+          "tint": "FFE070"
         }
       },
       "hit": {
@@ -361,7 +361,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "45E7A3",
+          "color": "C1ACFF",
           "size": 0.45
         },
         "sound": {
@@ -382,7 +382,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/wave.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "45E7A3"
+          "tint": "C1ACFF"
         }
       },
       "trail": {
@@ -396,7 +396,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "45E7A3",
+          "color": "C1ACFF",
           "size": 0.45
         },
         "sound": {
@@ -414,7 +414,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "45E7A3"
+          "tint": "C1ACFF"
         }
       },
       "impact": {
@@ -428,7 +428,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "45E7A3",
+          "color": "C1ACFF",
           "size": 0.45
         },
         "sound": {
@@ -446,7 +446,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "45E7A3"
+          "tint": "C1ACFF"
         }
       },
       "telegraph": {
@@ -461,7 +461,7 @@
     "class": "arciere",
     "name": "Tiro ostacolante",
     "effect": "HINDERING_SHOT",
-    "description": "Scia della freccia e anello di intralcio sul nemico colpito. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
+    "description": "Scia viola e anello di intralcio sul nemico colpito. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -474,7 +474,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "45E7A3",
+          "color": "A76CFF",
           "size": 0.45
         },
         "sound": {
@@ -495,7 +495,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "45E7A3"
+          "tint": "A76CFF"
         }
       },
       "trail": {
@@ -509,7 +509,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "45E7A3",
+          "color": "A76CFF",
           "size": 0.45
         },
         "sound": {
@@ -527,7 +527,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "45E7A3"
+          "tint": "A76CFF"
         }
       },
       "impact": {
@@ -541,7 +541,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "45E7A3",
+          "color": "A76CFF",
           "size": 0.45
         },
         "sound": {
@@ -562,7 +562,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "45E7A3"
+          "tint": "A76CFF"
         }
       },
       "telegraph": {
@@ -576,7 +576,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "45E7A3",
+          "color": "A76CFF",
           "size": 0.45
         },
         "sound": {
@@ -594,7 +594,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/nature_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "45E7A3"
+          "tint": "A76CFF"
         }
       },
       "hit": {
@@ -606,7 +606,7 @@
     "class": "arciere",
     "name": "Tiro di copertura",
     "effect": "COVER_FIRE",
-    "description": "Scie dei tiri di copertura e anelli sui nemici rallentati. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
+    "description": "Scie arancio dei tiri di copertura e anelli sui nemici rallentati. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -619,7 +619,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "45E7A3",
+          "color": "FF963F",
           "size": 0.45
         },
         "sound": {
@@ -640,7 +640,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "45E7A3"
+          "tint": "FF963F"
         }
       },
       "trail": {
@@ -654,7 +654,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "45E7A3",
+          "color": "FF963F",
           "size": 0.45
         },
         "sound": {
@@ -672,7 +672,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "45E7A3"
+          "tint": "FF963F"
         }
       },
       "impact": {
@@ -686,7 +686,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "45E7A3",
+          "color": "FF963F",
           "size": 0.45
         },
         "sound": {
@@ -707,7 +707,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "45E7A3"
+          "tint": "FF963F"
         }
       },
       "telegraph": {
@@ -721,7 +721,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "45E7A3",
+          "color": "FF963F",
           "size": 0.45
         },
         "sound": {
@@ -739,7 +739,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/nature_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "45E7A3"
+          "tint": "FF963F"
         }
       },
       "hit": {
@@ -751,7 +751,7 @@
     "class": "arciere",
     "name": "Doppio tiro",
     "effect": "DOUBLE_SHOT",
-    "description": "Due scie distinte, una per ciascuna freccia realmente scoccata. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
+    "description": "Due scie cremisi, una per ciascuna freccia realmente scoccata. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -764,7 +764,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "45E7A3",
+          "color": "FF527F",
           "size": 0.45
         },
         "sound": {
@@ -785,7 +785,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "45E7A3"
+          "tint": "FF527F"
         }
       },
       "trail": {
@@ -799,7 +799,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "45E7A3",
+          "color": "FF527F",
           "size": 0.45
         },
         "sound": {
@@ -817,7 +817,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "45E7A3"
+          "tint": "FF527F"
         }
       },
       "impact": {
@@ -831,7 +831,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "45E7A3",
+          "color": "FF527F",
           "size": 0.45
         },
         "sound": {
@@ -852,7 +852,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "45E7A3"
+          "tint": "FF527F"
         }
       },
       "telegraph": {
@@ -867,7 +867,7 @@
     "class": "arciere",
     "name": "Colpo del maestro",
     "effect": "MASTER_SHOT",
-    "description": "Scia più spessa e impatto concentrato del colpo del maestro. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
+    "description": "Scia dorata più spessa e impatto concentrato. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -880,7 +880,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "45E7A3",
+          "color": "FFD137",
           "size": 0.45
         },
         "sound": {
@@ -901,7 +901,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "45E7A3"
+          "tint": "FFD137"
         }
       },
       "trail": {
@@ -915,7 +915,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "45E7A3",
+          "color": "FFD137",
           "size": 0.45
         },
         "sound": {
@@ -933,7 +933,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "45E7A3"
+          "tint": "FFD137"
         }
       },
       "impact": {
@@ -947,7 +947,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "45E7A3",
+          "color": "FFD137",
           "size": 0.45
         },
         "sound": {
@@ -968,7 +968,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "45E7A3"
+          "tint": "FFD137"
         }
       },
       "telegraph": {
@@ -983,28 +983,28 @@
     "class": "guerriero_due_mani",
     "name": "Fendente pesante",
     "effect": "HEAVY_STRIKE",
-    "description": "Arco ampio più lento e impatto caldo del fendente pesante. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
+    "description": "Arco ampio più lento e impatto caldo del fendente pesante. Lame stratificate o punta di energia, scie e frammenti tridimensionali; altezza e ritmo specifici del colpo. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
         "shape": "MESH_SLASH",
-        "duration-ticks": 18,
-        "radius": 1.3,
+        "duration-ticks": 16,
+        "radius": 2.15,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FF913D",
+          "color": "FF6238",
           "size": 0.45
         },
         "sound": {
           "enabled": false
         },
         "mesh": {
-          "height": 1.7,
-          "opacity": 0.75,
+          "height": 3.1,
+          "opacity": 0.95,
           "rotation": 90,
           "scroll": 0.8,
           "fadeIn": 0.08,
@@ -1013,8 +1013,8 @@
           "ringGap": 0.3,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/wave.png",
-          "columnTexture": "castigoclasses:textures/vfx/slash.png",
-          "tint": "FF913D"
+          "columnTexture": "castigoclasses:textures/vfx/weapon_blade.png",
+          "tint": "FF6238"
         }
       },
       "trail": {
@@ -1024,14 +1024,14 @@
         "enabled": true,
         "shape": "MESH_BURST",
         "duration-ticks": 18,
-        "radius": 0.5,
+        "radius": 1.25,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FF913D",
+          "color": "FF6238",
           "size": 0.45
         },
         "sound": {
@@ -1052,7 +1052,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "FF913D"
+          "tint": "FF6238"
         }
       },
       "telegraph": {
@@ -1067,7 +1067,7 @@
     "class": "guerriero_due_mani",
     "name": "Affondo lungo",
     "effect": "LONG_THRUST",
-    "description": "Affondo luminoso allungato frontalmente e impatto puntuale. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
+    "description": "Affondo luminoso allungato frontalmente e impatto puntuale. Lame stratificate o punta di energia, scie e frammenti tridimensionali; altezza e ritmo specifici del colpo. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -1080,7 +1080,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FF913D",
+          "color": "FFD48A",
           "size": 0.45
         },
         "sound": {
@@ -1098,7 +1098,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "FF913D"
+          "tint": "FFD48A"
         }
       },
       "trail": {
@@ -1108,14 +1108,14 @@
         "enabled": true,
         "shape": "MESH_BURST",
         "duration-ticks": 18,
-        "radius": 0.5,
+        "radius": 0.75,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FF913D",
+          "color": "FFD48A",
           "size": 0.45
         },
         "sound": {
@@ -1136,7 +1136,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "FF913D"
+          "tint": "FFD48A"
         }
       },
       "telegraph": {
@@ -1264,28 +1264,28 @@
     "class": "guerriero_due_mani",
     "name": "Colpo di arresto",
     "effect": "STOP_STRIKE",
-    "description": "Taglio breve e anello che permane sul nemico rallentato. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
+    "description": "Taglio breve e anello che permane sul nemico rallentato. Lame stratificate o punta di energia, scie e frammenti tridimensionali; altezza e ritmo specifici del colpo. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
         "shape": "MESH_SLASH",
-        "duration-ticks": 10,
-        "radius": 1.3,
+        "duration-ticks": 12,
+        "radius": 1.7,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FF913D",
+          "color": "7EA9FF",
           "size": 0.45
         },
         "sound": {
           "enabled": false
         },
         "mesh": {
-          "height": 1.7,
-          "opacity": 0.75,
+          "height": 1.8,
+          "opacity": 0.95,
           "rotation": 90,
           "scroll": 0.8,
           "fadeIn": 0.08,
@@ -1294,8 +1294,8 @@
           "ringGap": 0.3,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/wave.png",
-          "columnTexture": "castigoclasses:textures/vfx/slash.png",
-          "tint": "FF913D"
+          "columnTexture": "castigoclasses:textures/vfx/weapon_blade.png",
+          "tint": "7EA9FF"
         }
       },
       "trail": {
@@ -1305,14 +1305,14 @@
         "enabled": true,
         "shape": "MESH_BURST",
         "duration-ticks": 18,
-        "radius": 0.5,
+        "radius": 0.75,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FF913D",
+          "color": "7EA9FF",
           "size": 0.45
         },
         "sound": {
@@ -1333,7 +1333,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "FF913D"
+          "tint": "7EA9FF"
         }
       },
       "telegraph": {
@@ -1347,7 +1347,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FF913D",
+          "color": "7EA9FF",
           "size": 0.45
         },
         "sound": {
@@ -1365,7 +1365,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/wave.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "FF913D"
+          "tint": "7EA9FF"
         }
       },
       "hit": {
@@ -1377,12 +1377,12 @@
     "class": "guerriero_due_mani",
     "name": "Fendente circolare",
     "effect": "SWEEP",
-    "description": "Onda circolare al raggio della skill e lampi su ogni nemico colpito. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
+    "description": "Onda circolare al raggio della skill e lampi su ogni nemico colpito. Lame stratificate o punta di energia, scie e frammenti tridimensionali; altezza e ritmo specifici del colpo. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
-        "shape": "MESH_WAVE",
-        "duration-ticks": 10,
+        "shape": "MESH_SLASH",
+        "duration-ticks": 12,
         "radius": 3.0,
         "points": 24,
         "particles": {
@@ -1390,7 +1390,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FF913D",
+          "color": "FFB35C",
           "size": 0.45
         },
         "sound": {
@@ -1400,8 +1400,8 @@
           "pitch": 1
         },
         "mesh": {
-          "height": 1.7,
-          "opacity": 0.75,
+          "height": 1.8,
+          "opacity": 0.95,
           "rotation": 90,
           "scroll": 0.8,
           "fadeIn": 0.08,
@@ -1410,8 +1410,8 @@
           "ringGap": 0.3,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/wave.png",
-          "columnTexture": "castigoclasses:textures/vfx/slash.png",
-          "tint": "FF913D"
+          "columnTexture": "castigoclasses:textures/vfx/weapon_blade.png",
+          "tint": "FFB35C"
         }
       },
       "trail": {
@@ -1421,14 +1421,14 @@
         "enabled": true,
         "shape": "MESH_BURST",
         "duration-ticks": 18,
-        "radius": 0.5,
+        "radius": 0.75,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FF913D",
+          "color": "FFB35C",
           "size": 0.45
         },
         "sound": {
@@ -1446,7 +1446,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "FF913D"
+          "tint": "FFB35C"
         }
       },
       "telegraph": {
@@ -1461,12 +1461,12 @@
     "class": "guerriero_due_mani",
     "name": "Falciata bassa",
     "effect": "LOW_SWEEP",
-    "description": "Onda bassa e anelli sui bersagli rallentati. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
+    "description": "Onda bassa e anelli sui bersagli rallentati. Lame stratificate o punta di energia, scie e frammenti tridimensionali; altezza e ritmo specifici del colpo. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
-        "shape": "MESH_WAVE",
-        "duration-ticks": 10,
+        "shape": "MESH_SLASH",
+        "duration-ticks": 12,
         "radius": 3.0,
         "points": 24,
         "particles": {
@@ -1474,7 +1474,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FF913D",
+          "color": "EB743C",
           "size": 0.45
         },
         "sound": {
@@ -1485,7 +1485,7 @@
         },
         "mesh": {
           "height": 0.4,
-          "opacity": 0.75,
+          "opacity": 0.95,
           "rotation": 90,
           "scroll": 0.8,
           "fadeIn": 0.08,
@@ -1494,8 +1494,8 @@
           "ringGap": 0.3,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/wave.png",
-          "columnTexture": "castigoclasses:textures/vfx/slash.png",
-          "tint": "FF913D"
+          "columnTexture": "castigoclasses:textures/vfx/weapon_blade.png",
+          "tint": "EB743C"
         }
       },
       "trail": {
@@ -1505,14 +1505,14 @@
         "enabled": true,
         "shape": "MESH_BURST",
         "duration-ticks": 18,
-        "radius": 0.5,
+        "radius": 0.75,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FF913D",
+          "color": "EB743C",
           "size": 0.45
         },
         "sound": {
@@ -1530,7 +1530,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "FF913D"
+          "tint": "EB743C"
         }
       },
       "telegraph": {
@@ -1544,7 +1544,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FF913D",
+          "color": "EB743C",
           "size": 0.45
         },
         "sound": {
@@ -1562,7 +1562,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/wave.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "FF913D"
+          "tint": "EB743C"
         }
       },
       "hit": {
@@ -1574,28 +1574,28 @@
     "class": "guerriero_due_mani",
     "name": "Spezzaguardia",
     "effect": "GUARD_BREAK",
-    "description": "Taglio, forte impatto e marchio sul nemico reso vulnerabile. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
+    "description": "Taglio, forte impatto e marchio sul nemico reso vulnerabile. Lame stratificate o punta di energia, scie e frammenti tridimensionali; altezza e ritmo specifici del colpo. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
         "shape": "MESH_SLASH",
-        "duration-ticks": 10,
-        "radius": 1.3,
+        "duration-ticks": 12,
+        "radius": 2.15,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FF913D",
+          "color": "FFBE48",
           "size": 0.45
         },
         "sound": {
           "enabled": false
         },
         "mesh": {
-          "height": 1.7,
-          "opacity": 0.75,
+          "height": 3.1,
+          "opacity": 0.95,
           "rotation": 90,
           "scroll": 0.8,
           "fadeIn": 0.08,
@@ -1604,8 +1604,8 @@
           "ringGap": 0.3,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/wave.png",
-          "columnTexture": "castigoclasses:textures/vfx/slash.png",
-          "tint": "FF913D"
+          "columnTexture": "castigoclasses:textures/vfx/weapon_blade.png",
+          "tint": "FFBE48"
         }
       },
       "trail": {
@@ -1615,14 +1615,14 @@
         "enabled": true,
         "shape": "MESH_BURST",
         "duration-ticks": 18,
-        "radius": 1.0,
+        "radius": 1.25,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FF913D",
+          "color": "FFBE48",
           "size": 0.45
         },
         "sound": {
@@ -1643,7 +1643,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "FF913D"
+          "tint": "FFBE48"
         }
       },
       "telegraph": {
@@ -1657,7 +1657,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FF913D",
+          "color": "FFBE48",
           "size": 0.45
         },
         "sound": {
@@ -1675,7 +1675,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/dark_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "FF913D"
+          "tint": "FFBE48"
         }
       },
       "hit": {
@@ -1687,28 +1687,28 @@
     "class": "guerriero_due_mani",
     "name": "Sequenza del campione",
     "effect": "COMBO",
-    "description": "Un arco e un impatto per ciascun colpo della sequenza realmente eseguito. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
+    "description": "Un arco e un impatto per ciascun colpo della sequenza realmente eseguito. Lame stratificate o punta di energia, scie e frammenti tridimensionali; altezza e ritmo specifici del colpo. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
         "shape": "MESH_SLASH",
-        "duration-ticks": 10,
-        "radius": 1.3,
+        "duration-ticks": 12,
+        "radius": 1.7,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FF913D",
+          "color": "FF9461",
           "size": 0.45
         },
         "sound": {
           "enabled": false
         },
         "mesh": {
-          "height": 1.7,
-          "opacity": 0.75,
+          "height": 1.8,
+          "opacity": 0.95,
           "rotation": 90,
           "scroll": 0.8,
           "fadeIn": 0.08,
@@ -1717,8 +1717,8 @@
           "ringGap": 0.3,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/wave.png",
-          "columnTexture": "castigoclasses:textures/vfx/slash.png",
-          "tint": "FF913D"
+          "columnTexture": "castigoclasses:textures/vfx/weapon_blade.png",
+          "tint": "FF9461"
         }
       },
       "trail": {
@@ -1728,14 +1728,14 @@
         "enabled": true,
         "shape": "MESH_BURST",
         "duration-ticks": 18,
-        "radius": 0.5,
+        "radius": 0.75,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FF913D",
+          "color": "FF9461",
           "size": 0.45
         },
         "sound": {
@@ -1756,7 +1756,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "FF913D"
+          "tint": "FF9461"
         }
       },
       "telegraph": {
@@ -1771,7 +1771,7 @@
     "class": "guerriero_scudo",
     "name": "Affondo disciplinato",
     "effect": "MELEE",
-    "description": "Affondo luminoso corto davanti al guerriero e lampo sulla vittima. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
+    "description": "Affondo luminoso corto davanti al guerriero e lampo sulla vittima. Lame stratificate o punta di energia, scie e frammenti tridimensionali; altezza e ritmo specifici del colpo. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -1812,7 +1812,7 @@
         "enabled": true,
         "shape": "MESH_BURST",
         "duration-ticks": 18,
-        "radius": 0.5,
+        "radius": 0.75,
         "points": 24,
         "particles": {
           "enabled": false,
@@ -1860,8 +1860,8 @@
       "cast": {
         "enabled": true,
         "shape": "MESH_SHIELD",
-        "duration-ticks": 10,
-        "radius": 0.8,
+        "duration-ticks": 12,
+        "radius": 1.15,
         "points": 24,
         "particles": {
           "enabled": false,
@@ -1875,8 +1875,8 @@
           "enabled": false
         },
         "mesh": {
-          "height": 1.3,
-          "opacity": 0.6,
+          "height": 1.8,
+          "opacity": 0.8,
           "rotation": 90,
           "scroll": 0.8,
           "fadeIn": 0.08,
@@ -1896,7 +1896,7 @@
         "enabled": true,
         "shape": "MESH_BURST",
         "duration-ticks": 18,
-        "radius": 0.5,
+        "radius": 0.75,
         "points": 24,
         "particles": {
           "enabled": false,
@@ -2365,28 +2365,28 @@
     "class": "guerriero_scudo",
     "name": "Contrattacco del veterano",
     "effect": "COUNTER",
-    "description": "Arco inverso del contrattacco e scintilla sulla vittima. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
+    "description": "Arco inverso del contrattacco e scintilla sulla vittima. Lame stratificate o punta di energia, scie e frammenti tridimensionali; altezza e ritmo specifici del colpo. Modelli energetici articolati originali, gesto dell’arma e audio dedicato.",
     "presentation": {
       "cast": {
         "enabled": true,
         "shape": "MESH_SLASH",
-        "duration-ticks": 10,
-        "radius": 1.3,
+        "duration-ticks": 12,
+        "radius": 1.7,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "48A9FF",
+          "color": "8EEBFF",
           "size": 0.45
         },
         "sound": {
           "enabled": false
         },
         "mesh": {
-          "height": 1.7,
-          "opacity": 0.75,
+          "height": 1.8,
+          "opacity": 0.95,
           "rotation": -90,
           "scroll": 0.8,
           "fadeIn": 0.08,
@@ -2395,8 +2395,8 @@
           "ringGap": 0.3,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/wave.png",
-          "columnTexture": "castigoclasses:textures/vfx/slash.png",
-          "tint": "48A9FF"
+          "columnTexture": "castigoclasses:textures/vfx/weapon_blade.png",
+          "tint": "8EEBFF"
         }
       },
       "trail": {
@@ -2406,14 +2406,14 @@
         "enabled": true,
         "shape": "MESH_BURST",
         "duration-ticks": 18,
-        "radius": 0.5,
+        "radius": 0.75,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "48A9FF",
+          "color": "8EEBFF",
           "size": 0.45
         },
         "sound": {
@@ -2434,7 +2434,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "48A9FF"
+          "tint": "8EEBFF"
         }
       },
       "telegraph": {

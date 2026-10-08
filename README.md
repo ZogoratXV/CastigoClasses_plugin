@@ -1,7 +1,11 @@
 # CastigoClasses — plugin
 
-Versione di test **0.1.0-beta.11** per **Purpur Minecraft 26.2**, Java 25 e **CastigoCore 2.1.0-beta.9**.
+Versione di test **0.1.0-beta.12** per **Purpur Minecraft 26.2**, Java 25 e **CastigoCore 2.1.0-beta.9**.
 Client: [CastigoClasses Fabric](https://github.com/ZogoratXV/CastigoClasses_fabricmod), Minecraft 26.2 / Fabric Loader 0.19.5.
+
+## Corpo a corpo, bersagli e icone — beta.12
+
+Lame di energia stratificate, affondi tridimensionali, colori distinti per l’arciere, aure sul bersaglio durante la preparazione e scelta delle icone dalla GUI admin. [Guida beta.12](docs/AGGIORNAMENTO-BETA12.md). Aggiornare plugin e mod insieme.
 
 ## VFX e animazioni delle armi — beta.11
 
@@ -26,7 +30,7 @@ Cure senza party, requisiti per oggetto vanilla/ItemsAdder, `/classe admin` e ic
 ## Installazione
 
 1. Lascia CastigoCore nella cartella `plugins` del server.
-2. Sostituisci il precedente CastigoClasses con `CastigoClasses-0.1.0-beta.11.jar` e riavvia.
+2. Sostituisci il precedente CastigoClasses con `CastigoClasses-0.1.0-beta.12.jar` e riavvia.
 3. LuckPerms è facoltativo: quando presente, il suo gruppo principale viene mostrato nel client.
 4. Installa la mod e Fabric API sul client seguendo il repository della mod.
 
@@ -155,7 +159,7 @@ Java 25. Copia il JAR originale del core in `libs/CastigoCore.jar` (non viene in
 .\gradlew.bat build
 ```
 
-Linux/macOS: `./gradlew build`. Risultato: `build/libs/CastigoClasses-0.1.0-beta.11.jar`.
+Linux/macOS: `./gradlew build`. Risultato: `build/libs/CastigoClasses-0.1.0-beta.12.jar`.
 Dipendenza API fissata: `org.purpurmc.purpur:purpur-api:26.2.build.2632-stable`.
 
 I test coprono crescita, curva XP, cap, risorse/cooldown, ordine degli slot, ereditarietà/validazione YAML e salvataggi reali attraverso CastigoCore. Build e test automatici verificati; prova multiplayer e compatibilità con gli altri plugin del server ancora da effettuare.
@@ -200,7 +204,7 @@ Le stesse formule usano sia la crescita automatica sia i punti assegnati. Il pan
 
 ## Aggiornamento core e VFX client
 
-Usa la mod **0.1.0-beta.11** per vedere e sentire gli effetti delle skill. Configurazione e limiti: [docs/VFX-CLIENT.md](docs/VFX-CLIENT.md). L'esempio viene creato in `examples/presentation.yml.example` al primo avvio. I vecchi YAML ricevono preset compatibili senza essere sovrascritti.
+Usa la mod **0.1.0-beta.12** per vedere e sentire gli effetti delle skill. Configurazione e limiti: [docs/VFX-CLIENT.md](docs/VFX-CLIENT.md). L'esempio viene creato in `examples/presentation.yml.example` al primo avvio. I vecchi YAML ricevono preset compatibili senza essere sovrascritti.
 
 Le cinque discipline del documento RP sono soltanto valutate in [docs/PROPOSTA-DISCIPLINE.md](docs/PROPOSTA-DISCIPLINE.md): le 40 abilità non sono incluse in questa build.
 

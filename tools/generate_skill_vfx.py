@@ -13,6 +13,12 @@ def cue(shape,color,radius=1,duration=16,height=2,texture='rune_ring',rotation=9
 
 def make(cls,sid,effect,radius):
     color={'mago_bianco':'FFE29A','mago_nero':'963DFF','guerriero_scudo':'48A9FF','guerriero_due_mani':'FF913D','arciere':'45E7A3','mago':'AC73FF'}[cls]
+    if cls=='arciere':
+        color={'PRECISE_SHOT':'42CFFF','HUNTER_STEP':'64F59A','STUDY':'FFE070','DISENGAGE':'C1ACFF',
+               'HINDERING_SHOT':'A76CFF','COVER_FIRE':'FF963F','DOUBLE_SHOT':'FF527F','MASTER_SHOT':'FFD137'}[effect]
+    elif cls.startswith('guerriero'):
+        color={'HEAVY_STRIKE':'FF6238','GUARD_BREAK':'FFBE48','COUNTER':'8EEBFF','LONG_THRUST':'FFD48A',
+               'STOP_STRIKE':'7EA9FF','COMBO':'FF9461','SWEEP':'FFB35C','LOW_SWEEP':'EB743C'}.get(effect,color)
     seal='holy_seal' if cls=='mago_bianco' else 'dark_seal' if cls=='mago_nero' else 'nature_seal' if cls=='arciere' else 'rune_ring'
     phases={name:{'enabled':False} for name in ('cast','trail','impact','telegraph','hit')}
     phases['cast']=cue('MESH_RING',color,.55,10,texture=seal)
@@ -75,12 +81,12 @@ def make(cls,sid,effect,radius):
         stage('trail','MESH_BEAM',radius=.3 if effect=='MASTER_SHOT' else .12,duration=6,column='ribbon')
         stage('impact','MESH_BURST',radius=1 if effect=='MASTER_SHOT' else .35,duration=12,texture='flare')
         if effect in ('HINDERING_SHOT','COVER_FIRE'):stage('telegraph','MESH_RING',radius=.65,duration=22,texture='nature_seal',rotation=-60)
-        description={'PRECISE_SHOT':'Scia verde sottile agganciata al percorso reale della freccia.','HINDERING_SHOT':'Scia della freccia e anello di intralcio sul nemico colpito.','DOUBLE_SHOT':'Due scie distinte, una per ciascuna freccia realmente scoccata.','MASTER_SHOT':'Scia più spessa e impatto concentrato del colpo del maestro.','COVER_FIRE':'Scie dei tiri di copertura e anelli sui nemici rallentati.'}[effect]
+        description={'PRECISE_SHOT':'Scia ciano agganciata al percorso reale della freccia.','HINDERING_SHOT':'Scia viola e anello di intralcio sul nemico colpito.','DOUBLE_SHOT':'Due scie cremisi, una per ciascuna freccia realmente scoccata.','MASTER_SHOT':'Scia dorata più spessa e impatto concentrato.','COVER_FIRE':'Scie arancio dei tiri di copertura e anelli sui nemici rallentati.'}[effect]
     else:
         area=effect in ('SWEEP','LOW_SWEEP')
-        stage('cast','MESH_WAVE' if area else 'MESH_SLASH',radius=radius if area else 1.8 if effect=='LONG_THRUST' else 1.3,duration=18 if effect=='HEAVY_STRIKE' else 10,height=.4 if effect=='LOW_SWEEP' else 1.7,texture='wave',column='slash',rotation=-90 if effect=='COUNTER' else 90,rings=2 if area else 1)
-        stage('impact','MESH_BURST',radius=.8 if effect=='GUARD_BREAK' else .4,duration=12,height=1.2,texture='flare')
-        if effect=='SHIELD_BASH':stage('cast','MESH_SHIELD',radius=.8,duration=10,height=1.3,column='shield_grid',opacity=.6)
+        stage('cast','MESH_SLASH',radius=radius if area else 2.15 if effect in ('HEAVY_STRIKE','GUARD_BREAK') else 1.7,duration=16 if effect=='HEAVY_STRIKE' else 12,height=.4 if effect=='LOW_SWEEP' else 3.1 if effect in ('HEAVY_STRIKE','GUARD_BREAK') else 1.8,texture='wave',column='slash',rotation=-90 if effect=='COUNTER' else 90,rings=2 if area else 1)
+        stage('impact','MESH_BURST',radius=1 if effect in ('HEAVY_STRIKE','GUARD_BREAK') else .6,duration=16,height=1.2,texture='flare')
+        if effect=='SHIELD_BASH':stage('cast','MESH_SHIELD',radius=1.15,duration=12,height=1.8,column='shield_grid',opacity=.8)
         if effect in ('MELEE','LONG_THRUST'):stage('cast','MESH_THRUST',radius=2.8 if effect=='LONG_THRUST' else 1.6,duration=10,height=1.7,column='ribbon')
         if effect in ('STOP_STRIKE','SHIELD_BASH','LOW_SWEEP'):stage('telegraph','MESH_RING',radius=.5,duration=22,texture='wave',rotation=-45)
         if effect=='GUARD_BREAK':stage('telegraph','MESH_SIGIL',radius=.45,duration=22,height=2,texture='dark_seal')
@@ -94,6 +100,9 @@ def make(cls,sid,effect,radius):
     for phase,c in phases.items():
         if not c.get('enabled'):continue
         shape=c['shape']
+        if cls.startswith('guerriero') and shape=='MESH_SLASH':
+            c['mesh']['columnTexture']=P+'weapon_blade.png'
+            c['mesh']['opacity']=.95
         if shape=='MESH_RING' and not (area and phase in ('telegraph','impact')):
             c['radius']=max(c['radius'],1.45 if phase=='cast' else 1.15)
             c['mesh']['rings']=max(c['mesh']['rings'],2)
@@ -115,6 +124,8 @@ def make(cls,sid,effect,radius):
     if cls=='arciere' and phases['cast'].get('enabled'):
         phases['cast']['sound']={'enabled':True,'id':'castigoclasses_audio:archer.awakened_archer_arrow_shoot','volume':.5,'pitch':1}
     description=description.replace('Raggio sottile colorato e lampo nel punto colpito.','Scia intrecciata con nucleo chiaro, esplosione colorata e frammenti sul bersaglio.')
+    if cls.startswith('guerriero') and effect in ('MELEE','LONG_THRUST','COUNTER','HEAVY_STRIKE','STOP_STRIKE','SWEEP','LOW_SWEEP','GUARD_BREAK','COMBO'):
+        description+=' Lame stratificate o punta di energia, scie e frammenti tridimensionali; altezza e ritmo specifici del colpo.'
     description+=' Modelli energetici articolati originali, gesto dell’arma e audio dedicato.'
     return phases,description
 
@@ -133,7 +144,7 @@ def main():
             rows.append(f'| {cls} | {name} | {description} |')
     assert len(presets)==48,len(presets)
     (ROOT/'src/main/resources/skill-vfx.json').write_text(json.dumps(presets,ensure_ascii=False,indent=2)+'\n',encoding='utf8')
-    (ROOT/'docs/VFX-48-ABILITA.md').write_text('# VFX delle 48 abilità — beta.11\n\nSigilli personali ampliati, scie intrecciate, impatti con volume e frammenti in stile Minecraft. I raggi delle aree di gioco restano autorevoli. Nessun prefab o shader Unity viene eseguito dalla mod.\n\n| Classe | Abilità | Effetto |\n|---|---|---|\n'+'\n'.join(rows)+'\n',encoding='utf8')
+    (ROOT/'docs/VFX-48-ABILITA.md').write_text('# VFX delle 48 abilità — beta.12\n\nLame stratificate, affondi con punta e scia, barriere leggibili e colori distinti per gli otto tiri/tecniche dell’arciere. I raggi delle aree di gioco restano autorevoli.\n\n| Classe | Abilità | Effetto |\n|---|---|---|\n'+'\n'.join(rows)+'\n',encoding='utf8')
     print('Generated 48 skill presets and visual catalog')
 
 if __name__=='__main__':main()

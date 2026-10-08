@@ -9,6 +9,11 @@ import org.mockbukkit.mockbukkit.entity.PlayerMock;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class DisciplineIntegrationTest {
+    // MockBukkit does not implement visibility ray tests; these fixtures use an unobstructed world.
+    static class VisiblePlayer extends PlayerMock {
+        VisiblePlayer(ServerMock server,String name){super(server,name);}
+        @Override public boolean hasLineOfSight(org.bukkit.entity.Entity other){return true;}
+    }
     // MockBukkit cannot instantiate the supplied final core plugin. Only its scheduling
     // bridge is substituted; ParticleStyle and atomic profile writes use the real core JAR.
     public static class TestClasses extends CastigoClasses {
@@ -26,7 +31,7 @@ public class DisciplineIntegrationTest {
         server=MockBukkit.mock();server.addSimpleWorld("world");
         MockBukkit.createMockPlugin("CastigoCore");
         plugin=MockBukkit.loadWith(TestClasses.class,getClass().getResourceAsStream("/plugin.yml"));
-        assertTrue(plugin.isEnabled());player=server.addPlayer("Tester");
+        assertTrue(plugin.isEnabled());player=new VisiblePlayer(server,"Tester");server.addPlayer(player);
         player.addAttachment(plugin,"castigo.classes.use",true);
         player.getInventory().setItemInMainHand(new ItemStack(Material.STICK));
         assertNotNull(plugin.profile(player));
@@ -49,6 +54,61 @@ public class DisciplineIntegrationTest {
         player.setSneaking(true);player.setHealth(5);use("mago_bianco",7);var t=(TestClasses)plugin;
         assertTrue(t.motions.contains("prepare"));assertFalse(t.motions.contains("release"));
         server.getScheduler().performTicks(45);assertTrue(t.motions.contains("release"));
+    }
+    @Test void castTimeAuraIsIvoryTracksTargetAndStopsOnRelease() {
+        player.getWorld().loadChunk(player.getLocation().getChunk());player.setSneaking(true);player.setHealth(5);use("mago_bianco",7);
+        var test=(TestClasses)plugin;
+        var aura=test.effects.stream().filter(e->e.get("shape").getAsString().equals("MESH_COLUMN")).findFirst().orElseThrow();
+        assertEquals("FFFFD8",aura.getAsJsonObject("mesh").get("tint").getAsString());
+        assertEquals(player.getUniqueId().toString(),aura.get("target").getAsString());
+        assertEquals(player.getEntityId(),aura.get("targetEntity").getAsInt());
+        server.getScheduler().performTicks(30);
+        assertTrue(test.stopped.contains(java.util.UUID.fromString(aura.get("handle").getAsString())));
+    }
+    @Test void interruptedCastRemovesTargetAuraAndInstantSkillsDoNotCreateIt() {
+        player.getWorld().loadChunk(player.getLocation().getChunk());player.setSneaking(true);player.setHealth(5);use("mago_bianco",7);
+        var test=(TestClasses)plugin;var aura=test.effects.stream().filter(e->e.get("shape").getAsString().equals("MESH_COLUMN")).findFirst().orElseThrow();
+        player.teleport(player.getLocation().add(1,0,0));server.getScheduler().performTicks(1);
+        assertTrue(test.stopped.contains(java.util.UUID.fromString(aura.get("handle").getAsString())));
+        test.effects.clear();use("mago_bianco",1);
+        assertTrue(test.effects.stream().noneMatch(e->e.get("shape").getAsString().equals("MESH_COLUMN")));
+    }
+    @Test void otherDisciplineAurasUseRequestedColorsAndRecipient() {
+        var target=server.addPlayer("Marked");target.teleport(player.getLocation().add(2,0,0));target.getWorld().loadChunk(target.getLocation().getChunk());
+        var engine=new SkillEngine(plugin);
+        for(String id:java.util.List.of("mago_nero","arciere")) {
+            command("set",player.getName(),id);var skill=plugin.catalog().get(id).skills().getFirst();
+            engine.targetAura(player,skill,target,()->true);
+            var packet=((TestClasses)plugin).effects.getLast();
+            assertEquals(id.equals("mago_nero")?"59209B":"43D66D",packet.getAsJsonObject("mesh").get("tint").getAsString());
+            assertEquals(target.getUniqueId().toString(),packet.get("target").getAsString());
+        }
+    }
+    @Test void preparedHealKeepsOriginalRecipientWhenCasterTurnsAway() {
+        player.setRotation(0,0);player.setSneaking(false);
+        var target=server.addPlayer("FirstTarget");target.teleport(player.getLocation().add(0,0,4));target.setHealth(5);
+        target.getWorld().loadChunk(target.getLocation().getChunk());
+        // MockBukkit does not implement world ray tracing. Substitute only the initial selection.
+        var aiming=new java.util.concurrent.atomic.AtomicReference<org.bukkit.entity.LivingEntity>(target);
+        var engine=new SkillEngine(plugin);var disciplines=new DisciplineEngine(plugin,engine,(p,r)->aiming.get());
+        assertTrue(disciplines.cast(player,plugin.catalog().get("mago_bianco").skills().get(6),3));
+        var test=(TestClasses)plugin;
+        var aura=test.effects.stream().filter(e->e.get("shape").getAsString().equals("MESH_COLUMN")).findFirst().orElseThrow();
+        assertEquals(target.getUniqueId().toString(),aura.get("target").getAsString());
+        player.setRotation(180,0);aiming.set(player);
+        for(int i=0;i<30;i++){disciplines.tick();server.getScheduler().performTicks(1);}
+        assertTrue(target.getHealth()>5);assertTrue(disciplines.casting(player.getUniqueId()).isEmpty());
+    }
+    @Test void selectedTargetLeavingRangeCancelsPreparationAndAura() {
+        player.setRotation(0,0);var target=server.addPlayer("MovingTarget");
+        target.teleport(player.getLocation().add(0,0,4));target.setHealth(5);target.getWorld().loadChunk(target.getLocation().getChunk());
+        var engine=new SkillEngine(plugin);var disciplines=new DisciplineEngine(plugin,engine,(p,r)->target);
+        assertTrue(disciplines.cast(player,plugin.catalog().get("mago_bianco").skills().get(6),3));var test=(TestClasses)plugin;
+        var aura=test.effects.stream().filter(e->e.get("shape").getAsString().equals("MESH_COLUMN")).findFirst().orElseThrow();
+        target.teleport(target.getLocation().add(100,0,0));
+        for(int i=0;i<30;i++){disciplines.tick();server.getScheduler().performTicks(1);}
+        assertEquals(5,target.getHealth());assertTrue(disciplines.casting(player.getUniqueId()).isEmpty());
+        assertTrue(test.stopped.contains(java.util.UUID.fromString(aura.get("handle").getAsString())));
     }
     @Test void failedEquipmentNeverAnimatesAWeapon() {
         player.getInventory().clear();use("guerriero_scudo",3);var t=(TestClasses)plugin;
@@ -186,6 +246,15 @@ public class DisciplineIntegrationTest {
         var skill=plugin.catalog().get("mago_bianco").skills().getFirst();
         assertEquals("minecraft:blaze_rod",plugin.equipment().requirement("mago_bianco",skill,plugin.catalog().mechanics(skill)).item());
         assertEquals(3,player.getInventory().getItem(9).getAmount());
+        clickMenu(31);clickMenu(54);
+        assertEquals("minecraft:blaze_rod",plugin.equipment().icon("mago_bianco",skill));
+        assertEquals(3,player.getInventory().getItem(9).getAmount());
+        clickMenu(24);assertEquals(skill.icon(),plugin.equipment().icon("mago_bianco",skill));
+        clickMenu(20);
+        String path="texture:castigo:textures/gui/skills/orison.png";
+        var input=new org.bukkit.event.player.AsyncPlayerChatEvent(false,player,path,new java.util.HashSet<>(server.getOnlinePlayers()));
+        server.getPluginManager().callEvent(input);assertTrue(input.isCancelled());server.getScheduler().performTicks(1);
+        assertEquals(path,plugin.equipment().icon("mago_bianco",skill));
     }
     @Test void normalPlayerCannotOpenAdminGui() {
         plugin.onCommand(player,plugin.getCommand("classe"),"classe",new String[]{"admin"});

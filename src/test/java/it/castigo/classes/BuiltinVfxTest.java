@@ -10,6 +10,22 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class BuiltinVfxTest {
     @TempDir Path directory;
+    @Test void archerSkillsUseDistinctColorsConsistentAcrossEveryStage() {
+        var presets=JsonParser.parseReader(new InputStreamReader(getClass().getResourceAsStream("/skill-vfx.json"),java.nio.charset.StandardCharsets.UTF_8)).getAsJsonObject();
+        var colors=new java.util.HashSet<String>();
+        for(var value:presets.asMap().values()) {
+            var preset=value.getAsJsonObject();if(!preset.get("class").getAsString().equals("arciere"))continue;
+            var stages=preset.getAsJsonObject("presentation");String color=null;
+            for(var stage:stages.asMap().values()) {
+                var cue=stage.getAsJsonObject();if(!cue.get("enabled").getAsBoolean())continue;
+                String tint=cue.getAsJsonObject("mesh").get("tint").getAsString();
+                if(color==null)color=tint;else assertEquals(color,tint);
+                assertEquals(color,cue.getAsJsonObject("particles").get("color").getAsString());
+            }
+            assertTrue(colors.add(color),preset.get("name").getAsString());
+        }
+        assertEquals(8,colors.size());
+    }
     @Test void all48RealSkillsHaveValidatedMeshPresetsAndPortableEditorRoundTrips() throws Exception {
         var classes=java.util.List.of("mago","mago_bianco","mago_nero","guerriero_scudo","guerriero_due_mani","arciere");
         for(String c:classes)try(var stream=getClass().getResourceAsStream("/classes/"+c+".yml")){Files.copy(stream,directory.resolve(c+".yml"));}

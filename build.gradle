@@ -1,6 +1,6 @@
 plugins { id 'java' }
 group = 'it.castigo'
-version = '0.1.0-beta.11'
+version = '0.1.0-beta.12'
 repositories {
     mavenCentral()
     maven { url = 'https://repo.purpurmc.org/snapshots' }
