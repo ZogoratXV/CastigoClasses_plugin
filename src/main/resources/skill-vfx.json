@@ -3,20 +3,20 @@
     "class": "arciere",
     "name": "Tiro preciso",
     "effect": "PRECISE_SHOT",
-    "description": "Scia verde sottile agganciata al percorso reale della freccia.",
+    "description": "Scia verde sottile agganciata al percorso reale della freccia. Texture a pixel, particelle tridimensionali e colori stratificati.",
     "presentation": {
       "cast": {
         "enabled": true,
         "shape": "MESH_BURST",
         "duration-ticks": 6,
-        "radius": 0.3,
+        "radius": 0.5,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "9BEAB2",
+          "color": "45E7A3",
           "size": 0.45
         },
         "sound": {
@@ -27,28 +27,28 @@
           "opacity": 0.75,
           "rotation": 90,
           "scroll": 0.8,
-          "fadeIn": 0.08,
-          "fadeOut": 0.4,
+          "fadeIn": 0.015,
+          "fadeOut": 0.5,
           "rings": 1,
           "ringGap": 0.3,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "9BEAB2"
+          "tint": "45E7A3"
         }
       },
       "trail": {
         "enabled": true,
         "shape": "MESH_BEAM",
-        "duration-ticks": 6,
-        "radius": 0.12,
+        "duration-ticks": 8,
+        "radius": 0.174,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "9BEAB2",
+          "color": "45E7A3",
           "size": 0.45
         },
         "sound": {
@@ -66,21 +66,21 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "9BEAB2"
+          "tint": "45E7A3"
         }
       },
       "impact": {
         "enabled": true,
         "shape": "MESH_BURST",
-        "duration-ticks": 12,
-        "radius": 0.35,
+        "duration-ticks": 18,
+        "radius": 0.5,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "9BEAB2",
+          "color": "45E7A3",
           "size": 0.45
         },
         "sound": {
@@ -94,14 +94,14 @@
           "opacity": 0.75,
           "rotation": 90,
           "scroll": 0.8,
-          "fadeIn": 0.08,
-          "fadeOut": 0.4,
+          "fadeIn": 0.015,
+          "fadeOut": 0.5,
           "rings": 1,
           "ringGap": 0.3,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "9BEAB2"
+          "tint": "45E7A3"
         }
       },
       "telegraph": {
@@ -116,7 +116,7 @@
     "class": "arciere",
     "name": "Passo del cacciatore",
     "effect": "HUNTER_STEP",
-    "description": "Scia breve dietro il movimento reale.",
+    "description": "Scia breve dietro il movimento reale. Texture a pixel, particelle tridimensionali e colori stratificati.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -129,7 +129,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "9BEAB2",
+          "color": "45E7A3",
           "size": 0.45
         },
         "sound": {
@@ -150,21 +150,21 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/wave.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "9BEAB2"
+          "tint": "45E7A3"
         }
       },
       "trail": {
         "enabled": true,
         "shape": "MESH_BEAM",
-        "duration-ticks": 6,
-        "radius": 0.3,
+        "duration-ticks": 8,
+        "radius": 0.435,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "9BEAB2",
+          "color": "45E7A3",
           "size": 0.45
         },
         "sound": {
@@ -182,21 +182,21 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "9BEAB2"
+          "tint": "45E7A3"
         }
       },
       "impact": {
         "enabled": true,
         "shape": "MESH_BURST",
-        "duration-ticks": 12,
-        "radius": 0.65,
+        "duration-ticks": 18,
+        "radius": 0.8125,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "9BEAB2",
+          "color": "45E7A3",
           "size": 0.45
         },
         "sound": {
@@ -207,14 +207,14 @@
           "opacity": 0.75,
           "rotation": 90,
           "scroll": 0.8,
-          "fadeIn": 0.08,
-          "fadeOut": 0.4,
+          "fadeIn": 0.015,
+          "fadeOut": 0.5,
           "rings": 1,
           "ringGap": 0.3,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "9BEAB2"
+          "tint": "45E7A3"
         }
       },
       "telegraph": {
@@ -229,20 +229,20 @@
     "class": "arciere",
     "name": "Occhio del cacciatore",
     "effect": "STUDY",
-    "description": "Marchio verde di mira sopra il bersaglio studiato.",
+    "description": "Marchio verde di mira sopra il bersaglio studiato. Texture a pixel, particelle tridimensionali e colori stratificati.",
     "presentation": {
       "cast": {
         "enabled": true,
         "shape": "MESH_RING",
         "duration-ticks": 10,
-        "radius": 0.55,
+        "radius": 1.45,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "9BEAB2",
+          "color": "45E7A3",
           "size": 0.45
         },
         "sound": {
@@ -255,12 +255,12 @@
           "scroll": 0.8,
           "fadeIn": 0.08,
           "fadeOut": 0.4,
-          "rings": 1,
-          "ringGap": 0.3,
+          "rings": 2,
+          "ringGap": 0.12,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/nature_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "9BEAB2"
+          "tint": "45E7A3"
         }
       },
       "trail": {
@@ -277,7 +277,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "9BEAB2",
+          "color": "45E7A3",
           "size": 0.45
         },
         "sound": {
@@ -298,7 +298,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/nature_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "9BEAB2"
+          "tint": "45E7A3"
         }
       },
       "telegraph": {
@@ -312,7 +312,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "9BEAB2",
+          "color": "45E7A3",
           "size": 0.45
         },
         "sound": {
@@ -330,7 +330,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/nature_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "9BEAB2"
+          "tint": "45E7A3"
         }
       },
       "hit": {
@@ -342,7 +342,7 @@
     "class": "arciere",
     "name": "Disimpegno",
     "effect": "DISENGAGE",
-    "description": "Scia breve dietro il movimento reale.",
+    "description": "Scia breve dietro il movimento reale. Texture a pixel, particelle tridimensionali e colori stratificati.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -355,7 +355,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "9BEAB2",
+          "color": "45E7A3",
           "size": 0.45
         },
         "sound": {
@@ -376,21 +376,21 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/wave.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "9BEAB2"
+          "tint": "45E7A3"
         }
       },
       "trail": {
         "enabled": true,
         "shape": "MESH_BEAM",
-        "duration-ticks": 6,
-        "radius": 0.3,
+        "duration-ticks": 8,
+        "radius": 0.435,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "9BEAB2",
+          "color": "45E7A3",
           "size": 0.45
         },
         "sound": {
@@ -408,21 +408,21 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "9BEAB2"
+          "tint": "45E7A3"
         }
       },
       "impact": {
         "enabled": true,
         "shape": "MESH_BURST",
-        "duration-ticks": 12,
-        "radius": 0.65,
+        "duration-ticks": 18,
+        "radius": 0.8125,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "9BEAB2",
+          "color": "45E7A3",
           "size": 0.45
         },
         "sound": {
@@ -433,14 +433,14 @@
           "opacity": 0.75,
           "rotation": 90,
           "scroll": 0.8,
-          "fadeIn": 0.08,
-          "fadeOut": 0.4,
+          "fadeIn": 0.015,
+          "fadeOut": 0.5,
           "rings": 1,
           "ringGap": 0.3,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "9BEAB2"
+          "tint": "45E7A3"
         }
       },
       "telegraph": {
@@ -455,20 +455,20 @@
     "class": "arciere",
     "name": "Tiro ostacolante",
     "effect": "HINDERING_SHOT",
-    "description": "Scia della freccia e anello di intralcio sul nemico colpito.",
+    "description": "Scia della freccia e anello di intralcio sul nemico colpito. Texture a pixel, particelle tridimensionali e colori stratificati.",
     "presentation": {
       "cast": {
         "enabled": true,
         "shape": "MESH_BURST",
         "duration-ticks": 6,
-        "radius": 0.3,
+        "radius": 0.5,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "9BEAB2",
+          "color": "45E7A3",
           "size": 0.45
         },
         "sound": {
@@ -479,28 +479,28 @@
           "opacity": 0.75,
           "rotation": 90,
           "scroll": 0.8,
-          "fadeIn": 0.08,
-          "fadeOut": 0.4,
+          "fadeIn": 0.015,
+          "fadeOut": 0.5,
           "rings": 1,
           "ringGap": 0.3,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "9BEAB2"
+          "tint": "45E7A3"
         }
       },
       "trail": {
         "enabled": true,
         "shape": "MESH_BEAM",
-        "duration-ticks": 6,
-        "radius": 0.12,
+        "duration-ticks": 8,
+        "radius": 0.174,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "9BEAB2",
+          "color": "45E7A3",
           "size": 0.45
         },
         "sound": {
@@ -518,21 +518,21 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "9BEAB2"
+          "tint": "45E7A3"
         }
       },
       "impact": {
         "enabled": true,
         "shape": "MESH_BURST",
-        "duration-ticks": 12,
-        "radius": 0.35,
+        "duration-ticks": 18,
+        "radius": 0.5,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "9BEAB2",
+          "color": "45E7A3",
           "size": 0.45
         },
         "sound": {
@@ -546,28 +546,28 @@
           "opacity": 0.75,
           "rotation": 90,
           "scroll": 0.8,
-          "fadeIn": 0.08,
-          "fadeOut": 0.4,
+          "fadeIn": 0.015,
+          "fadeOut": 0.5,
           "rings": 1,
           "ringGap": 0.3,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "9BEAB2"
+          "tint": "45E7A3"
         }
       },
       "telegraph": {
         "enabled": true,
         "shape": "MESH_RING",
         "duration-ticks": 22,
-        "radius": 0.65,
+        "radius": 1.15,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "9BEAB2",
+          "color": "45E7A3",
           "size": 0.45
         },
         "sound": {
@@ -580,12 +580,12 @@
           "scroll": 0.8,
           "fadeIn": 0.08,
           "fadeOut": 0.4,
-          "rings": 1,
-          "ringGap": 0.3,
+          "rings": 2,
+          "ringGap": 0.12,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/nature_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "9BEAB2"
+          "tint": "45E7A3"
         }
       },
       "hit": {
@@ -597,20 +597,20 @@
     "class": "arciere",
     "name": "Tiro di copertura",
     "effect": "COVER_FIRE",
-    "description": "Scie dei tiri di copertura e anelli sui nemici rallentati.",
+    "description": "Scie dei tiri di copertura e anelli sui nemici rallentati. Texture a pixel, particelle tridimensionali e colori stratificati.",
     "presentation": {
       "cast": {
         "enabled": true,
         "shape": "MESH_BURST",
         "duration-ticks": 6,
-        "radius": 0.3,
+        "radius": 0.5,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "9BEAB2",
+          "color": "45E7A3",
           "size": 0.45
         },
         "sound": {
@@ -621,28 +621,28 @@
           "opacity": 0.75,
           "rotation": 90,
           "scroll": 0.8,
-          "fadeIn": 0.08,
-          "fadeOut": 0.4,
+          "fadeIn": 0.015,
+          "fadeOut": 0.5,
           "rings": 1,
           "ringGap": 0.3,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "9BEAB2"
+          "tint": "45E7A3"
         }
       },
       "trail": {
         "enabled": true,
         "shape": "MESH_BEAM",
-        "duration-ticks": 6,
-        "radius": 0.12,
+        "duration-ticks": 8,
+        "radius": 0.174,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "9BEAB2",
+          "color": "45E7A3",
           "size": 0.45
         },
         "sound": {
@@ -660,21 +660,21 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "9BEAB2"
+          "tint": "45E7A3"
         }
       },
       "impact": {
         "enabled": true,
         "shape": "MESH_BURST",
-        "duration-ticks": 12,
-        "radius": 0.35,
+        "duration-ticks": 18,
+        "radius": 0.5,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "9BEAB2",
+          "color": "45E7A3",
           "size": 0.45
         },
         "sound": {
@@ -688,28 +688,28 @@
           "opacity": 0.75,
           "rotation": 90,
           "scroll": 0.8,
-          "fadeIn": 0.08,
-          "fadeOut": 0.4,
+          "fadeIn": 0.015,
+          "fadeOut": 0.5,
           "rings": 1,
           "ringGap": 0.3,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "9BEAB2"
+          "tint": "45E7A3"
         }
       },
       "telegraph": {
         "enabled": true,
         "shape": "MESH_RING",
         "duration-ticks": 22,
-        "radius": 0.65,
+        "radius": 1.15,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "9BEAB2",
+          "color": "45E7A3",
           "size": 0.45
         },
         "sound": {
@@ -722,12 +722,12 @@
           "scroll": 0.8,
           "fadeIn": 0.08,
           "fadeOut": 0.4,
-          "rings": 1,
-          "ringGap": 0.3,
+          "rings": 2,
+          "ringGap": 0.12,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/nature_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "9BEAB2"
+          "tint": "45E7A3"
         }
       },
       "hit": {
@@ -739,20 +739,20 @@
     "class": "arciere",
     "name": "Doppio tiro",
     "effect": "DOUBLE_SHOT",
-    "description": "Due scie distinte, una per ciascuna freccia realmente scoccata.",
+    "description": "Due scie distinte, una per ciascuna freccia realmente scoccata. Texture a pixel, particelle tridimensionali e colori stratificati.",
     "presentation": {
       "cast": {
         "enabled": true,
         "shape": "MESH_BURST",
         "duration-ticks": 6,
-        "radius": 0.3,
+        "radius": 0.5,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "9BEAB2",
+          "color": "45E7A3",
           "size": 0.45
         },
         "sound": {
@@ -763,28 +763,28 @@
           "opacity": 0.75,
           "rotation": 90,
           "scroll": 0.8,
-          "fadeIn": 0.08,
-          "fadeOut": 0.4,
+          "fadeIn": 0.015,
+          "fadeOut": 0.5,
           "rings": 1,
           "ringGap": 0.3,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "9BEAB2"
+          "tint": "45E7A3"
         }
       },
       "trail": {
         "enabled": true,
         "shape": "MESH_BEAM",
-        "duration-ticks": 6,
-        "radius": 0.12,
+        "duration-ticks": 8,
+        "radius": 0.174,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "9BEAB2",
+          "color": "45E7A3",
           "size": 0.45
         },
         "sound": {
@@ -802,21 +802,21 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "9BEAB2"
+          "tint": "45E7A3"
         }
       },
       "impact": {
         "enabled": true,
         "shape": "MESH_BURST",
-        "duration-ticks": 12,
-        "radius": 0.35,
+        "duration-ticks": 18,
+        "radius": 0.5,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "9BEAB2",
+          "color": "45E7A3",
           "size": 0.45
         },
         "sound": {
@@ -830,14 +830,14 @@
           "opacity": 0.75,
           "rotation": 90,
           "scroll": 0.8,
-          "fadeIn": 0.08,
-          "fadeOut": 0.4,
+          "fadeIn": 0.015,
+          "fadeOut": 0.5,
           "rings": 1,
           "ringGap": 0.3,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "9BEAB2"
+          "tint": "45E7A3"
         }
       },
       "telegraph": {
@@ -852,20 +852,20 @@
     "class": "arciere",
     "name": "Colpo del maestro",
     "effect": "MASTER_SHOT",
-    "description": "Scia più spessa e impatto concentrato del colpo del maestro.",
+    "description": "Scia più spessa e impatto concentrato del colpo del maestro. Texture a pixel, particelle tridimensionali e colori stratificati.",
     "presentation": {
       "cast": {
         "enabled": true,
         "shape": "MESH_BURST",
         "duration-ticks": 6,
-        "radius": 0.3,
+        "radius": 0.5,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "9BEAB2",
+          "color": "45E7A3",
           "size": 0.45
         },
         "sound": {
@@ -876,28 +876,28 @@
           "opacity": 0.75,
           "rotation": 90,
           "scroll": 0.8,
-          "fadeIn": 0.08,
-          "fadeOut": 0.4,
+          "fadeIn": 0.015,
+          "fadeOut": 0.5,
           "rings": 1,
           "ringGap": 0.3,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "9BEAB2"
+          "tint": "45E7A3"
         }
       },
       "trail": {
         "enabled": true,
         "shape": "MESH_BEAM",
-        "duration-ticks": 6,
-        "radius": 0.3,
+        "duration-ticks": 8,
+        "radius": 0.435,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "9BEAB2",
+          "color": "45E7A3",
           "size": 0.45
         },
         "sound": {
@@ -915,21 +915,21 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "9BEAB2"
+          "tint": "45E7A3"
         }
       },
       "impact": {
         "enabled": true,
         "shape": "MESH_BURST",
-        "duration-ticks": 12,
-        "radius": 1,
+        "duration-ticks": 18,
+        "radius": 1.25,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "9BEAB2",
+          "color": "45E7A3",
           "size": 0.45
         },
         "sound": {
@@ -943,14 +943,14 @@
           "opacity": 0.75,
           "rotation": 90,
           "scroll": 0.8,
-          "fadeIn": 0.08,
-          "fadeOut": 0.4,
+          "fadeIn": 0.015,
+          "fadeOut": 0.5,
           "rings": 1,
           "ringGap": 0.3,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "9BEAB2"
+          "tint": "45E7A3"
         }
       },
       "telegraph": {
@@ -965,7 +965,7 @@
     "class": "guerriero_due_mani",
     "name": "Fendente pesante",
     "effect": "HEAVY_STRIKE",
-    "description": "Arco ampio più lento e impatto caldo del fendente pesante.",
+    "description": "Arco ampio più lento e impatto caldo del fendente pesante. Texture a pixel, particelle tridimensionali e colori stratificati.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -978,7 +978,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FFAF68",
+          "color": "FF913D",
           "size": 0.45
         },
         "sound": {
@@ -996,7 +996,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/wave.png",
           "columnTexture": "castigoclasses:textures/vfx/slash.png",
-          "tint": "FFAF68"
+          "tint": "FF913D"
         }
       },
       "trail": {
@@ -1005,15 +1005,15 @@
       "impact": {
         "enabled": true,
         "shape": "MESH_BURST",
-        "duration-ticks": 12,
-        "radius": 0.4,
+        "duration-ticks": 18,
+        "radius": 0.5,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FFAF68",
+          "color": "FF913D",
           "size": 0.45
         },
         "sound": {
@@ -1027,14 +1027,14 @@
           "opacity": 0.75,
           "rotation": 90,
           "scroll": 0.8,
-          "fadeIn": 0.08,
-          "fadeOut": 0.4,
+          "fadeIn": 0.015,
+          "fadeOut": 0.5,
           "rings": 1,
           "ringGap": 0.3,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "FFAF68"
+          "tint": "FF913D"
         }
       },
       "telegraph": {
@@ -1049,7 +1049,7 @@
     "class": "guerriero_due_mani",
     "name": "Affondo lungo",
     "effect": "LONG_THRUST",
-    "description": "Affondo luminoso allungato frontalmente e impatto puntuale.",
+    "description": "Affondo luminoso allungato frontalmente e impatto puntuale. Texture a pixel, particelle tridimensionali e colori stratificati.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -1062,7 +1062,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FFAF68",
+          "color": "FF913D",
           "size": 0.45
         },
         "sound": {
@@ -1080,7 +1080,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "FFAF68"
+          "tint": "FF913D"
         }
       },
       "trail": {
@@ -1089,15 +1089,15 @@
       "impact": {
         "enabled": true,
         "shape": "MESH_BURST",
-        "duration-ticks": 12,
-        "radius": 0.4,
+        "duration-ticks": 18,
+        "radius": 0.5,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FFAF68",
+          "color": "FF913D",
           "size": 0.45
         },
         "sound": {
@@ -1111,14 +1111,14 @@
           "opacity": 0.75,
           "rotation": 90,
           "scroll": 0.8,
-          "fadeIn": 0.08,
-          "fadeOut": 0.4,
+          "fadeIn": 0.015,
+          "fadeOut": 0.5,
           "rings": 1,
           "ringGap": 0.3,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "FFAF68"
+          "tint": "FF913D"
         }
       },
       "telegraph": {
@@ -1133,7 +1133,7 @@
     "class": "guerriero_due_mani",
     "name": "Carica travolgente",
     "effect": "CHARGE",
-    "description": "Scia breve dietro il movimento reale e impatto sul nemico raggiunto.",
+    "description": "Scia breve dietro il movimento reale e impatto sul nemico raggiunto. Texture a pixel, particelle tridimensionali e colori stratificati.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -1146,7 +1146,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FFAF68",
+          "color": "FF913D",
           "size": 0.45
         },
         "sound": {
@@ -1167,21 +1167,21 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/wave.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "FFAF68"
+          "tint": "FF913D"
         }
       },
       "trail": {
         "enabled": true,
         "shape": "MESH_BEAM",
-        "duration-ticks": 6,
-        "radius": 0.6,
+        "duration-ticks": 8,
+        "radius": 0.87,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FFAF68",
+          "color": "FF913D",
           "size": 0.45
         },
         "sound": {
@@ -1199,21 +1199,21 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "FFAF68"
+          "tint": "FF913D"
         }
       },
       "impact": {
         "enabled": true,
         "shape": "MESH_BURST",
-        "duration-ticks": 12,
-        "radius": 0.65,
+        "duration-ticks": 18,
+        "radius": 0.8125,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FFAF68",
+          "color": "FF913D",
           "size": 0.45
         },
         "sound": {
@@ -1224,14 +1224,14 @@
           "opacity": 0.75,
           "rotation": 90,
           "scroll": 0.8,
-          "fadeIn": 0.08,
-          "fadeOut": 0.4,
+          "fadeIn": 0.015,
+          "fadeOut": 0.5,
           "rings": 1,
           "ringGap": 0.3,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "FFAF68"
+          "tint": "FF913D"
         }
       },
       "telegraph": {
@@ -1246,7 +1246,7 @@
     "class": "guerriero_due_mani",
     "name": "Colpo di arresto",
     "effect": "STOP_STRIKE",
-    "description": "Taglio breve e anello che permane sul nemico rallentato.",
+    "description": "Taglio breve e anello che permane sul nemico rallentato. Texture a pixel, particelle tridimensionali e colori stratificati.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -1259,7 +1259,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FFAF68",
+          "color": "FF913D",
           "size": 0.45
         },
         "sound": {
@@ -1277,7 +1277,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/wave.png",
           "columnTexture": "castigoclasses:textures/vfx/slash.png",
-          "tint": "FFAF68"
+          "tint": "FF913D"
         }
       },
       "trail": {
@@ -1286,15 +1286,15 @@
       "impact": {
         "enabled": true,
         "shape": "MESH_BURST",
-        "duration-ticks": 12,
-        "radius": 0.4,
+        "duration-ticks": 18,
+        "radius": 0.5,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FFAF68",
+          "color": "FF913D",
           "size": 0.45
         },
         "sound": {
@@ -1308,28 +1308,28 @@
           "opacity": 0.75,
           "rotation": 90,
           "scroll": 0.8,
-          "fadeIn": 0.08,
-          "fadeOut": 0.4,
+          "fadeIn": 0.015,
+          "fadeOut": 0.5,
           "rings": 1,
           "ringGap": 0.3,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "FFAF68"
+          "tint": "FF913D"
         }
       },
       "telegraph": {
         "enabled": true,
         "shape": "MESH_RING",
         "duration-ticks": 22,
-        "radius": 0.5,
+        "radius": 1.15,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FFAF68",
+          "color": "FF913D",
           "size": 0.45
         },
         "sound": {
@@ -1342,12 +1342,12 @@
           "scroll": 0.8,
           "fadeIn": 0.08,
           "fadeOut": 0.4,
-          "rings": 1,
-          "ringGap": 0.3,
+          "rings": 2,
+          "ringGap": 0.12,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/wave.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "FFAF68"
+          "tint": "FF913D"
         }
       },
       "hit": {
@@ -1359,7 +1359,7 @@
     "class": "guerriero_due_mani",
     "name": "Fendente circolare",
     "effect": "SWEEP",
-    "description": "Onda circolare al raggio della skill e lampi su ogni nemico colpito.",
+    "description": "Onda circolare al raggio della skill e lampi su ogni nemico colpito. Texture a pixel, particelle tridimensionali e colori stratificati.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -1372,7 +1372,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FFAF68",
+          "color": "FF913D",
           "size": 0.45
         },
         "sound": {
@@ -1393,7 +1393,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/wave.png",
           "columnTexture": "castigoclasses:textures/vfx/slash.png",
-          "tint": "FFAF68"
+          "tint": "FF913D"
         }
       },
       "trail": {
@@ -1402,15 +1402,15 @@
       "impact": {
         "enabled": true,
         "shape": "MESH_BURST",
-        "duration-ticks": 12,
-        "radius": 0.4,
+        "duration-ticks": 18,
+        "radius": 0.5,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FFAF68",
+          "color": "FF913D",
           "size": 0.45
         },
         "sound": {
@@ -1421,14 +1421,14 @@
           "opacity": 0.75,
           "rotation": 90,
           "scroll": 0.8,
-          "fadeIn": 0.08,
-          "fadeOut": 0.4,
+          "fadeIn": 0.015,
+          "fadeOut": 0.5,
           "rings": 1,
           "ringGap": 0.3,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "FFAF68"
+          "tint": "FF913D"
         }
       },
       "telegraph": {
@@ -1443,7 +1443,7 @@
     "class": "guerriero_due_mani",
     "name": "Falciata bassa",
     "effect": "LOW_SWEEP",
-    "description": "Onda bassa e anelli sui bersagli rallentati.",
+    "description": "Onda bassa e anelli sui bersagli rallentati. Texture a pixel, particelle tridimensionali e colori stratificati.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -1456,7 +1456,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FFAF68",
+          "color": "FF913D",
           "size": 0.45
         },
         "sound": {
@@ -1477,7 +1477,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/wave.png",
           "columnTexture": "castigoclasses:textures/vfx/slash.png",
-          "tint": "FFAF68"
+          "tint": "FF913D"
         }
       },
       "trail": {
@@ -1486,15 +1486,15 @@
       "impact": {
         "enabled": true,
         "shape": "MESH_BURST",
-        "duration-ticks": 12,
-        "radius": 0.4,
+        "duration-ticks": 18,
+        "radius": 0.5,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FFAF68",
+          "color": "FF913D",
           "size": 0.45
         },
         "sound": {
@@ -1505,14 +1505,14 @@
           "opacity": 0.75,
           "rotation": 90,
           "scroll": 0.8,
-          "fadeIn": 0.08,
-          "fadeOut": 0.4,
+          "fadeIn": 0.015,
+          "fadeOut": 0.5,
           "rings": 1,
           "ringGap": 0.3,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "FFAF68"
+          "tint": "FF913D"
         }
       },
       "telegraph": {
@@ -1526,7 +1526,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FFAF68",
+          "color": "FF913D",
           "size": 0.45
         },
         "sound": {
@@ -1544,7 +1544,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/wave.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "FFAF68"
+          "tint": "FF913D"
         }
       },
       "hit": {
@@ -1556,7 +1556,7 @@
     "class": "guerriero_due_mani",
     "name": "Spezzaguardia",
     "effect": "GUARD_BREAK",
-    "description": "Taglio, forte impatto e marchio sul nemico reso vulnerabile.",
+    "description": "Taglio, forte impatto e marchio sul nemico reso vulnerabile. Texture a pixel, particelle tridimensionali e colori stratificati.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -1569,7 +1569,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FFAF68",
+          "color": "FF913D",
           "size": 0.45
         },
         "sound": {
@@ -1587,7 +1587,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/wave.png",
           "columnTexture": "castigoclasses:textures/vfx/slash.png",
-          "tint": "FFAF68"
+          "tint": "FF913D"
         }
       },
       "trail": {
@@ -1596,15 +1596,15 @@
       "impact": {
         "enabled": true,
         "shape": "MESH_BURST",
-        "duration-ticks": 12,
-        "radius": 0.8,
+        "duration-ticks": 18,
+        "radius": 1.0,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FFAF68",
+          "color": "FF913D",
           "size": 0.45
         },
         "sound": {
@@ -1618,14 +1618,14 @@
           "opacity": 0.75,
           "rotation": 90,
           "scroll": 0.8,
-          "fadeIn": 0.08,
-          "fadeOut": 0.4,
+          "fadeIn": 0.015,
+          "fadeOut": 0.5,
           "rings": 1,
           "ringGap": 0.3,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "FFAF68"
+          "tint": "FF913D"
         }
       },
       "telegraph": {
@@ -1639,7 +1639,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FFAF68",
+          "color": "FF913D",
           "size": 0.45
         },
         "sound": {
@@ -1657,7 +1657,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/dark_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "FFAF68"
+          "tint": "FF913D"
         }
       },
       "hit": {
@@ -1669,7 +1669,7 @@
     "class": "guerriero_due_mani",
     "name": "Sequenza del campione",
     "effect": "COMBO",
-    "description": "Un arco e un impatto per ciascun colpo della sequenza realmente eseguito.",
+    "description": "Un arco e un impatto per ciascun colpo della sequenza realmente eseguito. Texture a pixel, particelle tridimensionali e colori stratificati.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -1682,7 +1682,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FFAF68",
+          "color": "FF913D",
           "size": 0.45
         },
         "sound": {
@@ -1700,7 +1700,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/wave.png",
           "columnTexture": "castigoclasses:textures/vfx/slash.png",
-          "tint": "FFAF68"
+          "tint": "FF913D"
         }
       },
       "trail": {
@@ -1709,15 +1709,15 @@
       "impact": {
         "enabled": true,
         "shape": "MESH_BURST",
-        "duration-ticks": 12,
-        "radius": 0.4,
+        "duration-ticks": 18,
+        "radius": 0.5,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FFAF68",
+          "color": "FF913D",
           "size": 0.45
         },
         "sound": {
@@ -1731,14 +1731,14 @@
           "opacity": 0.75,
           "rotation": 90,
           "scroll": 0.8,
-          "fadeIn": 0.08,
-          "fadeOut": 0.4,
+          "fadeIn": 0.015,
+          "fadeOut": 0.5,
           "rings": 1,
           "ringGap": 0.3,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "FFAF68"
+          "tint": "FF913D"
         }
       },
       "telegraph": {
@@ -1753,7 +1753,7 @@
     "class": "guerriero_scudo",
     "name": "Affondo disciplinato",
     "effect": "MELEE",
-    "description": "Affondo luminoso corto davanti al guerriero e lampo sulla vittima.",
+    "description": "Affondo luminoso corto davanti al guerriero e lampo sulla vittima. Texture a pixel, particelle tridimensionali e colori stratificati.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -1766,7 +1766,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "83CFFF",
+          "color": "48A9FF",
           "size": 0.45
         },
         "sound": {
@@ -1784,7 +1784,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "83CFFF"
+          "tint": "48A9FF"
         }
       },
       "trail": {
@@ -1793,15 +1793,15 @@
       "impact": {
         "enabled": true,
         "shape": "MESH_BURST",
-        "duration-ticks": 12,
-        "radius": 0.4,
+        "duration-ticks": 18,
+        "radius": 0.5,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "83CFFF",
+          "color": "48A9FF",
           "size": 0.45
         },
         "sound": {
@@ -1815,14 +1815,14 @@
           "opacity": 0.75,
           "rotation": 90,
           "scroll": 0.8,
-          "fadeIn": 0.08,
-          "fadeOut": 0.4,
+          "fadeIn": 0.015,
+          "fadeOut": 0.5,
           "rings": 1,
           "ringGap": 0.3,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "83CFFF"
+          "tint": "48A9FF"
         }
       },
       "telegraph": {
@@ -1837,7 +1837,7 @@
     "class": "guerriero_scudo",
     "name": "Urto di scudo",
     "effect": "SHIELD_BASH",
-    "description": "Impatto ravvicinato e anello sul nemico stordito/rallentato.",
+    "description": "Impatto ravvicinato e anello sul nemico stordito/rallentato. Texture a pixel, particelle tridimensionali e colori stratificati.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -1850,7 +1850,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "83CFFF",
+          "color": "48A9FF",
           "size": 0.45
         },
         "sound": {
@@ -1868,7 +1868,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
           "columnTexture": "castigoclasses:textures/vfx/shield_grid.png",
-          "tint": "83CFFF"
+          "tint": "48A9FF"
         }
       },
       "trail": {
@@ -1877,15 +1877,15 @@
       "impact": {
         "enabled": true,
         "shape": "MESH_BURST",
-        "duration-ticks": 12,
-        "radius": 0.4,
+        "duration-ticks": 18,
+        "radius": 0.5,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "83CFFF",
+          "color": "48A9FF",
           "size": 0.45
         },
         "sound": {
@@ -1899,28 +1899,28 @@
           "opacity": 0.75,
           "rotation": 90,
           "scroll": 0.8,
-          "fadeIn": 0.08,
-          "fadeOut": 0.4,
+          "fadeIn": 0.015,
+          "fadeOut": 0.5,
           "rings": 1,
           "ringGap": 0.3,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "83CFFF"
+          "tint": "48A9FF"
         }
       },
       "telegraph": {
         "enabled": true,
         "shape": "MESH_RING",
         "duration-ticks": 22,
-        "radius": 0.5,
+        "radius": 1.15,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "83CFFF",
+          "color": "48A9FF",
           "size": 0.45
         },
         "sound": {
@@ -1933,12 +1933,12 @@
           "scroll": 0.8,
           "fadeIn": 0.08,
           "fadeOut": 0.4,
-          "rings": 1,
-          "ringGap": 0.3,
+          "rings": 2,
+          "ringGap": 0.12,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/wave.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "83CFFF"
+          "tint": "48A9FF"
         }
       },
       "hit": {
@@ -1950,7 +1950,7 @@
     "class": "guerriero_scudo",
     "name": "Guardia salda",
     "effect": "GUARD",
-    "description": "Barriera curva che segue la direzione del personaggio e termina con la protezione.",
+    "description": "Barriera curva che segue la direzione del personaggio e termina con la protezione. Texture a pixel, particelle tridimensionali e colori stratificati.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -1963,7 +1963,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "83CFFF",
+          "color": "48A9FF",
           "size": 0.45
         },
         "sound": {
@@ -1984,7 +1984,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/holy_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/shield_grid.png",
-          "tint": "83CFFF"
+          "tint": "48A9FF"
         }
       },
       "trail": {
@@ -1993,15 +1993,15 @@
       "impact": {
         "enabled": true,
         "shape": "MESH_BURST",
-        "duration-ticks": 12,
-        "radius": 0.65,
+        "duration-ticks": 18,
+        "radius": 0.8125,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "83CFFF",
+          "color": "48A9FF",
           "size": 0.45
         },
         "sound": {
@@ -2012,14 +2012,14 @@
           "opacity": 0.75,
           "rotation": 90,
           "scroll": 0.8,
-          "fadeIn": 0.08,
-          "fadeOut": 0.4,
+          "fadeIn": 0.015,
+          "fadeOut": 0.5,
           "rings": 1,
           "ringGap": 0.3,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "83CFFF"
+          "tint": "48A9FF"
         }
       },
       "telegraph": {
@@ -2033,7 +2033,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "83CFFF",
+          "color": "48A9FF",
           "size": 0.45
         },
         "sound": {
@@ -2051,21 +2051,21 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/holy_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/shield_grid.png",
-          "tint": "83CFFF"
+          "tint": "48A9FF"
         }
       },
       "hit": {
         "enabled": true,
         "shape": "MESH_BURST",
         "duration-ticks": 8,
-        "radius": 0.65,
+        "radius": 0.8125,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "83CFFF",
+          "color": "48A9FF",
           "size": 0.45
         },
         "sound": {
@@ -2076,14 +2076,14 @@
           "opacity": 0.75,
           "rotation": 90,
           "scroll": 0.8,
-          "fadeIn": 0.08,
-          "fadeOut": 0.4,
+          "fadeIn": 0.015,
+          "fadeOut": 0.5,
           "rings": 1,
           "ringGap": 0.3,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "83CFFF"
+          "tint": "48A9FF"
         }
       }
     }
@@ -2092,7 +2092,7 @@
     "class": "guerriero_scudo",
     "name": "Passo del guardiano",
     "effect": "DASH",
-    "description": "Scia breve dietro il movimento reale.",
+    "description": "Scia breve dietro il movimento reale. Texture a pixel, particelle tridimensionali e colori stratificati.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -2105,7 +2105,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "83CFFF",
+          "color": "48A9FF",
           "size": 0.45
         },
         "sound": {
@@ -2126,21 +2126,21 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/wave.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "83CFFF"
+          "tint": "48A9FF"
         }
       },
       "trail": {
         "enabled": true,
         "shape": "MESH_BEAM",
-        "duration-ticks": 6,
-        "radius": 0.3,
+        "duration-ticks": 8,
+        "radius": 0.435,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "83CFFF",
+          "color": "48A9FF",
           "size": 0.45
         },
         "sound": {
@@ -2158,21 +2158,21 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "83CFFF"
+          "tint": "48A9FF"
         }
       },
       "impact": {
         "enabled": true,
         "shape": "MESH_BURST",
-        "duration-ticks": 12,
-        "radius": 0.65,
+        "duration-ticks": 18,
+        "radius": 0.8125,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "83CFFF",
+          "color": "48A9FF",
           "size": 0.45
         },
         "sound": {
@@ -2183,14 +2183,14 @@
           "opacity": 0.75,
           "rotation": 90,
           "scroll": 0.8,
-          "fadeIn": 0.08,
-          "fadeOut": 0.4,
+          "fadeIn": 0.015,
+          "fadeOut": 0.5,
           "rings": 1,
           "ringGap": 0.3,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "83CFFF"
+          "tint": "48A9FF"
         }
       },
       "telegraph": {
@@ -2204,7 +2204,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "83CFFF",
+          "color": "48A9FF",
           "size": 0.45
         },
         "sound": {
@@ -2222,7 +2222,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
           "columnTexture": "castigoclasses:textures/vfx/shield_grid.png",
-          "tint": "83CFFF"
+          "tint": "48A9FF"
         }
       },
       "hit": {
@@ -2234,20 +2234,20 @@
     "class": "guerriero_scudo",
     "name": "Difesa del compagno",
     "effect": "LINK",
-    "description": "Barriera iniziale sul protetto e filo luminoso verso il protettore mentre il vincolo è efficace.",
+    "description": "Barriera iniziale sul protetto e filo luminoso verso il protettore mentre il vincolo è efficace. Texture a pixel, particelle tridimensionali e colori stratificati.",
     "presentation": {
       "cast": {
         "enabled": true,
         "shape": "MESH_RING",
         "duration-ticks": 10,
-        "radius": 0.55,
+        "radius": 1.45,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "83CFFF",
+          "color": "48A9FF",
           "size": 0.45
         },
         "sound": {
@@ -2260,12 +2260,12 @@
           "scroll": 0.8,
           "fadeIn": 0.08,
           "fadeOut": 0.4,
-          "rings": 1,
-          "ringGap": 0.3,
+          "rings": 2,
+          "ringGap": 0.12,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "83CFFF"
+          "tint": "48A9FF"
         }
       },
       "trail": {
@@ -2282,7 +2282,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "83CFFF",
+          "color": "48A9FF",
           "size": 0.45
         },
         "sound": {
@@ -2303,21 +2303,21 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
           "columnTexture": "castigoclasses:textures/vfx/shield_grid.png",
-          "tint": "83CFFF"
+          "tint": "48A9FF"
         }
       },
       "telegraph": {
         "enabled": true,
         "shape": "MESH_BEAM",
         "duration-ticks": 22,
-        "radius": 0.25,
+        "radius": 0.3625,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "83CFFF",
+          "color": "48A9FF",
           "size": 0.45
         },
         "sound": {
@@ -2335,7 +2335,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "83CFFF"
+          "tint": "48A9FF"
         }
       },
       "hit": {
@@ -2347,7 +2347,7 @@
     "class": "guerriero_scudo",
     "name": "Contrattacco del veterano",
     "effect": "COUNTER",
-    "description": "Arco inverso del contrattacco e scintilla sulla vittima.",
+    "description": "Arco inverso del contrattacco e scintilla sulla vittima. Texture a pixel, particelle tridimensionali e colori stratificati.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -2360,7 +2360,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "83CFFF",
+          "color": "48A9FF",
           "size": 0.45
         },
         "sound": {
@@ -2378,7 +2378,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/wave.png",
           "columnTexture": "castigoclasses:textures/vfx/slash.png",
-          "tint": "83CFFF"
+          "tint": "48A9FF"
         }
       },
       "trail": {
@@ -2387,15 +2387,15 @@
       "impact": {
         "enabled": true,
         "shape": "MESH_BURST",
-        "duration-ticks": 12,
-        "radius": 0.4,
+        "duration-ticks": 18,
+        "radius": 0.5,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "83CFFF",
+          "color": "48A9FF",
           "size": 0.45
         },
         "sound": {
@@ -2409,14 +2409,14 @@
           "opacity": 0.75,
           "rotation": 90,
           "scroll": 0.8,
-          "fadeIn": 0.08,
-          "fadeOut": 0.4,
+          "fadeIn": 0.015,
+          "fadeOut": 0.5,
           "rings": 1,
           "ringGap": 0.3,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "83CFFF"
+          "tint": "48A9FF"
         }
       },
       "telegraph": {
@@ -2431,20 +2431,20 @@
     "class": "guerriero_scudo",
     "name": "Riscossa",
     "effect": "RECOVER",
-    "description": "Aura azzurra alla base del personaggio durante la riscossa.",
+    "description": "Aura azzurra alla base del personaggio durante la riscossa. Texture a pixel, particelle tridimensionali e colori stratificati.",
     "presentation": {
       "cast": {
         "enabled": true,
         "shape": "MESH_RING",
         "duration-ticks": 18,
-        "radius": 1,
+        "radius": 1.45,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "83CFFF",
+          "color": "48A9FF",
           "size": 0.45
         },
         "sound": {
@@ -2460,12 +2460,12 @@
           "scroll": 0.8,
           "fadeIn": 0.08,
           "fadeOut": 0.4,
-          "rings": 1,
-          "ringGap": 0.3,
+          "rings": 2,
+          "ringGap": 0.12,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/holy_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/shield_grid.png",
-          "tint": "83CFFF"
+          "tint": "48A9FF"
         }
       },
       "trail": {
@@ -2474,15 +2474,15 @@
       "impact": {
         "enabled": true,
         "shape": "MESH_BURST",
-        "duration-ticks": 12,
-        "radius": 0.65,
+        "duration-ticks": 18,
+        "radius": 0.8125,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "83CFFF",
+          "color": "48A9FF",
           "size": 0.45
         },
         "sound": {
@@ -2493,28 +2493,28 @@
           "opacity": 0.75,
           "rotation": 90,
           "scroll": 0.8,
-          "fadeIn": 0.08,
-          "fadeOut": 0.4,
+          "fadeIn": 0.015,
+          "fadeOut": 0.5,
           "rings": 1,
           "ringGap": 0.3,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "83CFFF"
+          "tint": "48A9FF"
         }
       },
       "telegraph": {
         "enabled": true,
         "shape": "MESH_RING",
         "duration-ticks": 22,
-        "radius": 1,
+        "radius": 1.15,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "83CFFF",
+          "color": "48A9FF",
           "size": 0.45
         },
         "sound": {
@@ -2527,26 +2527,26 @@
           "scroll": 0.8,
           "fadeIn": 0.08,
           "fadeOut": 0.4,
-          "rings": 1,
-          "ringGap": 0.3,
+          "rings": 2,
+          "ringGap": 0.12,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/holy_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/shield_grid.png",
-          "tint": "83CFFF"
+          "tint": "48A9FF"
         }
       },
       "hit": {
         "enabled": true,
         "shape": "MESH_BURST",
         "duration-ticks": 8,
-        "radius": 0.65,
+        "radius": 0.8125,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "83CFFF",
+          "color": "48A9FF",
           "size": 0.45
         },
         "sound": {
@@ -2557,14 +2557,14 @@
           "opacity": 0.75,
           "rotation": 90,
           "scroll": 0.8,
-          "fadeIn": 0.08,
-          "fadeOut": 0.4,
+          "fadeIn": 0.015,
+          "fadeOut": 0.5,
           "rings": 1,
           "ringGap": 0.3,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "83CFFF"
+          "tint": "48A9FF"
         }
       }
     }
@@ -2573,7 +2573,7 @@
     "class": "guerriero_scudo",
     "name": "Baluardo",
     "effect": "BULWARK",
-    "description": "Barriera curva che segue la direzione del personaggio e termina con la protezione.",
+    "description": "Barriera curva che segue la direzione del personaggio e termina con la protezione. Texture a pixel, particelle tridimensionali e colori stratificati.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -2586,7 +2586,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "83CFFF",
+          "color": "48A9FF",
           "size": 0.45
         },
         "sound": {
@@ -2607,7 +2607,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/holy_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/shield_grid.png",
-          "tint": "83CFFF"
+          "tint": "48A9FF"
         }
       },
       "trail": {
@@ -2616,15 +2616,15 @@
       "impact": {
         "enabled": true,
         "shape": "MESH_BURST",
-        "duration-ticks": 12,
-        "radius": 0.65,
+        "duration-ticks": 18,
+        "radius": 0.8125,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "83CFFF",
+          "color": "48A9FF",
           "size": 0.45
         },
         "sound": {
@@ -2635,14 +2635,14 @@
           "opacity": 0.75,
           "rotation": 90,
           "scroll": 0.8,
-          "fadeIn": 0.08,
-          "fadeOut": 0.4,
+          "fadeIn": 0.015,
+          "fadeOut": 0.5,
           "rings": 1,
           "ringGap": 0.3,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "83CFFF"
+          "tint": "48A9FF"
         }
       },
       "telegraph": {
@@ -2656,7 +2656,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "83CFFF",
+          "color": "48A9FF",
           "size": 0.45
         },
         "sound": {
@@ -2674,21 +2674,21 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/holy_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/shield_grid.png",
-          "tint": "83CFFF"
+          "tint": "48A9FF"
         }
       },
       "hit": {
         "enabled": true,
         "shape": "MESH_BURST",
         "duration-ticks": 8,
-        "radius": 0.65,
+        "radius": 0.8125,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "83CFFF",
+          "color": "48A9FF",
           "size": 0.45
         },
         "sound": {
@@ -2699,14 +2699,14 @@
           "opacity": 0.75,
           "rotation": 90,
           "scroll": 0.8,
-          "fadeIn": 0.08,
-          "fadeOut": 0.4,
+          "fadeIn": 0.015,
+          "fadeOut": 0.5,
           "rings": 1,
           "ringGap": 0.3,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "83CFFF"
+          "tint": "48A9FF"
         }
       }
     }
@@ -2715,20 +2715,20 @@
     "class": "mago",
     "name": "Dardo arcano",
     "effect": "BOLT",
-    "description": "Raggio sottile colorato e lampo nel punto colpito.",
+    "description": "Scia intrecciata con nucleo chiaro, esplosione colorata e frammenti sul bersaglio. Texture a pixel, particelle tridimensionali e colori stratificati.",
     "presentation": {
       "cast": {
         "enabled": true,
         "shape": "MESH_RING",
         "duration-ticks": 10,
-        "radius": 0.55,
+        "radius": 1.45,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "BB88FF",
+          "color": "AC73FF",
           "size": 0.45
         },
         "sound": {
@@ -2741,26 +2741,26 @@
           "scroll": 0.8,
           "fadeIn": 0.08,
           "fadeOut": 0.4,
-          "rings": 1,
-          "ringGap": 0.3,
+          "rings": 2,
+          "ringGap": 0.12,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "BB88FF"
+          "tint": "AC73FF"
         }
       },
       "trail": {
         "enabled": true,
         "shape": "MESH_BEAM",
         "duration-ticks": 8,
-        "radius": 0.2,
+        "radius": 0.29,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "BB88FF",
+          "color": "AC73FF",
           "size": 0.45
         },
         "sound": {
@@ -2778,21 +2778,21 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "BB88FF"
+          "tint": "AC73FF"
         }
       },
       "impact": {
         "enabled": true,
         "shape": "MESH_BURST",
-        "duration-ticks": 12,
-        "radius": 0.8,
+        "duration-ticks": 18,
+        "radius": 1.0,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "BB88FF",
+          "color": "AC73FF",
           "size": 0.45
         },
         "sound": {
@@ -2806,14 +2806,14 @@
           "opacity": 0.75,
           "rotation": 90,
           "scroll": 0.8,
-          "fadeIn": 0.08,
-          "fadeOut": 0.4,
+          "fadeIn": 0.015,
+          "fadeOut": 0.5,
           "rings": 1,
           "ringGap": 0.3,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "BB88FF"
+          "tint": "AC73FF"
         }
       },
       "telegraph": {
@@ -2828,20 +2828,20 @@
     "class": "mago",
     "name": "Sfera di fuoco",
     "effect": "FIREBALL",
-    "description": "Scia incandescente e impatto espansivo arancio.",
+    "description": "Scia incandescente e impatto espansivo arancio. Texture a pixel, particelle tridimensionali e colori stratificati.",
     "presentation": {
       "cast": {
         "enabled": true,
         "shape": "MESH_RING",
         "duration-ticks": 10,
-        "radius": 0.55,
+        "radius": 1.45,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "BB88FF",
+          "color": "AC73FF",
           "size": 0.45
         },
         "sound": {
@@ -2854,26 +2854,26 @@
           "scroll": 0.8,
           "fadeIn": 0.08,
           "fadeOut": 0.4,
-          "rings": 1,
-          "ringGap": 0.3,
+          "rings": 2,
+          "ringGap": 0.12,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "BB88FF"
+          "tint": "AC73FF"
         }
       },
       "trail": {
         "enabled": true,
         "shape": "MESH_BEAM",
         "duration-ticks": 8,
-        "radius": 0.45,
+        "radius": 0.6525,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FFD069",
+          "color": "FF822E",
           "size": 0.45
         },
         "sound": {
@@ -2891,21 +2891,21 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "FFD069"
+          "tint": "FF822E"
         }
       },
       "impact": {
         "enabled": true,
         "shape": "MESH_BURST",
-        "duration-ticks": 12,
-        "radius": 3.0,
+        "duration-ticks": 18,
+        "radius": 3.75,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FFD069",
+          "color": "FF822E",
           "size": 0.45
         },
         "sound": {
@@ -2919,14 +2919,14 @@
           "opacity": 0.75,
           "rotation": 90,
           "scroll": 0.8,
-          "fadeIn": 0.08,
-          "fadeOut": 0.4,
+          "fadeIn": 0.015,
+          "fadeOut": 0.5,
           "rings": 1,
           "ringGap": 0.3,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "FFD069"
+          "tint": "FF822E"
         }
       },
       "telegraph": {
@@ -2941,7 +2941,7 @@
     "class": "mago",
     "name": "Nova glaciale",
     "effect": "FROST_NOVA",
-    "description": "Doppia onda ghiacciata azzurra attorno al mago.",
+    "description": "Doppia onda ghiacciata azzurra attorno al mago. Texture a pixel, particelle tridimensionali e colori stratificati.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -2954,7 +2954,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "BB88FF",
+          "color": "AC73FF",
           "size": 0.45
         },
         "sound": {
@@ -2972,7 +2972,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/wave.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "BB88FF"
+          "tint": "AC73FF"
         }
       },
       "trail": {
@@ -2989,7 +2989,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "BB88FF",
+          "color": "AC73FF",
           "size": 0.45
         },
         "sound": {
@@ -3025,20 +3025,20 @@
     "class": "mago",
     "name": "Passo dimensionale",
     "effect": "BLINK",
-    "description": "Traccia fra partenza e arrivo e anello sulla destinazione.",
+    "description": "Traccia fra partenza e arrivo e anello sulla destinazione. Texture a pixel, particelle tridimensionali e colori stratificati.",
     "presentation": {
       "cast": {
         "enabled": true,
         "shape": "MESH_RING",
         "duration-ticks": 10,
-        "radius": 0.55,
+        "radius": 1.45,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "BB88FF",
+          "color": "AC73FF",
           "size": 0.45
         },
         "sound": {
@@ -3051,26 +3051,26 @@
           "scroll": 0.8,
           "fadeIn": 0.08,
           "fadeOut": 0.4,
-          "rings": 1,
-          "ringGap": 0.3,
+          "rings": 2,
+          "ringGap": 0.12,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "BB88FF"
+          "tint": "AC73FF"
         }
       },
       "trail": {
         "enabled": true,
         "shape": "MESH_BEAM",
         "duration-ticks": 8,
-        "radius": 0.2,
+        "radius": 0.29,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "BB88FF",
+          "color": "AC73FF",
           "size": 0.45
         },
         "sound": {
@@ -3088,7 +3088,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "BB88FF"
+          "tint": "AC73FF"
         }
       },
       "impact": {
@@ -3102,7 +3102,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "BB88FF",
+          "color": "AC73FF",
           "size": 0.45
         },
         "sound": {
@@ -3123,7 +3123,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/wave.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "BB88FF"
+          "tint": "AC73FF"
         }
       },
       "telegraph": {
@@ -3138,7 +3138,7 @@
     "class": "mago",
     "name": "Barriera arcana",
     "effect": "WARD",
-    "description": "Barriera curva che segue la direzione del personaggio e termina con la protezione.",
+    "description": "Barriera curva che segue la direzione del personaggio e termina con la protezione. Texture a pixel, particelle tridimensionali e colori stratificati.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -3151,7 +3151,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "BB88FF",
+          "color": "AC73FF",
           "size": 0.45
         },
         "sound": {
@@ -3169,7 +3169,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/holy_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/shield_grid.png",
-          "tint": "BB88FF"
+          "tint": "AC73FF"
         }
       },
       "trail": {
@@ -3178,15 +3178,15 @@
       "impact": {
         "enabled": true,
         "shape": "MESH_BURST",
-        "duration-ticks": 12,
-        "radius": 0.65,
+        "duration-ticks": 18,
+        "radius": 0.8125,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "BB88FF",
+          "color": "AC73FF",
           "size": 0.45
         },
         "sound": {
@@ -3200,14 +3200,14 @@
           "opacity": 0.75,
           "rotation": 90,
           "scroll": 0.8,
-          "fadeIn": 0.08,
-          "fadeOut": 0.4,
+          "fadeIn": 0.015,
+          "fadeOut": 0.5,
           "rings": 1,
           "ringGap": 0.3,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "BB88FF"
+          "tint": "AC73FF"
         }
       },
       "telegraph": {
@@ -3221,7 +3221,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "BB88FF",
+          "color": "AC73FF",
           "size": 0.45
         },
         "sound": {
@@ -3239,21 +3239,21 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/holy_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/shield_grid.png",
-          "tint": "BB88FF"
+          "tint": "AC73FF"
         }
       },
       "hit": {
         "enabled": true,
         "shape": "MESH_BURST",
         "duration-ticks": 8,
-        "radius": 0.65,
+        "radius": 0.8125,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "BB88FF",
+          "color": "AC73FF",
           "size": 0.45
         },
         "sound": {
@@ -3264,14 +3264,14 @@
           "opacity": 0.75,
           "rotation": 90,
           "scroll": 0.8,
-          "fadeIn": 0.08,
-          "fadeOut": 0.4,
+          "fadeIn": 0.015,
+          "fadeOut": 0.5,
           "rings": 1,
           "ringGap": 0.3,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "BB88FF"
+          "tint": "AC73FF"
         }
       }
     }
@@ -3280,20 +3280,20 @@
     "class": "mago",
     "name": "Ricucitura",
     "effect": "HEAL",
-    "description": "Anelli e colonna di guarigione sul destinatario.",
+    "description": "Anelli e colonna di guarigione sul destinatario. Texture a pixel, particelle tridimensionali e colori stratificati.",
     "presentation": {
       "cast": {
         "enabled": true,
         "shape": "MESH_RING",
         "duration-ticks": 10,
-        "radius": 0.55,
+        "radius": 1.45,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "BB88FF",
+          "color": "AC73FF",
           "size": 0.45
         },
         "sound": {
@@ -3306,12 +3306,12 @@
           "scroll": 0.8,
           "fadeIn": 0.08,
           "fadeOut": 0.4,
-          "rings": 1,
-          "ringGap": 0.3,
+          "rings": 2,
+          "ringGap": 0.12,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "BB88FF"
+          "tint": "AC73FF"
         }
       },
       "trail": {
@@ -3321,14 +3321,14 @@
         "enabled": true,
         "shape": "HEALING_BEAM",
         "duration-ticks": 36,
-        "radius": 0.85,
+        "radius": 1.65,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "55FF66",
+          "color": "49F5AB",
           "size": 0.45
         },
         "sound": {
@@ -3347,9 +3347,9 @@
           "rings": 2,
           "ringGap": 0.3,
           "columnRadius": 0.42,
-          "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
+          "ringTexture": "castigoclasses:textures/vfx/holy_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/healing_column.png",
-          "tint": "55FF66"
+          "tint": "49F5AB"
         }
       },
       "telegraph": {
@@ -3364,20 +3364,20 @@
     "class": "mago",
     "name": "Folgore",
     "effect": "LIGHTNING",
-    "description": "Scarica verticale azzurra sopra il bersaglio e lampo elettrico.",
+    "description": "Scarica verticale azzurra sopra il bersaglio e lampo elettrico. Texture a pixel, particelle tridimensionali e colori stratificati.",
     "presentation": {
       "cast": {
         "enabled": true,
         "shape": "MESH_RING",
         "duration-ticks": 10,
-        "radius": 0.55,
+        "radius": 1.45,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "BB88FF",
+          "color": "AC73FF",
           "size": 0.45
         },
         "sound": {
@@ -3390,26 +3390,26 @@
           "scroll": 0.8,
           "fadeIn": 0.08,
           "fadeOut": 0.4,
-          "rings": 1,
-          "ringGap": 0.3,
+          "rings": 2,
+          "ringGap": 0.12,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "BB88FF"
+          "tint": "AC73FF"
         }
       },
       "trail": {
         "enabled": true,
         "shape": "MESH_BEAM",
         "duration-ticks": 8,
-        "radius": 0.2,
+        "radius": 0.29,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "AEE9FF",
+          "color": "65CFFF",
           "size": 0.45
         },
         "sound": {
@@ -3427,21 +3427,21 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
           "columnTexture": "castigoclasses:textures/vfx/lightning.png",
-          "tint": "AEE9FF"
+          "tint": "65CFFF"
         }
       },
       "impact": {
         "enabled": true,
         "shape": "MESH_BURST",
-        "duration-ticks": 12,
-        "radius": 0.8,
+        "duration-ticks": 18,
+        "radius": 1.0,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "AEE9FF",
+          "color": "65CFFF",
           "size": 0.45
         },
         "sound": {
@@ -3455,14 +3455,14 @@
           "opacity": 0.75,
           "rotation": 90,
           "scroll": 0.8,
-          "fadeIn": 0.08,
-          "fadeOut": 0.4,
+          "fadeIn": 0.015,
+          "fadeOut": 0.5,
           "rings": 1,
           "ringGap": 0.3,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "AEE9FF"
+          "tint": "65CFFF"
         }
       },
       "telegraph": {
@@ -3477,20 +3477,20 @@
     "class": "mago",
     "name": "Meteora",
     "effect": "METEOR",
-    "description": "Cerchio di avvertimento, scia verticale e grande esplosione luminosa.",
+    "description": "Cerchio di avvertimento, scia verticale e grande esplosione luminosa. Texture a pixel, particelle tridimensionali e colori stratificati.",
     "presentation": {
       "cast": {
         "enabled": true,
         "shape": "MESH_RING",
         "duration-ticks": 10,
-        "radius": 0.55,
+        "radius": 1.45,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "BB88FF",
+          "color": "AC73FF",
           "size": 0.45
         },
         "sound": {
@@ -3503,26 +3503,26 @@
           "scroll": 0.8,
           "fadeIn": 0.08,
           "fadeOut": 0.4,
-          "rings": 1,
-          "ringGap": 0.3,
+          "rings": 2,
+          "ringGap": 0.12,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "BB88FF"
+          "tint": "AC73FF"
         }
       },
       "trail": {
         "enabled": true,
         "shape": "MESH_BEAM",
         "duration-ticks": 8,
-        "radius": 0.45,
+        "radius": 0.6525,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FFD069",
+          "color": "FF822E",
           "size": 0.45
         },
         "sound": {
@@ -3540,21 +3540,21 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "FFD069"
+          "tint": "FF822E"
         }
       },
       "impact": {
         "enabled": true,
         "shape": "MESH_BURST",
         "duration-ticks": 24,
-        "radius": 4,
+        "radius": 5.0,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FFD069",
+          "color": "FF822E",
           "size": 0.45
         },
         "sound": {
@@ -3568,14 +3568,14 @@
           "opacity": 0.75,
           "rotation": 90,
           "scroll": 0.8,
-          "fadeIn": 0.08,
-          "fadeOut": 0.4,
+          "fadeIn": 0.015,
+          "fadeOut": 0.5,
           "rings": 1,
           "ringGap": 0.3,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "FFD069"
+          "tint": "FF822E"
         }
       },
       "telegraph": {
@@ -3589,7 +3589,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "BB88FF",
+          "color": "AC73FF",
           "size": 0.45
         },
         "sound": {
@@ -3607,7 +3607,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/dark_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "BB88FF"
+          "tint": "AC73FF"
         }
       },
       "hit": {
@@ -3619,7 +3619,7 @@
     "class": "mago_bianco",
     "name": "Orison di cura",
     "effect": "ALLY_HEAL",
-    "description": "Anelli e colonna di guarigione sul destinatario.",
+    "description": "Anelli e colonna di guarigione sul destinatario. Texture a pixel, particelle tridimensionali e colori stratificati.",
     "presentation": {
       "cast": {
         "enabled": false
@@ -3631,14 +3631,14 @@
         "enabled": true,
         "shape": "HEALING_BEAM",
         "duration-ticks": 36,
-        "radius": 0.85,
+        "radius": 1.65,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "55FF66",
+          "color": "49F5AB",
           "size": 0.45
         },
         "sound": {
@@ -3657,9 +3657,9 @@
           "rings": 2,
           "ringGap": 0.3,
           "columnRadius": 0.42,
-          "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
+          "ringTexture": "castigoclasses:textures/vfx/holy_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/healing_column.png",
-          "tint": "55FF66"
+          "tint": "49F5AB"
         }
       },
       "telegraph": {
@@ -3674,20 +3674,20 @@
     "class": "mago_bianco",
     "name": "Dardo consacrato",
     "effect": "BOLT",
-    "description": "Raggio sottile colorato e lampo nel punto colpito.",
+    "description": "Scia intrecciata con nucleo chiaro, esplosione colorata e frammenti sul bersaglio. Texture a pixel, particelle tridimensionali e colori stratificati.",
     "presentation": {
       "cast": {
         "enabled": true,
         "shape": "MESH_RING",
         "duration-ticks": 10,
-        "radius": 0.55,
+        "radius": 1.45,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FFF2BD",
+          "color": "FFE29A",
           "size": 0.45
         },
         "sound": {
@@ -3700,26 +3700,26 @@
           "scroll": 0.8,
           "fadeIn": 0.08,
           "fadeOut": 0.4,
-          "rings": 1,
-          "ringGap": 0.3,
+          "rings": 2,
+          "ringGap": 0.12,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/holy_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "FFF2BD"
+          "tint": "FFE29A"
         }
       },
       "trail": {
         "enabled": true,
         "shape": "MESH_BEAM",
         "duration-ticks": 8,
-        "radius": 0.2,
+        "radius": 0.29,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FFF2BD",
+          "color": "FFE29A",
           "size": 0.45
         },
         "sound": {
@@ -3737,21 +3737,21 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "FFF2BD"
+          "tint": "FFE29A"
         }
       },
       "impact": {
         "enabled": true,
         "shape": "MESH_BURST",
-        "duration-ticks": 12,
-        "radius": 0.8,
+        "duration-ticks": 18,
+        "radius": 1.0,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FFF2BD",
+          "color": "FFE29A",
           "size": 0.45
         },
         "sound": {
@@ -3765,14 +3765,14 @@
           "opacity": 0.75,
           "rotation": 90,
           "scroll": 0.8,
-          "fadeIn": 0.08,
-          "fadeOut": 0.4,
+          "fadeIn": 0.015,
+          "fadeOut": 0.5,
           "rings": 1,
           "ringGap": 0.3,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "FFF2BD"
+          "tint": "FFE29A"
         }
       },
       "telegraph": {
@@ -3787,20 +3787,20 @@
     "class": "mago_bianco",
     "name": "Benedizione rigenerante",
     "effect": "HOT",
-    "description": "Breve luce curativa e due sigilli orbitanti per la durata della rigenerazione.",
+    "description": "Breve luce curativa e due sigilli orbitanti per la durata della rigenerazione. Texture a pixel, particelle tridimensionali e colori stratificati.",
     "presentation": {
       "cast": {
         "enabled": true,
         "shape": "MESH_RING",
         "duration-ticks": 10,
-        "radius": 0.55,
+        "radius": 1.45,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FFF2BD",
+          "color": "FFE29A",
           "size": 0.45
         },
         "sound": {
@@ -3813,12 +3813,12 @@
           "scroll": 0.8,
           "fadeIn": 0.08,
           "fadeOut": 0.4,
-          "rings": 1,
-          "ringGap": 0.3,
+          "rings": 2,
+          "ringGap": 0.12,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/holy_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "FFF2BD"
+          "tint": "FFE29A"
         }
       },
       "trail": {
@@ -3828,14 +3828,14 @@
         "enabled": true,
         "shape": "HEALING_BEAM",
         "duration-ticks": 24,
-        "radius": 0.65,
+        "radius": 1.3,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FFF2BD",
+          "color": "FFE29A",
           "size": 0.45
         },
         "sound": {
@@ -3856,21 +3856,21 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/holy_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/healing_column.png",
-          "tint": "FFF2BD"
+          "tint": "FFE29A"
         }
       },
       "telegraph": {
         "enabled": true,
         "shape": "MESH_RING",
         "duration-ticks": 22,
-        "radius": 0.7,
+        "radius": 1.15,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FFF2BD",
+          "color": "FFE29A",
           "size": 0.45
         },
         "sound": {
@@ -3884,11 +3884,11 @@
           "fadeIn": 0.08,
           "fadeOut": 0.4,
           "rings": 2,
-          "ringGap": 0.3,
+          "ringGap": 0.12,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/holy_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "FFF2BD"
+          "tint": "FFE29A"
         }
       },
       "hit": {
@@ -3902,7 +3902,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FFF2BD",
+          "color": "FFE29A",
           "size": 0.45
         },
         "sound": {
@@ -3920,7 +3920,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/holy_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "FFF2BD"
+          "tint": "FFE29A"
         }
       }
     }
@@ -3929,7 +3929,7 @@
     "class": "mago_bianco",
     "name": "Purificazione",
     "effect": "CLEANSE",
-    "description": "Sigillo luminoso che si espande sul destinatario purificato.",
+    "description": "Sigillo luminoso che si espande sul destinatario purificato. Texture a pixel, particelle tridimensionali e colori stratificati.",
     "presentation": {
       "cast": {
         "enabled": false
@@ -3948,7 +3948,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FFF2BD",
+          "color": "FFE29A",
           "size": 0.45
         },
         "sound": {
@@ -3969,7 +3969,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/holy_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "FFF2BD"
+          "tint": "FFE29A"
         }
       },
       "telegraph": {
@@ -3984,20 +3984,20 @@
     "class": "mago_bianco",
     "name": "Vincolo del custode",
     "effect": "LINK",
-    "description": "Barriera iniziale sul protetto e filo luminoso verso il protettore mentre il vincolo è efficace.",
+    "description": "Barriera iniziale sul protetto e filo luminoso verso il protettore mentre il vincolo è efficace. Texture a pixel, particelle tridimensionali e colori stratificati.",
     "presentation": {
       "cast": {
         "enabled": true,
         "shape": "MESH_RING",
         "duration-ticks": 10,
-        "radius": 0.55,
+        "radius": 1.45,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FFF2BD",
+          "color": "FFE29A",
           "size": 0.45
         },
         "sound": {
@@ -4010,12 +4010,12 @@
           "scroll": 0.8,
           "fadeIn": 0.08,
           "fadeOut": 0.4,
-          "rings": 1,
-          "ringGap": 0.3,
+          "rings": 2,
+          "ringGap": 0.12,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/holy_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "FFF2BD"
+          "tint": "FFE29A"
         }
       },
       "trail": {
@@ -4032,7 +4032,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FFF2BD",
+          "color": "FFE29A",
           "size": 0.45
         },
         "sound": {
@@ -4053,21 +4053,21 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
           "columnTexture": "castigoclasses:textures/vfx/shield_grid.png",
-          "tint": "FFF2BD"
+          "tint": "FFE29A"
         }
       },
       "telegraph": {
         "enabled": true,
         "shape": "MESH_BEAM",
         "duration-ticks": 22,
-        "radius": 0.25,
+        "radius": 0.3625,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FFF2BD",
+          "color": "FFE29A",
           "size": 0.45
         },
         "sound": {
@@ -4085,7 +4085,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "FFF2BD"
+          "tint": "FFE29A"
         }
       },
       "hit": {
@@ -4097,7 +4097,7 @@
     "class": "mago_bianco",
     "name": "Luce respingente",
     "effect": "REPULSE",
-    "description": "Onda di luce che parte dal mago e si allarga fino al raggio della spinta.",
+    "description": "Onda di luce che parte dal mago e si allarga fino al raggio della spinta. Texture a pixel, particelle tridimensionali e colori stratificati.",
     "presentation": {
       "cast": {
         "enabled": true,
@@ -4110,7 +4110,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FFF2BD",
+          "color": "FFE29A",
           "size": 0.45
         },
         "sound": {
@@ -4131,7 +4131,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/wave.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "FFF2BD"
+          "tint": "FFE29A"
         }
       },
       "trail": {
@@ -4148,7 +4148,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FFF2BD",
+          "color": "FFE29A",
           "size": 0.45
         },
         "sound": {
@@ -4166,7 +4166,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/wave.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "FFF2BD"
+          "tint": "FFE29A"
         }
       },
       "telegraph": {
@@ -4181,20 +4181,20 @@
     "class": "mago_bianco",
     "name": "Grande intercessione",
     "effect": "ALLY_HEAL",
-    "description": "Anelli e colonna di guarigione sul destinatario, più ampia e alta per Grande intercessione.",
+    "description": "Anelli e colonna di guarigione sul destinatario, più ampia e alta per Grande intercessione. Texture a pixel, particelle tridimensionali e colori stratificati.",
     "presentation": {
       "cast": {
         "enabled": true,
         "shape": "MESH_RING",
         "duration-ticks": 10,
-        "radius": 0.55,
+        "radius": 1.45,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FFF2BD",
+          "color": "FFE29A",
           "size": 0.45
         },
         "sound": {
@@ -4207,12 +4207,12 @@
           "scroll": 0.8,
           "fadeIn": 0.08,
           "fadeOut": 0.4,
-          "rings": 1,
-          "ringGap": 0.3,
+          "rings": 2,
+          "ringGap": 0.12,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/holy_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "FFF2BD"
+          "tint": "FFE29A"
         }
       },
       "trail": {
@@ -4222,14 +4222,14 @@
         "enabled": true,
         "shape": "HEALING_BEAM",
         "duration-ticks": 36,
-        "radius": 1.4,
+        "radius": 2.15,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FFF1AE",
+          "color": "FFE29A",
           "size": 0.45
         },
         "sound": {
@@ -4250,7 +4250,7 @@
           "columnRadius": 0.42,
           "ringTexture": "castigoclasses:textures/vfx/holy_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/healing_column.png",
-          "tint": "FFF1AE"
+          "tint": "FFE29A"
         }
       },
       "telegraph": {
@@ -4265,20 +4265,20 @@
     "class": "mago_bianco",
     "name": "Santuario di luce",
     "effect": "SANCTUARY",
-    "description": "Cerchio sacro dorato che delimita la zona protetta per tutta la sua durata.",
+    "description": "Cerchio sacro dorato che delimita la zona protetta per tutta la sua durata. Texture a pixel, particelle tridimensionali e colori stratificati.",
     "presentation": {
       "cast": {
         "enabled": true,
         "shape": "MESH_RING",
         "duration-ticks": 10,
-        "radius": 0.55,
+        "radius": 1.45,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FFF2BD",
+          "color": "FFE29A",
           "size": 0.45
         },
         "sound": {
@@ -4291,12 +4291,12 @@
           "scroll": 0.8,
           "fadeIn": 0.08,
           "fadeOut": 0.4,
-          "rings": 1,
-          "ringGap": 0.3,
+          "rings": 2,
+          "ringGap": 0.12,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/holy_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "FFF2BD"
+          "tint": "FFE29A"
         }
       },
       "trail": {
@@ -4313,7 +4313,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FFF2BD",
+          "color": "FFE29A",
           "size": 0.45
         },
         "sound": {
@@ -4334,7 +4334,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/holy_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "FFF2BD"
+          "tint": "FFE29A"
         }
       },
       "telegraph": {
@@ -4348,7 +4348,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "FFF2BD",
+          "color": "FFE29A",
           "size": 0.45
         },
         "sound": {
@@ -4366,7 +4366,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/holy_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "FFF2BD"
+          "tint": "FFE29A"
         }
       },
       "hit": {
@@ -4378,20 +4378,20 @@
     "class": "mago_nero",
     "name": "Dardo maledetto",
     "effect": "CURSED_BOLT",
-    "description": "Scia viola, impatto oscuro e sigillo della maledizione sul nemico.",
+    "description": "Scia viola, impatto oscuro e sigillo della maledizione sul nemico. Texture a pixel, particelle tridimensionali e colori stratificati.",
     "presentation": {
       "cast": {
         "enabled": true,
         "shape": "MESH_RING",
         "duration-ticks": 10,
-        "radius": 0.55,
+        "radius": 1.45,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "B24FFF",
+          "color": "963DFF",
           "size": 0.45
         },
         "sound": {
@@ -4404,26 +4404,26 @@
           "scroll": 0.8,
           "fadeIn": 0.08,
           "fadeOut": 0.4,
-          "rings": 1,
-          "ringGap": 0.3,
+          "rings": 2,
+          "ringGap": 0.12,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/dark_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "B24FFF"
+          "tint": "963DFF"
         }
       },
       "trail": {
         "enabled": true,
         "shape": "MESH_BEAM",
         "duration-ticks": 8,
-        "radius": 0.2,
+        "radius": 0.29,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "B24FFF",
+          "color": "963DFF",
           "size": 0.45
         },
         "sound": {
@@ -4441,21 +4441,21 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "B24FFF"
+          "tint": "963DFF"
         }
       },
       "impact": {
         "enabled": true,
         "shape": "MESH_BURST",
-        "duration-ticks": 12,
-        "radius": 0.8,
+        "duration-ticks": 18,
+        "radius": 1.0,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "B24FFF",
+          "color": "963DFF",
           "size": 0.45
         },
         "sound": {
@@ -4469,14 +4469,14 @@
           "opacity": 0.75,
           "rotation": 90,
           "scroll": 0.8,
-          "fadeIn": 0.08,
-          "fadeOut": 0.4,
+          "fadeIn": 0.015,
+          "fadeOut": 0.5,
           "rings": 1,
           "ringGap": 0.3,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "B24FFF"
+          "tint": "963DFF"
         }
       },
       "telegraph": {
@@ -4490,7 +4490,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "B24FFF",
+          "color": "963DFF",
           "size": 0.45
         },
         "sound": {
@@ -4508,21 +4508,21 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/dark_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "B24FFF"
+          "tint": "963DFF"
         }
       },
       "hit": {
         "enabled": true,
         "shape": "MESH_BURST",
         "duration-ticks": 8,
-        "radius": 0.3,
+        "radius": 0.5,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "B24FFF",
+          "color": "963DFF",
           "size": 0.45
         },
         "sound": {
@@ -4533,14 +4533,14 @@
           "opacity": 0.75,
           "rotation": 90,
           "scroll": 0.8,
-          "fadeIn": 0.08,
-          "fadeOut": 0.4,
+          "fadeIn": 0.015,
+          "fadeOut": 0.5,
           "rings": 1,
           "ringGap": 0.3,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "B24FFF"
+          "tint": "963DFF"
         }
       }
     }
@@ -4549,20 +4549,20 @@
     "class": "mago_nero",
     "name": "Malocchio",
     "effect": "VULNERABILITY",
-    "description": "Marchio oscuro lento sopra il nemico vulnerabile.",
+    "description": "Marchio oscuro lento sopra il nemico vulnerabile. Texture a pixel, particelle tridimensionali e colori stratificati.",
     "presentation": {
       "cast": {
         "enabled": true,
         "shape": "MESH_RING",
         "duration-ticks": 10,
-        "radius": 0.55,
+        "radius": 1.45,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "B24FFF",
+          "color": "963DFF",
           "size": 0.45
         },
         "sound": {
@@ -4575,12 +4575,12 @@
           "scroll": 0.8,
           "fadeIn": 0.08,
           "fadeOut": 0.4,
-          "rings": 1,
-          "ringGap": 0.3,
+          "rings": 2,
+          "ringGap": 0.12,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/dark_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "B24FFF"
+          "tint": "963DFF"
         }
       },
       "trail": {
@@ -4597,7 +4597,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "B24FFF",
+          "color": "963DFF",
           "size": 0.45
         },
         "sound": {
@@ -4618,7 +4618,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/dark_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "B24FFF"
+          "tint": "963DFF"
         }
       },
       "telegraph": {
@@ -4632,7 +4632,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "B24FFF",
+          "color": "963DFF",
           "size": 0.45
         },
         "sound": {
@@ -4650,7 +4650,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/dark_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "B24FFF"
+          "tint": "963DFF"
         }
       },
       "hit": {
@@ -4662,20 +4662,20 @@
     "class": "mago_nero",
     "name": "Consunzione",
     "effect": "DOT",
-    "description": "Piccolo sigillo pulsante di consunzione sul nemico.",
+    "description": "Piccolo sigillo pulsante di consunzione sul nemico. Texture a pixel, particelle tridimensionali e colori stratificati.",
     "presentation": {
       "cast": {
         "enabled": true,
         "shape": "MESH_RING",
         "duration-ticks": 10,
-        "radius": 0.55,
+        "radius": 1.45,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "B24FFF",
+          "color": "963DFF",
           "size": 0.45
         },
         "sound": {
@@ -4688,12 +4688,12 @@
           "scroll": 0.8,
           "fadeIn": 0.08,
           "fadeOut": 0.4,
-          "rings": 1,
-          "ringGap": 0.3,
+          "rings": 2,
+          "ringGap": 0.12,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/dark_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "B24FFF"
+          "tint": "963DFF"
         }
       },
       "trail": {
@@ -4710,7 +4710,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "B24FFF",
+          "color": "963DFF",
           "size": 0.45
         },
         "sound": {
@@ -4731,7 +4731,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/dark_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "B24FFF"
+          "tint": "963DFF"
         }
       },
       "telegraph": {
@@ -4745,7 +4745,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "B24FFF",
+          "color": "963DFF",
           "size": 0.45
         },
         "sound": {
@@ -4763,21 +4763,21 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/dark_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "B24FFF"
+          "tint": "963DFF"
         }
       },
       "hit": {
         "enabled": true,
         "shape": "MESH_BURST",
         "duration-ticks": 8,
-        "radius": 0.3,
+        "radius": 0.5,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "B24FFF",
+          "color": "963DFF",
           "size": 0.45
         },
         "sound": {
@@ -4788,14 +4788,14 @@
           "opacity": 0.75,
           "rotation": 90,
           "scroll": 0.8,
-          "fadeIn": 0.08,
-          "fadeOut": 0.4,
+          "fadeIn": 0.015,
+          "fadeOut": 0.5,
           "rings": 1,
           "ringGap": 0.3,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "B24FFF"
+          "tint": "963DFF"
         }
       }
     }
@@ -4804,20 +4804,20 @@
     "class": "mago_nero",
     "name": "Terrore sussurrato",
     "effect": "FEAR",
-    "description": "Ampio sigillo oscuro in rapida rotazione sul bersaglio intimorito.",
+    "description": "Ampio sigillo oscuro in rapida rotazione sul bersaglio intimorito. Texture a pixel, particelle tridimensionali e colori stratificati.",
     "presentation": {
       "cast": {
         "enabled": true,
         "shape": "MESH_RING",
         "duration-ticks": 10,
-        "radius": 0.55,
+        "radius": 1.45,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "B24FFF",
+          "color": "963DFF",
           "size": 0.45
         },
         "sound": {
@@ -4830,12 +4830,12 @@
           "scroll": 0.8,
           "fadeIn": 0.08,
           "fadeOut": 0.4,
-          "rings": 1,
-          "ringGap": 0.3,
+          "rings": 2,
+          "ringGap": 0.12,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/dark_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "B24FFF"
+          "tint": "963DFF"
         }
       },
       "trail": {
@@ -4852,7 +4852,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "B24FFF",
+          "color": "963DFF",
           "size": 0.45
         },
         "sound": {
@@ -4873,7 +4873,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/dark_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "B24FFF"
+          "tint": "963DFF"
         }
       },
       "telegraph": {
@@ -4887,7 +4887,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "B24FFF",
+          "color": "963DFF",
           "size": 0.45
         },
         "sound": {
@@ -4905,7 +4905,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/dark_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "B24FFF"
+          "tint": "963DFF"
         }
       },
       "hit": {
@@ -4917,20 +4917,20 @@
     "class": "mago_nero",
     "name": "Cerchio della rovina",
     "effect": "RUIN",
-    "description": "Sigillo oscuro a terra, controrotante, per tutta la durata della zona dannosa.",
+    "description": "Sigillo oscuro a terra, controrotante, per tutta la durata della zona dannosa. Texture a pixel, particelle tridimensionali e colori stratificati.",
     "presentation": {
       "cast": {
         "enabled": true,
         "shape": "MESH_RING",
         "duration-ticks": 10,
-        "radius": 0.55,
+        "radius": 1.45,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "B24FFF",
+          "color": "963DFF",
           "size": 0.45
         },
         "sound": {
@@ -4943,12 +4943,12 @@
           "scroll": 0.8,
           "fadeIn": 0.08,
           "fadeOut": 0.4,
-          "rings": 1,
-          "ringGap": 0.3,
+          "rings": 2,
+          "ringGap": 0.12,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/dark_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "B24FFF"
+          "tint": "963DFF"
         }
       },
       "trail": {
@@ -4965,7 +4965,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "B24FFF",
+          "color": "963DFF",
           "size": 0.45
         },
         "sound": {
@@ -4986,7 +4986,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/dark_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "B24FFF"
+          "tint": "963DFF"
         }
       },
       "telegraph": {
@@ -5000,7 +5000,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "B24FFF",
+          "color": "963DFF",
           "size": 0.45
         },
         "sound": {
@@ -5018,7 +5018,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/dark_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "B24FFF"
+          "tint": "963DFF"
         }
       },
       "hit": {
@@ -5030,20 +5030,20 @@
     "class": "mago_nero",
     "name": "Sigillo del tormento",
     "effect": "HEAL_BLOCK",
-    "description": "Sigillo di interdizione fermo sul nemico con cure ridotte.",
+    "description": "Sigillo di interdizione fermo sul nemico con cure ridotte. Texture a pixel, particelle tridimensionali e colori stratificati.",
     "presentation": {
       "cast": {
         "enabled": true,
         "shape": "MESH_RING",
         "duration-ticks": 10,
-        "radius": 0.55,
+        "radius": 1.45,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "B24FFF",
+          "color": "963DFF",
           "size": 0.45
         },
         "sound": {
@@ -5056,12 +5056,12 @@
           "scroll": 0.8,
           "fadeIn": 0.08,
           "fadeOut": 0.4,
-          "rings": 1,
-          "ringGap": 0.3,
+          "rings": 2,
+          "ringGap": 0.12,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/dark_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "B24FFF"
+          "tint": "963DFF"
         }
       },
       "trail": {
@@ -5078,7 +5078,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "B24FFF",
+          "color": "963DFF",
           "size": 0.45
         },
         "sound": {
@@ -5099,7 +5099,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/dark_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "B24FFF"
+          "tint": "963DFF"
         }
       },
       "telegraph": {
@@ -5113,7 +5113,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "B24FFF",
+          "color": "963DFF",
           "size": 0.45
         },
         "sound": {
@@ -5131,7 +5131,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/dark_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "B24FFF"
+          "tint": "963DFF"
         }
       },
       "hit": {
@@ -5143,20 +5143,20 @@
     "class": "mago_nero",
     "name": "Patto del sangue",
     "effect": "DRAIN",
-    "description": "Filo rosso fra mago e vittima e impulso sul bersaglio.",
+    "description": "Filo rosso fra mago e vittima e impulso sul bersaglio. Texture a pixel, particelle tridimensionali e colori stratificati.",
     "presentation": {
       "cast": {
         "enabled": true,
         "shape": "MESH_RING",
         "duration-ticks": 10,
-        "radius": 0.55,
+        "radius": 1.45,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "B24FFF",
+          "color": "963DFF",
           "size": 0.45
         },
         "sound": {
@@ -5169,26 +5169,26 @@
           "scroll": 0.8,
           "fadeIn": 0.08,
           "fadeOut": 0.4,
-          "rings": 1,
-          "ringGap": 0.3,
+          "rings": 2,
+          "ringGap": 0.12,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/dark_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "B24FFF"
+          "tint": "963DFF"
         }
       },
       "trail": {
         "enabled": true,
         "shape": "MESH_BEAM",
         "duration-ticks": 8,
-        "radius": 0.2,
+        "radius": 0.29,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "E25771",
+          "color": "E83D79",
           "size": 0.45
         },
         "sound": {
@@ -5206,21 +5206,21 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/rune_ring.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "E25771"
+          "tint": "E83D79"
         }
       },
       "impact": {
         "enabled": true,
         "shape": "MESH_BURST",
-        "duration-ticks": 12,
-        "radius": 0.8,
+        "duration-ticks": 18,
+        "radius": 1.0,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "E25771",
+          "color": "E83D79",
           "size": 0.45
         },
         "sound": {
@@ -5234,14 +5234,14 @@
           "opacity": 0.75,
           "rotation": 90,
           "scroll": 0.8,
-          "fadeIn": 0.08,
-          "fadeOut": 0.4,
+          "fadeIn": 0.015,
+          "fadeOut": 0.5,
           "rings": 1,
           "ringGap": 0.3,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/flare.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "E25771"
+          "tint": "E83D79"
         }
       },
       "telegraph": {
@@ -5256,20 +5256,20 @@
     "class": "mago_nero",
     "name": "Vortice delle tenebre",
     "effect": "VORTEX",
-    "description": "Tre nastri scuri a spirale convergono al centro della zona.",
+    "description": "Tre nastri scuri a spirale convergono al centro della zona. Texture a pixel, particelle tridimensionali e colori stratificati.",
     "presentation": {
       "cast": {
         "enabled": true,
         "shape": "MESH_RING",
         "duration-ticks": 10,
-        "radius": 0.55,
+        "radius": 1.45,
         "points": 24,
         "particles": {
           "enabled": false,
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "B24FFF",
+          "color": "963DFF",
           "size": 0.45
         },
         "sound": {
@@ -5282,12 +5282,12 @@
           "scroll": 0.8,
           "fadeIn": 0.08,
           "fadeOut": 0.4,
-          "rings": 1,
-          "ringGap": 0.3,
+          "rings": 2,
+          "ringGap": 0.12,
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/dark_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "B24FFF"
+          "tint": "963DFF"
         }
       },
       "trail": {
@@ -5304,7 +5304,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "B24FFF",
+          "color": "963DFF",
           "size": 0.45
         },
         "sound": {
@@ -5325,7 +5325,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/dark_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "B24FFF"
+          "tint": "963DFF"
         }
       },
       "telegraph": {
@@ -5339,7 +5339,7 @@
           "particle": "DUST",
           "count": 1,
           "spread": 0,
-          "color": "B24FFF",
+          "color": "963DFF",
           "size": 0.45
         },
         "sound": {
@@ -5357,7 +5357,7 @@
           "columnRadius": 0.22,
           "ringTexture": "castigoclasses:textures/vfx/dark_seal.png",
           "columnTexture": "castigoclasses:textures/vfx/ribbon.png",
-          "tint": "B24FFF"
+          "tint": "963DFF"
         }
       },
       "hit": {

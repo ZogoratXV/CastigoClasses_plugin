@@ -12,7 +12,7 @@ def cue(shape,color,radius=1,duration=16,height=2,texture='rune_ring',rotation=9
         'ringTexture':P+texture+'.png','columnTexture':P+column+'.png','tint':color}}
 
 def make(cls,sid,effect,radius):
-    color={'mago_bianco':'FFF2BD','mago_nero':'B24FFF','guerriero_scudo':'83CFFF','guerriero_due_mani':'FFAF68','arciere':'9BEAB2','mago':'BB88FF'}[cls]
+    color={'mago_bianco':'FFE29A','mago_nero':'963DFF','guerriero_scudo':'48A9FF','guerriero_due_mani':'FF913D','arciere':'45E7A3','mago':'AC73FF'}[cls]
     seal='holy_seal' if cls=='mago_bianco' else 'dark_seal' if cls=='mago_nero' else 'nature_seal' if cls=='arciere' else 'rune_ring'
     phases={name:{'enabled':False} for name in ('cast','trail','impact','telegraph','hit')}
     phases['cast']=cue('MESH_RING',color,.55,10,texture=seal)
@@ -21,7 +21,7 @@ def make(cls,sid,effect,radius):
     def stage(name,shape,**kw):phases[name]=cue(shape,color,**kw);return phases[name]
     if effect in ('ALLY_HEAL','HEAL'):
         large='intercessione' in sid
-        phases['impact']=cue('HEALING_BEAM','55FF66' if not large else 'FFF1AE',1.4 if large else .85,36,height=4 if large else 2.8,texture='holy_seal' if large else 'rune_ring',rings=3 if large else 2,column='healing_column')
+        phases['impact']=cue('HEALING_BEAM','49F5AB' if not large else 'FFE29A',2.15 if large else 1.65,36,height=4 if large else 2.8,texture='holy_seal',rings=3 if large else 2,column='healing_column')
         phases['impact']['sound']={'enabled':True,'id':'castigoclasses:skill.orison','volume':.75,'pitch':.85 if large else 1}
         phases['impact']['mesh']['columnRadius']=.42
         if 'orison' in sid:phases['cast']={'enabled':False}
@@ -46,7 +46,7 @@ def make(cls,sid,effect,radius):
         stage('telegraph',shape,radius=radius,duration=22,height=3 if effect=='VORTEX' else .3,texture=seal,rotation=-120 if effect=='VORTEX' else -25 if effect=='RUIN' else 20,rings=2,column='ribbon',opacity=.6)
         description={'SANCTUARY':'Cerchio sacro dorato che delimita la zona protetta per tutta la sua durata.','RUIN':'Sigillo oscuro a terra, controrotante, per tutta la durata della zona dannosa.','VORTEX':'Tre nastri scuri a spirale convergono al centro della zona.'}[effect]
     elif effect in ('BOLT','CURSED_BOLT','LIGHTNING','FIREBALL','DRAIN','METEOR','BLINK'):
-        tint='FFD069' if effect in ('FIREBALL','METEOR') else 'AEE9FF' if effect=='LIGHTNING' else 'E25771' if effect=='DRAIN' else color
+        tint='FF822E' if effect in ('FIREBALL','METEOR') else '65CFFF' if effect=='LIGHTNING' else 'E83D79' if effect=='DRAIN' else color
         phases['trail']=cue('MESH_BEAM',tint,.45 if effect in ('FIREBALL','METEOR') else .2,8,column='lightning' if effect=='LIGHTNING' else 'ribbon')
         phases['impact']=cue('MESH_BURST',tint,min(radius,4) if effect in ('FIREBALL','METEOR') else .8,24 if effect=='METEOR' else 12,texture='flare')
         if effect=='METEOR':stage('telegraph','MESH_RING',radius=radius,duration=24,texture='dark_seal',rotation=-60)
@@ -89,6 +89,26 @@ def make(cls,sid,effect,radius):
         sound='minecraft:entity.arrow.hit' if cls=='arciere' else 'minecraft:entity.player.attack.sweep' if cls.startswith('guerriero') else 'minecraft:entity.evoker.cast_spell' if cls=='mago_nero' else 'minecraft:block.amethyst_block.chime'
         audible='cast' if effect in ('GUARD','BULWARK','RECOVER','REPULSE','SWEEP','LOW_SWEEP','DASH','HUNTER_STEP','DISENGAGE','CHARGE') else 'impact'
         if phases[audible].get('enabled'):phases[audible]['sound']={'enabled':True,'id':sound,'volume':.45,'pitch':1}
+    # Personal sigils must surround a player, while area telegraphs retain the exact gameplay radius.
+    area=effect in ('SANCTUARY','RUIN','VORTEX','METEOR','REPULSE','SWEEP','LOW_SWEEP','FROST_NOVA')
+    for phase,c in phases.items():
+        if not c.get('enabled'):continue
+        shape=c['shape']
+        if shape=='MESH_RING' and not (area and phase in ('telegraph','impact')):
+            c['radius']=max(c['radius'],1.45 if phase=='cast' else 1.15)
+            c['mesh']['rings']=max(c['mesh']['rings'],2)
+            c['mesh']['ringGap']=.12
+        if shape=='HEALING_BEAM':c['radius']=max(c['radius'],1.3)
+        if shape=='MESH_BEAM':
+            c['radius']=min(1,c['radius']*1.45)
+            c['duration-ticks']=max(8,c['duration-ticks'])
+        if shape=='MESH_BURST':
+            c['radius']=max(.5,c['radius']*1.25)
+            c['duration-ticks']=max(18,c['duration-ticks']) if phase=='impact' else c['duration-ticks']
+            c['mesh']['fadeIn']=.015
+            c['mesh']['fadeOut']=.5
+    description=description.replace('Raggio sottile colorato e lampo nel punto colpito.','Scia intrecciata con nucleo chiaro, esplosione colorata e frammenti sul bersaglio.')
+    description+=' Texture a pixel, particelle tridimensionali e colori stratificati.'
     return phases,description
 
 def main():
@@ -106,7 +126,7 @@ def main():
             rows.append(f'| {cls} | {name} | {description} |')
     assert len(presets)==48,len(presets)
     (ROOT/'src/main/resources/skill-vfx.json').write_text(json.dumps(presets,ensure_ascii=False,indent=2)+'\n',encoding='utf8')
-    (ROOT/'docs/VFX-48-ABILITA.md').write_text('# VFX delle 48 abilità — beta.9\n\nPreset originali per Fabric, ispirati alle famiglie visive del pacchetto di riferimento. Nessun prefab o shader Unity viene eseguito dalla mod.\n\n| Classe | Abilità | Effetto |\n|---|---|---|\n'+'\n'.join(rows)+'\n',encoding='utf8')
+    (ROOT/'docs/VFX-48-ABILITA.md').write_text('# VFX delle 48 abilità — beta.10\n\nSigilli personali ampliati, scie intrecciate, impatti con volume e frammenti in stile Minecraft. I raggi delle aree di gioco restano autorevoli. Nessun prefab o shader Unity viene eseguito dalla mod.\n\n| Classe | Abilità | Effetto |\n|---|---|---|\n'+'\n'.join(rows)+'\n',encoding='utf8')
     print('Generated 48 skill presets and visual catalog')
 
 if __name__=='__main__':main()
