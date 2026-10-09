@@ -5,6 +5,13 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class DisciplineRulesTest {
+    @Test void castingAliasesOverrideShippedZeroAndAllowThirtySeconds() {
+        var config=new org.bukkit.configuration.file.YamlConfiguration();config.set("preparation-seconds",0);
+        config.set("casting-time",1.5);assertEquals(30,SkillMechanics.read(config).preparationTicks());
+        config.set("casting-time",30);assertEquals(600,SkillMechanics.read(config).preparationTicks());
+        config.set("casting-time",-1);assertThrows(IllegalArgumentException.class,()->SkillMechanics.read(config));
+        config.set("casting-time",null);config.set("preparation-seconds",2);assertEquals(40,SkillMechanics.read(config).preparationTicks());
+    }
     @Test void physicalAndMagicalAttributesBothAffectConfiguredSkills() {
         var skill=new Skill("test","Test","",Skill.Effect.MELEE,"minecraft:stick",0,1,1,1000,5,0.5,3,2,20);
         var rules=new SkillMechanics(SkillMechanics.Weapon.ANY,0,2,3,4,0.3);

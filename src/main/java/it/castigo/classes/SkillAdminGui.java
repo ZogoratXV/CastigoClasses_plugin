@@ -22,12 +22,14 @@ public final class SkillAdminGui implements Listener {
     private ItemStack button(Material material,String name,String... lore) {
         var item=new ItemStack(material);var meta=item.getItemMeta();meta.setDisplayName(name);meta.setLore(List.of(lore));item.setItemMeta(meta);return item;
     }
-    public void open(Player p) { inputs.remove(p.getUniqueId());show(p,null,-1,0,false); }
+    public void cancelInput(Player p){inputs.remove(p.getUniqueId());}
+    public void open(Player p) { cancelInput(p);plugin.closeHudInput(p);show(p,null,-1,0,false); }
     private void show(Player p,String classId,int skill,int page,boolean off) {
         if(!p.hasPermission("castigo.classes.admin"))return;
         var menu=new Menu(p,classId,skill,page,off);menu.inventory=Bukkit.createInventory(menu,54,"Castigo · Configura skill");
         var inv=menu.inventory;
         if(classId==null) {
+            inv.setItem(49,button(Material.PAINTING,"HUD gruppi LuckPerms","Layout PNG, colori e posizione elementi"));
             var classes=new ArrayList<>(plugin.catalog().all().values());
             for(int i=0;i<45&&page*45+i<classes.size();i++) { var c=classes.get(page*45+i);inv.setItem(i,button(Material.BOOK,c.name(),c.id())); }
             if(page>0)inv.setItem(45,button(Material.ARROW,"Pagina precedente"));
@@ -87,6 +89,7 @@ public final class SkillAdminGui implements Listener {
             }
             if(slot<0||slot>=54)return;
             if(m.classId==null) {
+                if(slot==49){later(p,()->plugin.openHud(p));return;}
                 var classes=new ArrayList<>(plugin.catalog().all().values());int index=m.page*45+slot;
                 if(slot<45&&index<classes.size())later(p,()->show(p,classes.get(index).id(),-1,0,false));
                 if(slot==45&&m.page>0)later(p,()->show(p,null,-1,m.page-1,false));

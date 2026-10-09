@@ -40,6 +40,8 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
     private SkillEquipment equipment;
     private VfxSettings vfxSettings;
     private SkillAdminGui adminGui;
+    private HudSettings hudSettings;
+    private HudAdminGui hudGui;
     private int ticks;
 
     @Override public void onEnable() {
@@ -58,6 +60,8 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
         } catch(Exception e) { getLogger().severe("Configurazione non valida: "+e.getMessage()); getServer().getPluginManager().disablePlugin(this); return; }
         engine=new SkillEngine(this);
         adminGui=new SkillAdminGui(this);
+        hudGui=new HudAdminGui(this);
+        getServer().getPluginManager().registerEvents(hudGui,this);
         getServer().getPluginManager().registerEvents(adminGui,this);
         getServer().getPluginManager().registerEvents(this,this);
         getServer().getPluginManager().registerEvents(engine,this);
@@ -87,8 +91,10 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
         StatPointRules pointRules=new StatPointRules(interval,amount,gain);
         SkillEquipment nextEquipment=new SkillEquipment(new File(getDataFolder(),"skill-equipment.yml"));
         VfxSettings nextVfx=new VfxSettings(new File(getDataFolder(),"vfx-overrides.json"));
+        HudSettings nextHud=new HudSettings(new File(getDataFolder(),"hud-themes.json").toPath());
         catalog=next; progression=curve; statPoints=pointRules;equipment=nextEquipment;
         vfxSettings=nextVfx;
+        hudSettings=nextHud;
     }
     private int configInteger(String key,int fallback,int min,int max) {
         double value=ClassCatalog.number(getConfig(),key,fallback,min,max);
@@ -102,6 +108,26 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
     public ClassDefinition definition(Profile p) { return catalog.get(p.classId); }
     public ClassCatalog catalog() { return catalog; }
     public SkillEquipment equipment() { return equipment; }
+    public HudSettings hudSettings(){return hudSettings;}
+    public void openHud(Player p){adminGui.cancelInput(p);hudGui.open(p);}
+    public void closeHudInput(Player p){hudGui.cancelInput(p);}
+    public void syncHud(){for(Player p:Bukkit.getOnlinePlayers())sync(p);}
+    public Set<String> hudGroups(){
+        var result=new TreeSet<>(hudSettings.groups());result.add("default");
+        if(getServer().getPluginManager().isPluginEnabled("LuckPerms"))try{
+            var lp=getServer().getServicesManager().load(LuckPerms.class);
+            if(lp!=null)for(var g:lp.getGroupManager().getLoadedGroups())result.add(g.getName());
+        }catch(LinkageError ignored){}
+        return result;
+    }
+    private HudTheme hudFor(Player p,String primary){
+        var groups=new HashSet<String>();if(!primary.isBlank())groups.add(primary);
+        if(getServer().getPluginManager().isPluginEnabled("LuckPerms"))try{
+            var lp=getServer().getServicesManager().load(LuckPerms.class);var user=lp==null?null:lp.getUserManager().getUser(p.getUniqueId());
+            if(user!=null)for(var g:user.getInheritedGroups(lp.getContextManager().getQueryOptions(user).orElse(lp.getContextManager().getStaticQueryOptions())))groups.add(g.getName());
+        }catch(LinkageError ignored){}
+        return hudSettings.resolve(groups,primary);
+    }
     public SkillPresentation presentation(Player p,Skill skill) { return vfxSettings.resolve(profile(p).classId,skill,catalog.presentation(skill)); }
     public JsonObject casting(Player p) { return engine.casting(p.getUniqueId()); }
     public boolean equipped(Player p,Skill skill) {
@@ -241,13 +267,13 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
         if(!connected.contains(player.getUniqueId()))return;
         Profile p=profile(player); if(p==null)return;
         JsonObject obj=new JsonObject();
-        obj.add("casting",engine.casting(player.getUniqueId()));obj.addProperty("vfxAdmin",player.hasPermission("castigo.classes.admin"));
+        obj.add("casting",engine.casting(player.getUniqueId()));
         obj.addProperty("world",player.getWorld().getUID().toString());
         obj.addProperty("name",net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer.plainText().serialize(player.displayName())); obj.addProperty("classId",p.classId);
         obj.addProperty("level",p.level); obj.addProperty("xp",p.xp); obj.addProperty("xpNext",progression.required(p.level));
         obj.addProperty("health",player.getHealth()); obj.addProperty("maxHealth",player.getAttribute(Attribute.MAX_HEALTH).getValue());
         obj.addProperty("resource",p.resource); obj.addProperty("maxResource",stats(player).mana());
-        obj.addProperty("group",group(player)); obj.add("stats",gson.toJsonTree(stats(player)));
+        String primary=group(player);obj.addProperty("group",primary);obj.add("hud",hudFor(player,primary).json()); obj.add("stats",gson.toJsonTree(stats(player)));
         JsonObject points=new JsonObject(),allocated=new JsonObject();JsonArray allocatable=new JsonArray();
         for(StatAttribute stat:StatAttribute.values()) {
             allocated.addProperty(stat.id(),p.allocatedStats.getOrDefault(stat,0));
@@ -298,7 +324,7 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
                 lastCatalog.put(player.getUniqueId(),now);connected.add(player.getUniqueId()); catalog(player); return;
             }
             if(!connected.contains(player.getUniqueId())||!player.hasPermission("castigo.classes.use"))return;
-            if(type.startsWith("vfx_")) { editVfx(player,type,o);return; }
+            if(type.startsWith("vfx_"))return;
             switch(type) {
                 case "cast" -> cast(player,o.get("slot").getAsInt());
                 case "allocate" -> allocate(player,StatAttribute.parse(o.get("attribute").getAsString()));
@@ -316,25 +342,6 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
     private void cast(Player p,int slot) {
         if(slot<0||slot>=8||profile(p)==null||!p.hasPermission("castigo.classes.use"))return;
         engine.cast(p,definition(profile(p)).skill(profile(p).slots.get(slot)));
-    }
-    private void editVfx(Player p,String type,JsonObject input) {
-        JsonObject reply=new JsonObject();
-        try {
-            String c=input.get("classId").getAsString(),sid=input.get("skillId").getAsString();
-            var stage=SkillPresentation.Stage.valueOf(input.get("stage").getAsString());
-            reply.addProperty("classId",c);reply.addProperty("skillId",sid);reply.addProperty("stage",stage.name());
-            var definition=catalog.get(c);var skill=definition==null?null:definition.skill(sid);
-            if(skill==null)throw new IllegalArgumentException("Skill sconosciuta");
-            if(!Set.of("vfx_get","vfx_save","vfx_reset").contains(type))throw new IllegalArgumentException("Azione VFX sconosciuta");
-            if(!type.equals("vfx_get")) {
-                if(!p.hasPermission("castigo.classes.admin"))throw new IllegalArgumentException("Serve castigo.classes.admin per modificare il server");
-                vfxSettings.save(c,sid,stage,type.equals("vfx_reset")?null:input.getAsJsonObject("draft"));
-            }
-            reply.add("draft",VfxSettings.draft(vfxSettings.resolve(c,skill,catalog.presentation(skill)).cues().get(stage)));
-            reply.addProperty("message",type.equals("vfx_get")?"Preset caricato dal server":type.equals("vfx_reset")?"Ripristinato il preset della classe":"Preset salvato sul server");
-            reply.addProperty("ok",true);
-        } catch(Exception e) { reply.addProperty("ok",false);reply.addProperty("message","Preset non applicato: "+e.getMessage()); }
-        send(p,"vfx_editor",reply);
     }
     public void stopEffect(UUID world,UUID handle) {
         JsonObject o=new JsonObject();o.addProperty("handle",handle.toString());
@@ -389,8 +396,9 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
     }
     @Override public boolean onCommand(CommandSender sender,Command command,String label,String[] args) {
         try {
-            if(args.length>0&&Set.of("admin","icona").contains(args[0])) {
+            if(args.length>0&&Set.of("admin","icona","hud").contains(args[0])) {
                 if(!sender.hasPermission("castigo.classes.admin")) { sender.sendMessage("Permesso mancante.");return true; }
+                if(args[0].equals("hud")){if(sender instanceof Player p)openHud(p);else sender.sendMessage("Apri la GUI da un giocatore.");return true;}
                 if(args[0].equals("admin")) {
                     if(sender instanceof Player p)adminGui.open(p);else sender.sendMessage("Apri la GUI da un giocatore.");return true;
                 }
@@ -463,7 +471,7 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
     @Override public List<String> onTabComplete(CommandSender s,Command c,String label,String[] args) {
         List<String> choices=args.length==1?new ArrayList<>(List.of("lista","skill","scambia","sottoclasse","assegna")):new ArrayList<>();
         if(args.length==2&&args[0].equals("assegna"))for(StatAttribute stat:StatAttribute.values())choices.add(stat.label().toLowerCase(Locale.ROOT));
-        if(args.length==1&&s.hasPermission("castigo.classes.admin"))choices.addAll(List.of("reload","set","xp","livello","admin","icona"));
+        if(args.length==1&&s.hasPermission("castigo.classes.admin"))choices.addAll(List.of("reload","set","xp","livello","admin","icona","hud"));
         if(s.hasPermission("castigo.classes.admin")&&args[0].equals("icona")) {
             if(args.length==2)choices.addAll(catalog.all().keySet());
             if(args.length==3&&catalog.get(args[1])!=null)catalog.get(args[1]).skills().forEach(skill->choices.add(skill.id()));

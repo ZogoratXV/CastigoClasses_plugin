@@ -89,7 +89,7 @@ public final class SkillEngine implements Listener {
         Long previousCooldown=data.cooldowns.get(skill.id());
         AbilityRules.commit(data,skill,now,plugin.getConfig().getLong("combat.global-cooldown-ms",350));
         boolean accepted=false;
-        try { accepted=skill.effect().discipline()?disciplines.cast(p,skill,power):execute(p,skill,power); }
+        try { accepted=disciplines.cast(p,skill,power); }
         finally {
             if(!accepted) {
                 data.resource=previousResource;data.globalReadyAt=previousGlobal;
@@ -126,12 +126,12 @@ public final class SkillEngine implements Listener {
         }
         return result;
     }
-    private boolean execute(Player p,Skill s,double power) {
+    boolean executeLegacy(Player p,Skill s,double power,LivingEntity locked) {
         Location from=p.getEyeLocation();
         SkillPresentation fx=plugin.presentation(p,s);
         switch(s.effect()) {
             case BOLT,LIGHTNING -> {
-                RayTraceResult hit=ray(p,s.range());
+                RayTraceResult hit=locked==null?ray(p,s.range()):new RayTraceResult(locked.getEyeLocation().toVector(),locked);
                 if(hit==null||!(hit.getHitEntity() instanceof LivingEntity target)) { plugin.feedback(p,"Nessun bersaglio valido nella linea di mira.");return false; }
                 boolean accepted=damageAccepted(target,p,power);
                 effects.play(fx,SkillPresentation.Stage.TRAIL,s.effect()==Skill.Effect.LIGHTNING?target.getLocation().add(0,8,0):from,hit.getHitPosition().toLocation(p.getWorld()));

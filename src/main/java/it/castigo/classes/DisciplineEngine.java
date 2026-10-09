@@ -83,7 +83,7 @@ public final class DisciplineEngine implements Listener {
         int arrows=DisciplineRules.arrows(skill.effect());
         if(arrows>0&&(ammo(p)<arrows||shots.size()+arrows>256)) { plugin.feedback(p,"Servono "+arrows+" frecce normali, oppure troppi proiettili attivi.");return false; }
         if(skill.effect()==Skill.Effect.COUNTER&&counters.getOrDefault(p.getUniqueId(),Long.MIN_VALUE)<tick) { plugin.feedback(p,"Serve una parata riuscita negli ultimi 2 secondi.");return false; }
-        int delay=rules.preparationTicks();if(buff(p,Kind.FEAR)!=null)delay=(int)Math.ceil(delay*1.5);
+        int delay=rules.preparationTicks();if(buff(p,Kind.FEAR)!=null)delay=Math.min(600,(int)Math.ceil(delay*1.5));
         if(delay>0) {
             LivingEntity selected=preparationTarget(p,skill);
             if(requiresTarget(skill.effect())&&selected==null)return fail(p,"Nessun bersaglio valido entro portata.");
@@ -147,6 +147,7 @@ public final class DisciplineEngine implements Listener {
     }
     private boolean execute(Player p,Skill s,double power,LivingEntity locked) {
         if(!equipped(p,s)||!engine.allowed(p,p.getLocation()))return false;
+        if(!s.effect().discipline())return engine.executeLegacy(p,s,power,locked);
         LivingEntity target;Location center;
         switch(s.effect()) {
             case ALLY_HEAL,HOT,CLEANSE,LINK -> {
@@ -239,7 +240,7 @@ public final class DisciplineEngine implements Listener {
     }
     private static boolean requiresTarget(Skill.Effect effect) {
         return friendly(effect)||switch(effect) {
-            case CURSED_BOLT,VULNERABILITY,DOT,FEAR,HEAL_BLOCK,DRAIN,STUDY,MELEE,SHIELD_BASH,COUNTER,HEAVY_STRIKE,LONG_THRUST,STOP_STRIKE,GUARD_BREAK,COMBO -> true;
+            case BOLT,LIGHTNING,CURSED_BOLT,VULNERABILITY,DOT,FEAR,HEAL_BLOCK,DRAIN,STUDY,MELEE,SHIELD_BASH,COUNTER,HEAVY_STRIKE,LONG_THRUST,STOP_STRIKE,GUARD_BREAK,COMBO -> true;
             default -> false;
         };
     }

@@ -10,6 +10,14 @@ import java.nio.file.*;
 
 /** Persisted per-class skill overrides; ItemsAdder IDs are read from its public API. */
 public final class SkillEquipment {
+    private static final com.google.gson.JsonObject ICONS=loadIcons();
+    private static com.google.gson.JsonObject loadIcons(){
+        try(var stream=SkillEquipment.class.getResourceAsStream("/skill-icons.json")){
+            if(stream==null)return new com.google.gson.JsonObject();
+            return com.google.gson.JsonParser.parseReader(new java.io.InputStreamReader(stream,java.nio.charset.StandardCharsets.UTF_8)).getAsJsonObject();
+        }catch(java.io.IOException e){throw new IllegalStateException(e);}
+    }
+    public static String defaultIcon(Skill skill){return skill.icon().startsWith("minecraft:")&&ICONS.has(skill.id())?ICONS.get(skill.id()).getAsString():skill.icon();}
     public record Requirement(boolean offhand,String item) {}
     private final File file;
     private YamlConfiguration data;
@@ -61,7 +69,7 @@ public final class SkillEquipment {
         }
         return item.getType().getKey().toString();
     }
-    public String icon(String classId,Skill skill) { return data.getString(path(classId,skill.id())+".icon",skill.icon()); }
+    public String icon(String classId,Skill skill) { return data.getString(path(classId,skill.id())+".icon",defaultIcon(skill)); }
     public void setItem(String c,String s,Requirement r) throws Exception {
         validateItem(r.item());var copy=copy();String path=path(c,s);
         copy.set(path+".item",r.item());copy.set(path+".hand",r.offhand()?"OFF":"MAIN");save(copy);

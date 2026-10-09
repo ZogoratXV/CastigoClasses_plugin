@@ -123,6 +123,27 @@ public class DisciplineIntegrationTest {
         player.setSneaking(true);player.setHealth(5);use("mago_bianco",1);
         assertTrue(player.getHealth()>5);assertTrue(plugin.profile(player).resource<1000);
     }
+    @Test void legacyHealNowHonorsConfiguredCastingTimeThroughNormalCommand() throws Exception {
+        var skill=plugin.catalog().get("mago").skills().get(5);
+        assertEquals(it.castigo.classes.model.Skill.Effect.HEAL,skill.effect());
+        var file=new java.io.File(plugin.getDataFolder(),"classes/mago.yml");
+        var config=org.bukkit.configuration.file.YamlConfiguration.loadConfiguration(file);
+        config.set("skills."+skill.id()+".preparation-seconds",2);config.save(file);command("reload");
+        player.setHealth(5);use("mago",6);assertEquals(5,player.getHealth());assertEquals(2000,plugin.casting(player).get("totalMs").getAsInt());
+        server.getScheduler().performTicks(39);assertEquals(5,player.getHealth());
+        server.getScheduler().performTicks(1);assertTrue(player.getHealth()>5);assertTrue(plugin.casting(player).isEmpty());
+    }
+    @Test void consecratedBoltPreparesAndLocksItsRecipient()throws Exception{
+        var original=plugin.catalog().get("mago_bianco").skills().get(1);
+        var file=new java.io.File(plugin.getDataFolder(),"classes/mago_bianco.yml");var config=org.bukkit.configuration.file.YamlConfiguration.loadConfiguration(file);
+        config.set("skills."+original.id()+".preparation-seconds",1);config.save(file);command("reload");
+        var target=server.addPlayer("BoltTarget");target.teleport(player.getLocation().add(0,0,4));target.getWorld().loadChunk(target.getLocation().getChunk());target.getWorld().setPVP(true);
+        var engine=new SkillEngine(plugin);server.getPluginManager().registerEvents(engine,plugin);
+        var disciplines=new DisciplineEngine(plugin,engine,(p,r)->target);double health=target.getHealth();
+        assertTrue(disciplines.cast(player,plugin.catalog().get("mago_bianco").skills().get(1),3));
+        for(int i=0;i<19;i++)disciplines.tick();assertEquals(health,target.getHealth());
+        player.setRotation(180,0);disciplines.tick();assertTrue(target.getHealth()<health);
+    }
     @Test void wrongEquipmentDoesNotSpendResourceOrStartCooldown() {
         player.getInventory().clear();use("guerriero_scudo",3);
         assertEquals(1000,plugin.profile(player).resource);assertTrue(plugin.profile(player).cooldowns.isEmpty());
@@ -229,7 +250,7 @@ public class DisciplineIntegrationTest {
         var restored=new SkillEquipment(new java.io.File(plugin.getDataFolder(),"skill-equipment.yml"));
         assertEquals(icon,restored.icon("mago_bianco",skill));
         assertThrows(IllegalArgumentException.class,()->restored.setIcon("mago_bianco",skill.id(),"texture:castigo:../../outside.png"));
-        restored.setIcon("mago_bianco",skill.id(),"reset");assertEquals(skill.icon(),restored.icon("mago_bianco",skill));
+        restored.setIcon("mago_bianco",skill.id(),"reset");assertEquals(SkillEquipment.defaultIcon(skill),restored.icon("mago_bianco",skill));
     }
     private void clickMenu(int rawSlot) {
         var event=new org.bukkit.event.inventory.InventoryClickEvent(player.getOpenInventory(),org.bukkit.event.inventory.InventoryType.SlotType.CONTAINER,rawSlot,
@@ -249,7 +270,7 @@ public class DisciplineIntegrationTest {
         clickMenu(31);clickMenu(54);
         assertEquals("minecraft:blaze_rod",plugin.equipment().icon("mago_bianco",skill));
         assertEquals(3,player.getInventory().getItem(9).getAmount());
-        clickMenu(24);assertEquals(skill.icon(),plugin.equipment().icon("mago_bianco",skill));
+        clickMenu(24);assertEquals(SkillEquipment.defaultIcon(skill),plugin.equipment().icon("mago_bianco",skill));
         clickMenu(20);
         String path="texture:castigo:textures/gui/skills/orison.png";
         var input=new org.bukkit.event.player.AsyncPlayerChatEvent(false,player,path,new java.util.HashSet<>(server.getOnlinePlayers()));
@@ -259,6 +280,16 @@ public class DisciplineIntegrationTest {
     @Test void normalPlayerCannotOpenAdminGui() {
         plugin.onCommand(player,plugin.getCommand("classe"),"classe",new String[]{"admin"});
         assertNull(player.getOpenInventory().getTopInventory());
+    }
+    @Test void hudMenuSavesTextureWithoutConsumingOrBroadcastingChat() throws Exception {
+        player.addAttachment(plugin,"castigo.classes.admin",true);
+        plugin.onCommand(player,plugin.getCommand("classe"),"classe",new String[]{"admin"});clickMenu(49);clickMenu(0);clickMenu(0);
+        String texture="castigo:textures/gui/hud/default.png";
+        var input=new org.bukkit.event.player.AsyncPlayerChatEvent(false,player,texture,new java.util.HashSet<>(server.getOnlinePlayers()));
+        server.getPluginManager().callEvent(input);assertTrue(input.isCancelled());server.getScheduler().performTicks(1);
+        assertEquals(texture,plugin.hudSettings().theme("default").text("texture"));
+        assertEquals(texture,new HudSettings(new java.io.File(plugin.getDataFolder(),"hud-themes.json").toPath()).theme("default").text("texture"));
+        clickMenu(49);assertEquals("",plugin.hudSettings().theme("default").text("texture"));
     }
     @Test void orisonSelfCastEmitsBeamAtRecipientsFeet() {
         player.getWorld().loadChunk(player.getLocation().getChunk());
@@ -296,7 +327,7 @@ public class DisciplineIntegrationTest {
         plugin.profile(player).cooldowns.clear();use("mago_bianco",7);
         server.getScheduler().performTicks(30);assertTrue(plugin.casting(player).isEmpty());
     }
-    @Test void clientCannotPublishVfxWithoutAdminPermission() throws Exception {
+    @Test void removedEditorRejectsVfxWritesEvenForAdmins() throws Exception {
         var field=CastigoClasses.class.getDeclaredField("connected");field.setAccessible(true);
         ((java.util.Set<java.util.UUID>)field.get(plugin)).add(player.getUniqueId());
         var skill=plugin.catalog().get("mago_bianco").skills().getFirst();
@@ -307,7 +338,7 @@ public class DisciplineIntegrationTest {
         player.addAttachment(plugin,"castigo.classes.admin",true);
         var rate=CastigoClasses.class.getDeclaredField("lastRequest");rate.setAccessible(true);((java.util.Map<?,?>)rate.get(plugin)).clear();
         plugin.onPluginMessageReceived(CastigoClasses.CHANNEL,player,o.toString().getBytes(java.nio.charset.StandardCharsets.UTF_8));
-        assertTrue(new java.io.File(plugin.getDataFolder(),"vfx-overrides.json").exists());
-        assertEquals(SkillPresentation.Shape.RING,plugin.presentation(player,skill).cues().get(SkillPresentation.Stage.CAST).shape());
+        assertFalse(new java.io.File(plugin.getDataFolder(),"vfx-overrides.json").exists());
+        assertNotEquals(SkillPresentation.Shape.RING,plugin.presentation(player,skill).cues().get(SkillPresentation.Stage.CAST).shape());
     }
 }
