@@ -1,6 +1,8 @@
 default-class: mago_bianco
 max-level: 100
 xp:
+  # Peso massimo del supporto rispetto al danno; 0 disabilita. Il totale XP resta invariato.
+  support-max-ratio: 0.35
   base: 100
   growth: 1.18
   vanilla-multiplier: 1.0

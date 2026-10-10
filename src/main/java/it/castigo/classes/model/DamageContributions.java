@@ -14,8 +14,13 @@ public final class DamageContributions {
         if(q.size()>=1024)q.removeFirst();q.addLast(new Hit(player,damage,now));
     }
     public Map<UUID,Long> take(UUID victim,long xp,long now,Set<UUID> eligible){
+        return take(victim,xp,now,eligible,Map.of());
+    }
+    public double total(UUID victim,long now,Set<UUID> eligible){var q=victims.get(victim);return q==null?0:q.stream().filter(h->now-h.at<=30000&&eligible.contains(h.player)).mapToDouble(Hit::damage).sum();}
+    public Map<UUID,Long> take(UUID victim,long xp,long now,Set<UUID> eligible,Map<UUID,Double> support){
         var q=victims.remove(victim);if(q==null||xp<=0)return Map.of();
         var sums=new TreeMap<UUID,Double>();for(var h:q)if(now-h.at<=30000&&eligible.contains(h.player))sums.merge(h.player,h.damage,Double::sum);
+        support.forEach((id,n)->{if(eligible.contains(id)&&Double.isFinite(n)&&n>0)sums.merge(id,n,Double::sum);});
         double total=sums.values().stream().mapToDouble(Double::doubleValue).sum();if(total<=0)return Map.of();
         var result=new LinkedHashMap<UUID,Long>();var fractions=new HashMap<UUID,Double>();long used=0;
         for(var e:sums.entrySet()){double share=xp*(e.getValue()/total);long n=(long)Math.floor(share);result.put(e.getKey(),n);used+=n;fractions.put(e.getKey(),share-n);}

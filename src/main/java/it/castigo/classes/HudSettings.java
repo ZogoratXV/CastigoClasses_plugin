@@ -32,6 +32,10 @@ public final class HudSettings {
         if(!data.has(group)&&data.size()>=256)throw new IllegalArgumentException("Massimo 256 temi HUD");
         entry.addProperty("priority",priority);entry.add("layout",theme.json());next.add(group,entry);save(next);
     }
+    public void preset(String group,String id)throws Exception{
+        validateGroup(group);if(!data.has(group)&&data.size()>=256)throw new IllegalArgumentException("Massimo 256 temi HUD");
+        var next=data.deepCopy();var entry=new JsonObject();entry.addProperty("priority",priority(group));entry.add("layout",HudPresets.theme(id).json());next.add(group,entry);save(next);
+    }
     public void reset(String group)throws Exception{var next=data.deepCopy();next.remove(group);save(next);}
     private void save(JsonObject next)throws Exception {
         Files.createDirectories(file.getParent());Path temp=Files.createTempFile(file.getParent(),"hud-",".tmp");

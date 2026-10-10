@@ -74,4 +74,26 @@ class ProgressionIntegrationTest {
         var skill=plugin.catalog().get("mago_bianco").skills().getFirst();plugin.equipment().setItem("mago_bianco",skill.id(),new SkillEquipment.Requirement(false,"minecraft:blaze_rod"));
         assertEquals("minecraft:blaze_rod",plugin.equipment().requirement("mago_bianco_maestro",skill,plugin.catalog().mechanics(skill)).item());
     }
+
+    @Test void healerReceivesShareThroughRealHealAndDeathEvents()throws Exception{
+        var healer=server.addPlayer("Healer");var mob=(org.bukkit.entity.LivingEntity)player.getWorld().spawnEntity(player.getLocation(),org.bukkit.entity.EntityType.ZOMBIE);
+        var wound=new org.bukkit.event.entity.EntityDamageByEntityEvent(mob,player,org.bukkit.event.entity.EntityDamageEvent.DamageCause.ENTITY_ATTACK,10);server.getPluginManager().callEvent(wound);player.setHealth(5);
+        var field=CastigoClasses.class.getDeclaredField("engine");field.setAccessible(true);var engine=(SkillEngine)field.get(plugin);
+        assertTrue(new DisciplineEngine(plugin,engine).heal(healer,player,10));
+        var damage=new org.bukkit.event.entity.EntityDamageByEntityEvent(player,mob,org.bukkit.event.entity.EntityDamageEvent.DamageCause.ENTITY_ATTACK,20);server.getPluginManager().callEvent(damage);
+        var death=new org.bukkit.event.entity.EntityDeathEvent(mob,damage.getDamageSource(),new java.util.ArrayList<>(),100);server.getPluginManager().callEvent(death);
+        assertTrue(plugin.profile(healer).dailyXp>0);assertEquals(100,plugin.profile(healer).dailyXp+plugin.profile(player).dailyXp);assertEquals(0,death.getDroppedExp());
+    }
+    @Test void calibrationGuiCopiesItemAndPersistsPrivateInput()throws Exception{
+        player.addAttachment(plugin,"castigo.classes.admin",true);plugin.openCalibration(player);player.getInventory().setItem(9,new ItemStack(Material.BOW));click(54);click(1);chat("-0.25");
+        assertEquals(-.25,plugin.calibration().get("minecraft:bow").get("firstY").getAsDouble());assertEquals(Material.BOW,player.getInventory().getItem(9).getType());
+    }
+
+    @Test void trainingTargetHasNoRewardsAndCanBeRemoved(){
+        player.addAttachment(plugin,"castigo.classes.admin",true);plugin.adminTools().command(player,"crea");
+        var mob=player.getWorld().getEntities().stream().filter(plugin.adminTools()::dummy).findFirst().orElseThrow();
+        var hit=new org.bukkit.event.entity.EntityDamageByEntityEvent(player,mob,org.bukkit.event.entity.EntityDamageEvent.DamageCause.ENTITY_ATTACK,2000);server.getPluginManager().callEvent(hit);assertTrue(hit.getDamage()<=900);assertFalse(hit.isCancelled());
+        var death=new org.bukkit.event.entity.EntityDeathEvent((org.bukkit.entity.LivingEntity)mob,hit.getDamageSource(),new java.util.ArrayList<>(java.util.List.of(new ItemStack(Material.DIAMOND))),100);server.getPluginManager().callEvent(death);assertEquals(0,death.getDroppedExp());assertTrue(death.getDrops().isEmpty());assertEquals(0,plugin.profile(player).dailyXp);
+        plugin.adminTools().command(player,"rimuovi");assertFalse(mob.isValid());
+    }
 }

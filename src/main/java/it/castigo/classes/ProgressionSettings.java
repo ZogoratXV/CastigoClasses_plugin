@@ -19,6 +19,7 @@ public final class ProgressionSettings {
     public LocalTime resetTime(){return LocalTime.parse(data.getString("daily.reset-time","00:00"));}
     public String token(){return data.getString("daily.reset-token","");}
     public String day(Instant now){var zone=ZoneId.of("Europe/Rome");var date=now.atZone(zone).toLocalDate();var boundary=date.atTime(resetTime()).atZone(zone).toInstant();return (now.isBefore(boundary)?date.minusDays(1):date).toString();}
+    public Instant nextReset(Instant now){var date=LocalDate.parse(day(now)).plusDays(1);return date.atTime(resetTime()).atZone(ZoneId.of("Europe/Rome")).toInstant();}
     public int cap(String id,ClassCatalog catalog,int global){int fallback=Set.of("mago","mago_bianco","mago_nero","guerriero_scudo","guerriero_due_mani","arciere").contains(id)?10:global;return Math.min(global,data.getInt("classes."+id+".level-cap",catalog.levelCap(id,fallback)));}
     public String group(String id,ClassCatalog catalog){return data.getString("classes."+id+".group",catalog.group(id));}
     public String item(String id){return data.getString("classes."+id+".promotion-item","");}

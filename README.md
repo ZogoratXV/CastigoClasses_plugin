@@ -1,7 +1,15 @@
 # CastigoClasses — plugin
 
-Versione di test **0.1.0-beta.13** per **Purpur Minecraft 26.2**, Java 25 e **CastigoCore 2.1.0-beta.9**.
+Versione di test **0.1.0-beta.15** per **Purpur Minecraft 26.2**, Java 25 e **CastigoCore 2.1.0-beta.9**.
 Client: [CastigoClasses Fabric](https://github.com/ZogoratXV/CastigoClasses_fabricmod), Minecraft 26.2 / Fabric Loader 0.19.5.
+
+## Strumenti RP e regolazioni — beta.15
+
+Skill ereditate invariate, contributo cure/protezioni all'XP, calibrazione armi per oggetto, 11 preset HUD, bersaglio durante il casting e strumenti admin di diagnosi/prova. [Guida beta.15](docs/AGGIORNAMENTO-BETA15.md). Aggiornare entrambi i JAR.
+
+## Progressione — beta.14
+
+Cap giornaliero con reset in ora italiana, XP senza sfere e proporzionale al contributo, 12 sottoclassi con consumabili, gruppi LuckPerms automatici e impugnatura a due mani configurabile. [Guida beta.14](docs/AGGIORNAMENTO-BETA14.md).
 
 ## HUD LuckPerms, casting e icone — beta.13
 

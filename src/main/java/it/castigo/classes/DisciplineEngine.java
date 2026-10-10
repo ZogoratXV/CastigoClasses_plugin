@@ -62,7 +62,22 @@ public final class DisciplineEngine implements Listener {
     public com.google.gson.JsonObject casting(UUID id) {
         var result=new com.google.gson.JsonObject();var prep=preparing.get(id);
         if(prep!=null) { result.addProperty("name",prep.skill().name());result.addProperty("totalMs",prep.total()*50);result.addProperty("remainingMs",Math.max(0,prep.ready()-tick)*50); }
+        if(prep!=null&&prep.target()!=null){
+            var caster=resolve(prep.source());var target=prep.target();
+            result.addProperty("targetName",target.getName());result.addProperty("range",prep.skill().range());
+            if(caster!=null&&caster.getWorld().equals(target.getWorld()))result.addProperty("distance",caster.getLocation().distance(target.getLocation()));
+        }
         return result;
+    }
+    private String interruption(Player p,Preparation prep){
+        if(!equipped(p,prep.skill())||!p.getInventory().getItemInMainHand().isSimilar(prep.weapon()))return "equipaggiamento cambiato";
+        if(p.getLocation().distanceSquared(prep.start())>0.25)return "ti sei mosso";
+        var target=prep.target();if(target!=null){
+            if(target.isDead()||!target.isValid())return "bersaglio non disponibile";
+            if(!p.getWorld().equals(target.getWorld())||p.getLocation().distanceSquared(target.getLocation())>prep.skill().range()*prep.skill().range())return "bersaglio fuori portata";
+            if(!p.equals(target)&&!p.hasLineOfSight(target))return "bersaglio non visibile";
+        }
+        return "azione non consentita qui o bersaglio non valido";
     }
     private boolean endPreparation(UUID id) {
         boolean removed=preparing.remove(id)!=null;
@@ -103,7 +118,7 @@ public final class DisciplineEngine implements Listener {
             boolean valid=p!=null&&DisciplineRules.prepared(true,true,equipped(p,prep.skill()),p.getLocation().distanceSquared(prep.start()))
                     &&p.getInventory().getItemInMainHand().isSimilar(prep.weapon())&&engine.allowed(p,p.getLocation())
                     &&(prep.target()==null||validPreparedTarget(p,prep.skill(),prep.target()));
-            if(!valid) { endPreparation(entry.getKey());if(p!=null)plugin.feedback(p,"Preparazione interrotta.");continue; }
+            if(!valid) { endPreparation(entry.getKey());if(p!=null)plugin.feedback(p,"Preparazione interrotta: "+interruption(p,prep)+".");continue; }
             if(tick>=prep.ready()) { endPreparation(entry.getKey());if(!execute(p,prep.skill(),prep.power(),prep.target()))plugin.feedback(p,"Tecnica fallita: bersaglio o requisiti non più validi."); }
         }
         for(Buff b:List.copyOf(buffs.values())) {
@@ -286,7 +301,9 @@ public final class DisciplineEngine implements Listener {
         var attr=target.getAttribute(Attribute.MAX_HEALTH);if(attr==null)return false;
         double missing=attr.getValue()-target.getHealth();if(missing<=0||power<=0)return false;
         var event=new EntityRegainHealthEvent(target,Math.min(missing,power),EntityRegainHealthEvent.RegainReason.CUSTOM);
-        Bukkit.getPluginManager().callEvent(event);if(event.isCancelled()||event.getAmount()<=0)return false;
+        plugin.prepareHeal(event,p);
+        try{Bukkit.getPluginManager().callEvent(event);}finally{plugin.finishHeal(event);}
+        if(event.isCancelled()||event.getAmount()<=0)return false;
         target.setHealth(Math.min(attr.getValue(),target.getHealth()+event.getAmount()));return true;
     }
     private Buff buff(Entity e,Kind kind) { Buff b=buffs.get(new Key(e.getUniqueId(),kind));return b!=null&&b.end>tick?b:null; }
@@ -412,13 +429,13 @@ public final class DisciplineEngine implements Listener {
     }
     @EventHandler(priority=EventPriority.HIGHEST,ignoreCancelled=true) public void protection(EntityDamageByEntityEvent e) {
         if(!(e.getEntity() instanceof LivingEntity victim))return;
-        Buff guard=buff(victim,Kind.GUARD);double reduction=0;
-        if(guard!=null&&victim instanceof Player player&&equipped(player,guard.skill)&&front(victim,e.getDamager()))reduction=guard.fraction;
+        Buff guard=buff(victim,Kind.GUARD);double reduction=0;Player reductionOwner=null;
+        if(guard!=null&&victim instanceof Player player&&equipped(player,guard.skill)&&front(victim,e.getDamager())){reduction=guard.fraction;reductionOwner=player;}
         for(Zone zone:zones) {
             if(zone.skill().effect()!=Skill.Effect.SANCTUARY||zone.end()<=tick)continue;
-            Player caster=resolve(zone.source());if(caster!=null&&inSanctuary(caster,victim,zone))reduction=Math.max(reduction,mechanics(zone.skill()).fraction());
+            Player caster=resolve(zone.source());if(caster!=null&&inSanctuary(caster,victim,zone)&&mechanics(zone.skill()).fraction()>reduction){reduction=mechanics(zone.skill()).fraction();reductionOwner=caster;}
         }
-        if(reduction>0)e.setDamage(e.getDamage()*(1-reduction));
+        if(reduction>0){double before=e.getFinalDamage();e.setDamage(e.getDamage()*(1-reduction));plugin.protectedDamage(e,reductionOwner,Math.max(0,before-e.getFinalDamage()));}
         if(redirecting) { e.setDamage(Math.min(e.getDamage(),Math.max(0,victim.getHealth()-1)));return; }
         Buff link=buff(victim,Kind.LINK);
         if(link==null||redirecting)return;
@@ -429,7 +446,7 @@ public final class DisciplineEngine implements Listener {
         double before=protector.getHealth();redirecting=true;
         try { protector.damage(share,e.getDamager()); }
         finally { redirecting=false; }
-        if(protector.getHealth()<before)e.setDamage(Math.max(0,e.getDamage()-share));
+        if(protector.getHealth()<before){double original=e.getFinalDamage();e.setDamage(Math.max(0,e.getDamage()-share));plugin.protectedDamage(e,protector,Math.max(0,original-e.getFinalDamage()));}
     }
     private boolean front(LivingEntity target,Entity damager) {
         if(damager instanceof Projectile projectile&&projectile.getShooter() instanceof Entity shooter)damager=shooter;

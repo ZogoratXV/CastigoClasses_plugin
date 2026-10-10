@@ -13,6 +13,7 @@ public final class HudTheme {
         d.put("width",172);d.put("height",64);d.put("headX",8);d.put("headY",8);d.put("headSize",24);
         d.put("textX",40);d.put("nameY",7);d.put("classY",18);d.put("groupY",28);
         d.put("barsX",6);d.put("healthY",39);d.put("resourceY",50);d.put("barsWidth",160);d.put("xpY",60);
+        d.put("textScale",100);d.put("barTextScale",100);d.put("barHeight",8);
         DEFAULTS=Collections.unmodifiableMap(d);
     }
     private final JsonObject values;
@@ -27,6 +28,7 @@ public final class HudTheme {
                 int n=Integer.parseInt(value),min=0,max=400;
                 if(key.equals("width")){min=100;max=400;}else if(key.equals("height")){min=60;max=240;}
                 else if(key.equals("headSize")){min=8;max=64;}else if(key.equals("barsWidth")){min=20;max=380;}
+                else if(key.equals("textScale")||key.equals("barTextScale")){min=50;max=100;}else if(key.equals("barHeight")){min=4;max=12;}
                 if(n<min||n>max)throw new IllegalArgumentException(key+": da "+min+" a "+max);
                 values.addProperty(key,n);
             } else {

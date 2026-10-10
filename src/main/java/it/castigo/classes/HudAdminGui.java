@@ -16,7 +16,7 @@ public final class HudAdminGui implements Listener {
     private static final List<String> FIELDS;
     static{var list=new ArrayList<>(HudTheme.DEFAULTS.keySet());list.add("priority");FIELDS=List.copyOf(list);}
     private static final Map<String,String> LABELS=Map.ofEntries(
-        Map.entry("texture","Layout PNG"),Map.entry("frame","Stile cornice"),Map.entry("background","Colore sfondo"),Map.entry("border","Colore cornice"),
+        Map.entry("textScale","Scala testo %"),Map.entry("barTextScale","Scala testo barre %"),Map.entry("barHeight","Altezza barre"),Map.entry("texture","Layout PNG"),Map.entry("frame","Stile cornice"),Map.entry("background","Colore sfondo"),Map.entry("border","Colore cornice"),
         Map.entry("text","Colore testo"),Map.entry("healthColor","Colore vita"),Map.entry("resourceColor","Colore risorsa"),Map.entry("width","Larghezza HUD"),Map.entry("height","Altezza HUD"),
         Map.entry("headX","Testa: X"),Map.entry("headY","Testa: Y"),Map.entry("headSize","Dimensione testa"),Map.entry("textX","Testi: X"),
         Map.entry("nameY","Nome: Y"),Map.entry("classY","Classe: Y"),Map.entry("groupY","Gruppo: Y"),Map.entry("barsX","Barre: X"),
@@ -41,6 +41,7 @@ public final class HudAdminGui implements Listener {
         }else{
             var theme=plugin.hudSettings().theme(group);
             for(int i=0;i<FIELDS.size();i++){String f=FIELDS.get(i);menu.inventory.setItem(i,button(f.equals("texture")?Material.PAINTING:Material.PAPER,LABELS.get(f),"Gruppo: "+group,"Attuale: "+(f.equals("priority")?plugin.hudSettings().priority(group):theme.text(f)),"Clicca per impostare"));}
+            for(int n=0;n<HudPresets.NAMES.size();n++)menu.inventory.setItem(28+n,button(Material.PAINTING,"Preset: "+HudPresets.NAMES.get(n),"Applica PNG e coordinate compatte","Richiede il pacchetto CastigoHUD ItemsAdder"));
             menu.inventory.setItem(45,button(Material.ARROW,"Elenco gruppi"));
             menu.inventory.setItem(49,button(Material.BARRIER,"Ripristina tema","Rimuove la personalizzazione del gruppo"));
         }
@@ -58,6 +59,7 @@ public final class HudAdminGui implements Listener {
                 else if(slot==53&&(m.page+1)*45<m.groups.size())show(p,null,m.page+1);
                 else if(slot==49)ask(p,null,"group");
             }else if(slot<FIELDS.size())ask(p,m.group,FIELDS.get(slot));
+            else if(slot>=28&&slot<28+HudPresets.NAMES.size()){plugin.hudSettings().preset(m.group,HudPresets.NAMES.get(slot-28));plugin.syncHud();show(p,m.group,0);}
             else if(slot==45)show(p,null,0);
             else if(slot==49){plugin.hudSettings().reset(m.group);plugin.syncHud();show(p,m.group,0);}
         }catch(Exception ex){p.sendMessage("HUD non salvata: "+ex.getMessage());}});

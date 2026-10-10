@@ -45,6 +45,10 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
     private ProgressionSettings progressionSettings;
     private ProgressionAdminGui progressionGui;
     private ExperienceListener experienceListener;
+    private WeaponCalibration calibration;
+    private WeaponCalibrationGui calibrationGui;
+    private AdminTools adminTools;
+    public AdminTools adminTools(){return adminTools;}
     private int ticks;
 
     @Override public void onEnable() {
@@ -63,9 +67,12 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
             saveConfig();
             store=new ProfileStore(new File(getDataFolder(),"players"));
         } catch(Exception e) { getLogger().severe("Configurazione non valida: "+e.getMessage()); getServer().getPluginManager().disablePlugin(this); return; }
+        adminTools=new AdminTools(this);getServer().getPluginManager().registerEvents(adminTools,this);
         engine=new SkillEngine(this);
         adminGui=new SkillAdminGui(this);
         hudGui=new HudAdminGui(this);
+        calibrationGui=new WeaponCalibrationGui(this);
+        getServer().getPluginManager().registerEvents(calibrationGui,this);
         progressionGui=new ProgressionAdminGui(this);experienceListener=new ExperienceListener(this);
         getServer().getPluginManager().registerEvents(progressionGui,this);
         getServer().getPluginManager().registerEvents(experienceListener,this);
@@ -89,6 +96,7 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
         for(Profile p:profiles.values()) if(next.get(p.classId)==null) throw new IllegalArgumentException("Classe in uso rimossa: "+p.classId);
         Progression curve=new Progression(getConfig().getInt("max-level",100),getConfig().getDouble("xp.base",100),getConfig().getDouble("xp.growth",1.18));
         ClassCatalog.number(getConfig(),"xp.vanilla-multiplier",1,0,10000);
+        ClassCatalog.number(getConfig(),"xp.support-max-ratio",0.35,0,1);
         ClassCatalog.number(getConfig(),"combat.strength-melee-factor",0.5,0,100);
         ClassCatalog.number(getConfig(),"combat.dexterity-speed-factor",0.005,0,1);
         ClassCatalog.number(getConfig(),"combat.global-cooldown-ms",350,100,60000);
@@ -107,6 +115,8 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
             int cap=nextProgression.cap(d.id(),next,curve.maxLevel());if(cap<1||cap>1000)throw new IllegalArgumentException("Cap classe non valido: "+d.id());
             HudSettings.validateGroup(nextProgression.group(d.id(),next));
         }
+        WeaponCalibration nextCalibration=new WeaponCalibration(new File(getDataFolder(),"weapon-poses.json").toPath());
+        calibration=nextCalibration;
         progressionSettings=nextProgression;
         catalog=next; progression=curve; statPoints=pointRules;equipment=nextEquipment;
         vfxSettings=nextVfx;
@@ -120,10 +130,16 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
     private double pointGain(String stat,double fallback) { return ClassCatalog.number(getConfig(),"stat-points.per-point."+stat,fallback,0,1000); }
     private double strengthFactor() { return getConfig().getDouble("combat.strength-melee-factor",0.5); }
     private double dexterityFactor() { return getConfig().getDouble("combat.dexterity-speed-factor",0.005); }
+    public void prepareHeal(EntityRegainHealthEvent e,Player p){experienceListener.prepareHeal(e,p);}
+    public void finishHeal(EntityRegainHealthEvent e){experienceListener.finishHeal(e);}
+    public void protectedDamage(EntityDamageByEntityEvent e,Player p,double amount){if(p!=null)experienceListener.protectedDamage(e,p,amount);}
+    public WeaponCalibration calibration(){return calibration;}
+    public void openCalibration(Player p){adminGui.cancelInput(p);hudGui.cancelInput(p);progressionGui.cancelInput(p);calibrationGui.open(p,null);}
+    private JsonObject poseFor(org.bukkit.inventory.ItemStack item){try{return calibration.get(SkillEquipment.identify(item));}catch(Exception|LinkageError e){return new JsonObject();}}
     public ProgressionSettings progressionSettings(){return progressionSettings;}
     public int classCap(String id){return progressionSettings.cap(id,catalog,progression.maxLevel());}
-    public void openProgression(Player p){adminGui.cancelInput(p);hudGui.cancelInput(p);progressionGui.open(p);}
-    public void closeProgressionInput(Player p){if(progressionGui!=null)progressionGui.cancelInput(p);}
+    public void openProgression(Player p){if(calibrationGui!=null)calibrationGui.cancel(p);adminGui.cancelInput(p);hudGui.cancelInput(p);progressionGui.open(p);}
+    public void closeProgressionInput(Player p){if(calibrationGui!=null)calibrationGui.cancel(p);if(progressionGui!=null)progressionGui.cancelInput(p);}
     public void resetDaily(Player p){var data=profile(p);if(data==null)return;refreshDay(data);data.dailyXp=0;save(data);sync(p);}
     private void refreshDay(Profile p){ExperienceBudget.rollover(p,progressionSettings.day(java.time.Instant.now()),progressionSettings.token());}
     public boolean twoHanded(Player player){
@@ -185,6 +201,7 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
         try { store.save(p); } catch(Exception e) { getLogger().severe("Salvataggio profilo "+p.uuid+": "+e.getMessage()); }
     }
     @Override public void onDisable() {
+        if(adminTools!=null)adminTools.close();
         if(engine!=null)engine.shutdown();
         cancelTicks();
         for(Player p:Bukkit.getOnlinePlayers()) {
@@ -314,6 +331,7 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
         obj.addProperty("name",net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer.plainText().serialize(player.displayName())); obj.addProperty("classId",p.classId);
         refreshDay(p);boolean capped=p.level>=classCap(p.classId);
         obj.addProperty("classLevelCap",classCap(p.classId));obj.addProperty("classCapped",capped);
+        obj.addProperty("dailyResetAt",progressionSettings.nextReset(java.time.Instant.now()).toEpochMilli());
         obj.addProperty("dailyXp",p.dailyXp);obj.addProperty("dailyCap",progressionSettings.dailyCap());
         obj.addProperty("dailyCapped",progressionSettings.dailyCap()>0&&p.dailyXp>=progressionSettings.dailyCap());
         obj.addProperty("level",p.level); obj.addProperty("xp",p.xp); obj.addProperty("xpNext",capped?0:progression.required(p.level));
@@ -390,7 +408,7 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
         engine.cast(p,definition(profile(p)).skill(profile(p).slots.get(slot)));
     }
     private void broadcastGrip(Player p){
-        JsonObject o=new JsonObject();o.addProperty("world",p.getWorld().getUID().toString());o.addProperty("player",p.getUniqueId().toString());o.addProperty("entity",p.getEntityId());o.addProperty("active",twoHanded(p));
+        JsonObject o=new JsonObject();o.addProperty("world",p.getWorld().getUID().toString());o.addProperty("player",p.getUniqueId().toString());o.addProperty("entity",p.getEntityId());o.addProperty("active",twoHanded(p));o.add("calibration",poseFor(p.getInventory().getItemInMainHand()));
         for(Player observer:p.getWorld().getPlayers())if(clientEffects.contains(observer.getUniqueId())&&observer.getLocation().distanceSquared(p.getLocation())<=64*64)send(observer,"weapon_grip",o);
     }
     public void stopEffect(UUID world,UUID handle) {
@@ -404,7 +422,7 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
         o.addProperty("style",skill==null?"CAST":WeaponMotion.style(skill.effect()));
         boolean off=false;
         if(skill!=null&&profile(p)!=null)off=equipment().requirement(profile(p).classId,skill,catalog.mechanics(skill)).offhand();
-        o.addProperty("offhand",off);
+        o.addProperty("offhand",off);o.add("calibration",poseFor(off?p.getInventory().getItemInOffHand():p.getInventory().getItemInMainHand()));
         for(Player observer:p.getWorld().getPlayers())if(clientEffects.contains(observer.getUniqueId())&&observer.getLocation().distanceSquared(p.getLocation())<=64*64)send(observer,"weapon_motion",o);
     }
     public void broadcastEffect(Location from,Location at,JsonObject effect) {
@@ -446,8 +464,9 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
     }
     @Override public boolean onCommand(CommandSender sender,Command command,String label,String[] args) {
         try {
-            if(args.length>0&&Set.of("admin","icona","hud","progressione").contains(args[0])) {
+            if(args.length>0&&Set.of("admin","icona","hud","progressione","pose","prova","diagnosi").contains(args[0])) {
                 if(!sender.hasPermission("castigo.classes.admin")) { sender.sendMessage("Permesso mancante.");return true; }
+                if(Set.of("pose","prova","diagnosi").contains(args[0])){if(sender instanceof Player p){switch(args[0]){case "pose"->openCalibration(p);case "diagnosi"->adminTools.diagnose(p);case "prova"->adminTools.command(p,args.length>1?args[1]:"report");}}else sender.sendMessage("Comando da giocatore");return true;}
                 if(args[0].equals("progressione")){if(sender instanceof Player p)openProgression(p);else sender.sendMessage("Apri la GUI da un giocatore.");return true;}
                 if(args[0].equals("hud")){if(sender instanceof Player p)openHud(p);else sender.sendMessage("Apri la GUI da un giocatore.");return true;}
                 if(args[0].equals("admin")) {
@@ -485,7 +504,8 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
             if(!(sender instanceof Player p)) { sender.sendMessage("Comandi staff: /classe set|xp|reload");return true; }
             if(profile(p)==null||!p.hasPermission("castigo.classes.use"))return true;
             Profile data=profile(p);
-            if(args.length==2&&args[0].equals("assegna")) { allocate(p,StatAttribute.parse(args[1]));return true; }
+            
+        if(args.length==2&&args[0].equals("assegna")) { allocate(p,StatAttribute.parse(args[1]));return true; }
             if(args.length==2&&args[0].equals("skill")) { cast(p,Integer.parseInt(args[1])-1);return true; }
             if(args.length==3&&args[0].equals("scambia")) {
                 int a=Integer.parseInt(args[1])-1,b=Integer.parseInt(args[2])-1;
@@ -542,8 +562,9 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
     }
     @Override public List<String> onTabComplete(CommandSender s,Command c,String label,String[] args) {
         List<String> choices=args.length==1?new ArrayList<>(List.of("lista","skill","scambia","sottoclasse","assegna")):new ArrayList<>();
+        if(args.length==2&&args[0].equals("prova")&&s.hasPermission("castigo.classes.admin"))choices.addAll(List.of("crea","report","reset","rimuovi"));
         if(args.length==2&&args[0].equals("assegna"))for(StatAttribute stat:StatAttribute.values())choices.add(stat.label().toLowerCase(Locale.ROOT));
-        if(args.length==1&&s.hasPermission("castigo.classes.admin"))choices.addAll(List.of("reload","set","xp","livello","admin","icona","hud","progressione"));
+        if(args.length==1&&s.hasPermission("castigo.classes.admin"))choices.addAll(List.of("reload","set","xp","livello","admin","icona","hud","progressione","pose","prova","diagnosi"));
         if(s.hasPermission("castigo.classes.admin")&&args[0].equals("icona")) {
             if(args.length==2)choices.addAll(catalog.all().keySet());
             if(args.length==3&&catalog.get(args[1])!=null)catalog.get(args[1]).skills().forEach(skill->choices.add(skill.id()));

@@ -29,6 +29,9 @@ public final class SkillAdminGui implements Listener {
         var menu=new Menu(p,classId,skill,page,off);menu.inventory=Bukkit.createInventory(menu,54,"Castigo · Configura skill");
         var inv=menu.inventory;
         if(classId==null) {
+            inv.setItem(46,button(Material.COMPARATOR,"Diagnosi configurazione","Controlli classi e texture client"));
+            inv.setItem(50,button(Material.TARGET,"Bersaglio di prova","Crea davanti a te per 10 minuti","Misure: /classe prova report"));
+            inv.setItem(47,button(Material.IRON_SWORD,"Calibra animazioni armi","Posizione, angoli e intensità per oggetto"));
             inv.setItem(48,button(Material.EXPERIENCE_BOTTLE,"Progressione e sottoclassi","Cap XP, reset, gruppi e oggetti"));
             inv.setItem(49,button(Material.PAINTING,"HUD gruppi LuckPerms","Layout PNG, colori e posizione elementi"));
             var classes=new ArrayList<>(plugin.catalog().all().values());
@@ -90,6 +93,9 @@ public final class SkillAdminGui implements Listener {
             }
             if(slot<0||slot>=54)return;
             if(m.classId==null) {
+                if(slot==46){later(p,()->plugin.adminTools().diagnose(p));return;}
+                if(slot==50){later(p,()->{try{p.closeInventory();plugin.adminTools().command(p,"crea");}catch(Exception ex){p.sendMessage(ex.getMessage());}});return;}
+                if(slot==47){later(p,()->plugin.openCalibration(p));return;}
                 if(slot==48){later(p,()->plugin.openProgression(p));return;}
                 if(slot==49){later(p,()->plugin.openHud(p));return;}
                 var classes=new ArrayList<>(plugin.catalog().all().values());int index=m.page*45+slot;
