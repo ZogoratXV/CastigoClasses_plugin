@@ -28,6 +28,7 @@ public final class SkillEngine implements Listener {
         plugin.getServer().getPluginManager().registerEvents(disciplines,plugin);
         plugin.getServer().getScheduler().runTaskTimer(plugin,()->{disciplines.tick();visualLoops.tick();},1,1);
     }
+    public boolean busy(Player p){return disciplines.busy(p);}
     public void clear(UUID id) { wards.remove(id);disciplines.clear(id);Player p=Bukkit.getPlayer(id);if(p!=null)plugin.weaponMotion(p,null,"stop",0); }
     public void shutdown() { wards.clear();disciplines.shutdown();visualLoops.clear(); }
     void loop(Player p,Skill s,SkillPresentation.Stage stage,java.util.function.Supplier<Location> at,UUID target,boolean link,java.util.function.BooleanSupplier valid) {

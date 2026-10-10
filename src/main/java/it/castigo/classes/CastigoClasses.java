@@ -49,6 +49,10 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
     private WeaponCalibrationGui calibrationGui;
     private AdminTools adminTools;
     public AdminTools adminTools(){return adminTools;}
+    private final Set<UUID> animationClients=new HashSet<>();
+    private final Map<UUID,AttackVisualGate> attackVisuals=new HashMap<>();
+    private final Map<UUID,Integer> skillVariants=new HashMap<>();
+    private long motionSequence;
     private int ticks;
 
     @Override public void onEnable() {
@@ -215,6 +219,7 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
     @EventHandler public void quit(PlayerQuitEvent e) {
         Player p=e.getPlayer(); Profile data=profiles.remove(p.getUniqueId()); if(data!=null) save(data);
         connected.remove(p.getUniqueId()); lastRequest.remove(p.getUniqueId()); lastCatalog.remove(p.getUniqueId()); removeModifiers(p);
+        animationClients.remove(p.getUniqueId());attackVisuals.remove(p.getUniqueId());skillVariants.remove(p.getUniqueId());
         clientEffects.remove(p.getUniqueId());effectPackets.remove(p.getUniqueId());
         healingEffects.remove(p.getUniqueId());meshEffects.remove(p.getUniqueId());
         engine.clear(p.getUniqueId());
@@ -353,6 +358,7 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
         combat.addProperty("meleeBonus",CombatMath.meleeBonus(stats(p),strengthFactor()));
         combat.addProperty("defenseReductionPercent",CombatMath.defenseReduction(stats(p)));
         obj.add("combat",combat);
+        if(animationClients.contains(player.getUniqueId())){obj.addProperty("weaponAnimations",2);obj.addProperty("weaponProfile",animationProfile(player,player.getInventory().getItemInMainHand(),true));obj.addProperty("weaponSlot",player.getInventory().getHeldItemSlot());obj.add("weaponCalibration",poseFor(player.getInventory().getItemInMainHand()));}
         obj.add("slots",gson.toJsonTree(p.slots)); JsonObject cooldowns=new JsonObject();
         p.cooldowns.forEach((id,end)->cooldowns.addProperty(id,Math.max(0,end-System.currentTimeMillis())));
         obj.add("cooldowns",cooldowns); send(player,"state",obj);
@@ -372,14 +378,17 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
     @Override public void onPluginMessageReceived(String channel,Player player,byte[] bytes) {
         if(!channel.equals(CHANNEL)||bytes.length>2048||profile(player)==null)return;
         long now=System.currentTimeMillis();
-        if(now-lastRequest.getOrDefault(player.getUniqueId(),0L)<80)return;
-        lastRequest.put(player.getUniqueId(),now);
+
         try {
             JsonObject o=JsonParser.parseString(new String(bytes,StandardCharsets.UTF_8)).getAsJsonObject();
             if(o.get("v").getAsInt()!=1) { feedback(player,"Versione mod non compatibile."); return; }
             String type=o.get("type").getAsString();
+            if(type.equals("attack_visual")){if(animationClients.contains(player.getUniqueId())&&connected.contains(player.getUniqueId()))normalAttack(player,o,now);return;}
+            if(now-lastRequest.getOrDefault(player.getUniqueId(),0L)<80)return;
+            lastRequest.put(player.getUniqueId(),now);
             if(type.equals("hello")) {
                 if(now-lastCatalog.getOrDefault(player.getUniqueId(),0L)<1000)return;
+                if(o.has("weaponAnimations")&&o.get("weaponAnimations").getAsInt()==2)animationClients.add(player.getUniqueId());else animationClients.remove(player.getUniqueId());
                 int vfx=o.has("clientVfx")?o.get("clientVfx").getAsInt():0;
                 if(vfx==1||vfx==2)clientEffects.add(player.getUniqueId());
                 else clientEffects.remove(player.getUniqueId());
@@ -415,15 +424,38 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
         JsonObject o=new JsonObject();o.addProperty("handle",handle.toString());
         for(Player observer:Bukkit.getOnlinePlayers())if(observer.getWorld().getUID().equals(world)&&meshEffects.contains(observer.getUniqueId()))send(observer,"vfx_stop",o);
     }
+    public String animationProfile(Player p,org.bukkit.inventory.ItemStack item,boolean main){
+        if(main&&twoHanded(p))return "TWO_HANDED";
+        var values=poseFor(item);String configured=values.has("profile")?values.get("profile").getAsString():"AUTO";
+        if(!configured.equals("AUTO"))return configured;
+        String material=item.getType().name();return material.endsWith("_SWORD")?"SWORD":material.endsWith("_AXE")?"AXE":"VANILLA";
+    }
+    private void normalAttack(Player p,JsonObject request,long now){
+        if(!p.hasPermission("castigo.classes.use")||p.isDead()||p.getGameMode()==GameMode.SPECTATOR||p.isHandRaised()||engine.busy(p)||profile(p).globalReadyAt>now)return;
+        long prediction=request.get("id").getAsLong();if(prediction<0||prediction>9_007_199_254_740_991L)return;
+        String profile=animationProfile(p,p.getInventory().getItemInMainHand(),true);
+        String held;try{held=SkillEquipment.identify(p.getInventory().getItemInMainHand());}catch(Exception|LinkageError ex){return;}
+        if(profile.equals("VANILLA"))return;
+        int variant=attackVisuals.computeIfAbsent(p.getUniqueId(),k->new AttackVisualGate()).accept(prediction,now,held+":"+p.getInventory().getHeldItemSlot()+":"+profile);
+        if(variant<0)return;
+        var speed=p.getAttribute(Attribute.ATTACK_SPEED);
+        int duration=(int)Math.clamp(20/Math.max(.1,speed==null?4:speed.getValue()),5,20);
+        JsonObject o=motionBase(p,false);o.addProperty("phase","release");o.addProperty("duration",duration);o.addProperty("profile",profile);o.addProperty("normal",true);o.addProperty("prediction",prediction);o.addProperty("variant",variant);
+        for(Player observer:p.getWorld().getPlayers())if(animationClients.contains(observer.getUniqueId())&&observer.getLocation().distanceSquared(p.getLocation())<=64*64)send(observer,"weapon_motion_v2",o);
+    }
+    private JsonObject motionBase(Player p,boolean off){
+        JsonObject o=new JsonObject();o.addProperty("world",p.getWorld().getUID().toString());o.addProperty("player",p.getUniqueId().toString());o.addProperty("entity",p.getEntityId());o.addProperty("sequence",++motionSequence);o.addProperty("offhand",off);o.add("calibration",poseFor(off?p.getInventory().getItemInOffHand():p.getInventory().getItemInMainHand()));return o;
+    }
     public void weaponMotion(Player p,it.castigo.classes.model.Skill skill,String phase,int ticks) {
-        JsonObject o=new JsonObject();o.addProperty("world",p.getWorld().getUID().toString());
-        o.addProperty("player",p.getUniqueId().toString());o.addProperty("entity",p.getEntityId());
-        o.addProperty("phase",phase);o.addProperty("duration",Math.clamp(ticks,0,600));
-        o.addProperty("style",skill==null?"CAST":WeaponMotion.style(skill.effect()));
-        boolean off=false;
-        if(skill!=null&&profile(p)!=null)off=equipment().requirement(profile(p).classId,skill,catalog.mechanics(skill)).offhand();
-        o.addProperty("offhand",off);o.add("calibration",poseFor(off?p.getInventory().getItemInOffHand():p.getInventory().getItemInMainHand()));
-        for(Player observer:p.getWorld().getPlayers())if(clientEffects.contains(observer.getUniqueId())&&observer.getLocation().distanceSquared(p.getLocation())<=64*64)send(observer,"weapon_motion",o);
+        boolean off=skill!=null&&profile(p)!=null&&equipment().requirement(profile(p).classId,skill,catalog.mechanics(skill)).offhand();
+        JsonObject o=motionBase(p,off);o.addProperty("phase",phase);o.addProperty("duration",Math.clamp(ticks,0,600));
+        String style=skill==null?"CAST":WeaponMotion.style(skill.effect());o.addProperty("style",style);
+        String profile=animationProfile(p,off?p.getInventory().getItemInOffHand():p.getInventory().getItemInMainHand(),!off);
+        String clip=switch(style){case "CAST"->"CAST";case "BOW"->"BOW";case "SHIELD"->"SHIELD";case "THRUST"->"THRUST";case "HEAVY"->"AXE";default->profile.equals("VANILLA")?"SWORD":profile;};
+        // An explicit vanilla override disables skill gestures too, except the existing two-handed stance.
+        var values=poseFor(off?p.getInventory().getItemInOffHand():p.getInventory().getItemInMainHand());if(values.has("profile")&&values.get("profile").getAsString().equals("VANILLA")&&!twoHanded(p))clip="VANILLA";
+        o.addProperty("profile",clip);o.addProperty("normal",false);o.addProperty("variant",phase.equals("release")?skillVariants.merge(p.getUniqueId(),1,(x,y)->1-x):0);
+        for(Player observer:p.getWorld().getPlayers())if(clientEffects.contains(observer.getUniqueId())&&observer.getLocation().distanceSquared(p.getLocation())<=64*64)send(observer,animationClients.contains(observer.getUniqueId())?"weapon_motion_v2":"weapon_motion",o);
     }
     public void broadcastEffect(Location from,Location at,JsonObject effect) {
         int tick=Bukkit.getCurrentTick();if(tick!=effectTick) { effectTick=tick;effectPackets.clear(); }

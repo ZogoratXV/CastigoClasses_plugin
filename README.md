@@ -1,7 +1,11 @@
 # CastigoClasses — plugin
 
-Versione di test **0.1.0-beta.15** per **Purpur Minecraft 26.2**, Java 25 e **CastigoCore 2.1.0-beta.9**.
+Versione di test **0.1.0-beta.16** per **Purpur Minecraft 26.2**, Java 25 e **CastigoCore 2.1.0-beta.9**.
 Client: [CastigoClasses Fabric](https://github.com/ZogoratXV/CastigoClasses_fabricmod), Minecraft 26.2 / Fabric Loader 0.19.5.
+
+## Animazioni di combattimento — beta.16
+
+Animazioni originali per attacchi normali e skill, movimenti del busto e delle braccia, profili per arma dalla GUI e sincronizzazione cosmetica tra client. Purpur resta senza mod; Better Combat non è richiesto. Danni e cooldown invariati. [Guida beta.16](docs/AGGIORNAMENTO-BETA16.md). Aggiornare entrambi i JAR.
 
 ## Strumenti RP e regolazioni — beta.15
 
