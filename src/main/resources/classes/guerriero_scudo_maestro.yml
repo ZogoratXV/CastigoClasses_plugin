@@ -1,0 +1,9 @@
+id: guerriero_scudo_maestro
+name: Baluardo
+description: Prosecuzione della disciplina; conserva attributi e abilità apprese.
+parent: guerriero_scudo_esperto
+required-level: 25
+level-cap: 50
+luckperms-group: guerriero_scudo_maestro
+# Le otto skill sono ereditate; unlock-level continua a regolare gli sblocchi.
+# Configura il consumabile di ingresso in /classe progressione.

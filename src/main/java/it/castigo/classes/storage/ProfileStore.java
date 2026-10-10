@@ -18,6 +18,7 @@ public final class ProfileStore {
         if (!file.exists()) { p.resource=fallback.stats(1).mana(); p.normalize(fallback); return p; }
         YamlConfiguration y = new YamlConfiguration(); y.load(file);
         p.classId=y.getString("class",fallback.id()); p.level=Math.max(1,Math.min(maxLevel,y.getInt("level",1)));
+        p.dailyXp=Math.max(0,y.getLong("daily-xp.amount"));p.xpDay=y.getString("daily-xp.day","");p.xpResetToken=y.getString("daily-xp.reset-token","");p.managedClassGroup=y.getString("managed-class-group","");
         p.xp=Math.max(0,y.getLong("xp")); p.resource=y.getDouble("resource"); p.slots.addAll(y.getStringList("slots"));
         p.earnedStatPoints=pointCount(y,"stat-points.earned");
         p.statPointsRewardedThroughLevel=y.contains("stat-points.earned")?p.level:1;
@@ -40,7 +41,8 @@ public final class ProfileStore {
     }
     public void save(Profile p) throws IOException {
         YamlConfiguration y=new YamlConfiguration();
-        y.set("schema",2); y.set("class",p.classId); y.set("level",p.level); y.set("xp",p.xp);
+        y.set("daily-xp.amount",p.dailyXp);y.set("daily-xp.day",p.xpDay);y.set("daily-xp.reset-token",p.xpResetToken);y.set("managed-class-group",p.managedClassGroup);
+        y.set("schema",3); y.set("class",p.classId); y.set("level",p.level); y.set("xp",p.xp);
         y.set("stat-points.earned",p.earnedStatPoints);
         y.set("stat-points.rewarded-through-level",p.statPointsRewardedThroughLevel);
         p.allocatedStats.forEach((stat,count)->y.set("stat-points.allocated."+stat.id(),count));

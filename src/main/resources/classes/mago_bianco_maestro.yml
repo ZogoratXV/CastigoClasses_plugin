@@ -1,0 +1,9 @@
+id: mago_bianco_maestro
+name: Ierofante
+description: Prosecuzione della disciplina; conserva attributi e abilità apprese.
+parent: mago_bianco_esperto
+required-level: 25
+level-cap: 50
+luckperms-group: mago_bianco_maestro
+# Le otto skill sono ereditate; unlock-level continua a regolare gli sblocchi.
+# Configura il consumabile di ingresso in /classe progressione.

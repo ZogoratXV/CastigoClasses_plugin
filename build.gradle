@@ -1,6 +1,6 @@
 plugins { id 'java' }
 group = 'it.castigo'
-version = '0.1.0-beta.13'
+version = '0.1.0-beta.14'
 repositories {
     mavenCentral()
     maven { url = 'https://repo.purpurmc.org/snapshots' }
@@ -14,6 +14,7 @@ dependencies {
     testImplementation 'org.mockbukkit.mockbukkit:mockbukkit-v26.2:4.117.0'
     testImplementation 'org.purpurmc.purpur:purpur-api:26.2.build.2632-stable'
     testImplementation files('libs/CastigoCore.jar')
+    testImplementation 'net.luckperms:api:5.4'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 java { toolchain { languageVersion = JavaLanguageVersion.of(25) } }

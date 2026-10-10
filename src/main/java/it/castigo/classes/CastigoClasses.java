@@ -42,6 +42,9 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
     private SkillAdminGui adminGui;
     private HudSettings hudSettings;
     private HudAdminGui hudGui;
+    private ProgressionSettings progressionSettings;
+    private ProgressionAdminGui progressionGui;
+    private ExperienceListener experienceListener;
     private int ticks;
 
     @Override public void onEnable() {
@@ -51,6 +54,8 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
         if(!new File(getDataFolder(),"examples/presentation.yml.example").exists()) saveResource("examples/presentation.yml.example",false);
         for(String id:List.of("mago_bianco","mago_nero","guerriero_scudo","guerriero_due_mani","arciere"))
             if(!new File(getDataFolder(),"classes/"+id+".yml").exists())saveResource("classes/"+id+".yml",false);
+        for(String base:List.of("mago","mago_bianco","mago_nero","guerriero_scudo","guerriero_due_mani","arciere"))
+            for(String tier:List.of("esperto","maestro"))if(!new File(getDataFolder(),"classes/"+base+"_"+tier+".yml").exists())saveResource("classes/"+base+"_"+tier+".yml",false);
         try {
             Class.forName("it.castigo.core.ParticleStyle").getMethod("read",org.bukkit.configuration.ConfigurationSection.class);
             loadConfiguration();
@@ -61,6 +66,9 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
         engine=new SkillEngine(this);
         adminGui=new SkillAdminGui(this);
         hudGui=new HudAdminGui(this);
+        progressionGui=new ProgressionAdminGui(this);experienceListener=new ExperienceListener(this);
+        getServer().getPluginManager().registerEvents(progressionGui,this);
+        getServer().getPluginManager().registerEvents(experienceListener,this);
         getServer().getPluginManager().registerEvents(hudGui,this);
         getServer().getPluginManager().registerEvents(adminGui,this);
         getServer().getPluginManager().registerEvents(this,this);
@@ -70,6 +78,7 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
         Objects.requireNonNull(getCommand("classe")).setExecutor(this);
         Objects.requireNonNull(getCommand("classe")).setTabCompleter(this);
         for(Player p:Bukkit.getOnlinePlayers()) load(p);
+        for(var world:Bukkit.getWorlds())for(var orb:world.getEntitiesByClass(org.bukkit.entity.ExperienceOrb.class))orb.remove();
         scheduleTick(this::tick);
     }
     protected void scheduleTick(Runnable task) { CoreApi.repeat(this,task,5,5); }
@@ -90,8 +99,15 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
                 pointGain("mana",5),pointGain("intelligence",1),pointGain("attack",1),pointGain("defense",1));
         StatPointRules pointRules=new StatPointRules(interval,amount,gain);
         SkillEquipment nextEquipment=new SkillEquipment(new File(getDataFolder(),"skill-equipment.yml"));
+        nextEquipment.inherit(next);
         VfxSettings nextVfx=new VfxSettings(new File(getDataFolder(),"vfx-overrides.json"));
         HudSettings nextHud=new HudSettings(new File(getDataFolder(),"hud-themes.json").toPath());
+        ProgressionSettings nextProgression=new ProgressionSettings(new File(getDataFolder(),"progression-settings.yml").toPath());
+        for(var d:next.all().values()){
+            int cap=nextProgression.cap(d.id(),next,curve.maxLevel());if(cap<1||cap>1000)throw new IllegalArgumentException("Cap classe non valido: "+d.id());
+            HudSettings.validateGroup(nextProgression.group(d.id(),next));
+        }
+        progressionSettings=nextProgression;
         catalog=next; progression=curve; statPoints=pointRules;equipment=nextEquipment;
         vfxSettings=nextVfx;
         hudSettings=nextHud;
@@ -104,12 +120,29 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
     private double pointGain(String stat,double fallback) { return ClassCatalog.number(getConfig(),"stat-points.per-point."+stat,fallback,0,1000); }
     private double strengthFactor() { return getConfig().getDouble("combat.strength-melee-factor",0.5); }
     private double dexterityFactor() { return getConfig().getDouble("combat.dexterity-speed-factor",0.005); }
+    public ProgressionSettings progressionSettings(){return progressionSettings;}
+    public int classCap(String id){return progressionSettings.cap(id,catalog,progression.maxLevel());}
+    public void openProgression(Player p){adminGui.cancelInput(p);hudGui.cancelInput(p);progressionGui.open(p);}
+    public void closeProgressionInput(Player p){if(progressionGui!=null)progressionGui.cancelInput(p);}
+    public void resetDaily(Player p){var data=profile(p);if(data==null)return;refreshDay(data);data.dailyXp=0;save(data);sync(p);}
+    private void refreshDay(Profile p){ExperienceBudget.rollover(p,progressionSettings.day(java.time.Instant.now()),progressionSettings.token());}
+    public boolean twoHanded(Player player){
+        var data=profile(player);if(data==null||!catalog.descendsFrom(data.classId,"guerriero_due_mani")||!player.getInventory().getItemInOffHand().getType().isAir())return false;
+        try {String held=SkillEquipment.identify(player.getInventory().getItemInMainHand());
+            for(var d=definition(data);d!=null;d=catalog.get(d.parent()))if(progressionSettings.weapons(d.id()).contains(held))return true;
+        }catch(ReflectiveOperationException|IllegalArgumentException|LinkageError ignored){}return false;
+    }
+    public void syncClassGroup(Player player){
+        if(!getServer().getPluginManager().isPluginEnabled("LuckPerms"))return;
+        var data=profile(player);if(data==null)return;String next=progressionSettings.group(data.classId,catalog),previous=data.managedClassGroup;
+        data.managedClassGroup=next;save(data);ClassGroups.assign(this,player.getUniqueId(),previous,next);
+    }
     public Profile profile(Player p) { return profiles.get(p.getUniqueId()); }
     public ClassDefinition definition(Profile p) { return catalog.get(p.classId); }
     public ClassCatalog catalog() { return catalog; }
     public SkillEquipment equipment() { return equipment; }
     public HudSettings hudSettings(){return hudSettings;}
-    public void openHud(Player p){adminGui.cancelInput(p);hudGui.open(p);}
+    public void openHud(Player p){closeProgressionInput(p);adminGui.cancelInput(p);hudGui.open(p);}
     public void closeHudInput(Player p){hudGui.cancelInput(p);}
     public void syncHud(){for(Player p:Bukkit.getOnlinePlayers())sync(p);}
     public Set<String> hudGroups(){
@@ -143,9 +176,9 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
         try {
             Profile p=store.load(player.getUniqueId(),catalog.get(getConfig().getString("default-class","mago")),progression.maxLevel());
             if(catalog.get(p.classId)==null) throw new IllegalStateException("Classe salvata non trovata: "+p.classId);
-            progression.add(p,0); statPoints.reconcile(p);p.normalize(definition(p),stats(p));
+            normalizeXp(p); statPoints.reconcile(p);p.normalize(definition(p),stats(p));
             store.save(p); // Persist migration/retroactive awards before the profile becomes usable.
-            profiles.put(player.getUniqueId(),p); applyStats(player); displayXp(player,p);
+            profiles.put(player.getUniqueId(),p);refreshDay(p);if(p.level>=classCap(p.classId))p.xp=0; applyStats(player); displayXp(player,p);syncClassGroup(player);
         } catch(Exception e) { getLogger().severe("Caricamento profilo "+player.getUniqueId()+": "+e.getMessage()); player.kickPlayer("Profilo classi non disponibile. Contatta lo staff."); }
     }
     private void save(Profile p) {
@@ -199,9 +232,16 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
     @EventHandler(ignoreCancelled=true,priority=EventPriority.HIGH) public void defense(EntityDamageByEntityEvent e) {
         if(e.getEntity() instanceof Player p && profile(p)!=null) e.setDamage(Stats.mitigate(e.getDamage(),stats(p).defense()*engine.defenseFactor(p.getUniqueId())));
     }
+    private void normalizeXp(Profile p){if(p.level>=classCap(p.classId))p.xp=0;else new Progression(classCap(p.classId),progression.baseXp(),progression.growth()).add(p,0);}
+    public void validateClassCap(String id,int cap){
+        if(cap<1||cap>progression.maxLevel())throw new IllegalArgumentException("Cap da 1 a "+progression.maxLevel());
+        var d=catalog.get(id);if(!d.parent().isEmpty()&&cap<=classCap(d.parent()))throw new IllegalArgumentException("Il cap deve superare quello della classe precedente");
+        for(var child:catalog.all().values())if(child.parent().equals(id)&&(cap<child.requiredLevel()||cap>=classCap(child.id())))throw new IllegalArgumentException("Cap incompatibile con "+child.name()+": deve essere almeno "+child.requiredLevel()+" e inferiore a "+classCap(child.id()));
+    }
     public void grantXp(Player player,long amount) {
         Profile p=profile(player); if(p==null)return;
-        int before=p.level; progression.add(p,amount);
+        refreshDay(p);if(amount<=0)return;int before=p.level; ExperienceBudget.award(p,amount,progression,classCap(p.classId),progressionSettings.dailyCap());
+        save(p);
         int awarded=statPoints.reconcile(p);
         if(awarded>0) {
             save(p);player.sendMessage("§6Hai guadagnato "+awarded+" punti attributo. Disponibili: "+p.availableStatPoints());
@@ -214,16 +254,18 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
     }
     private void displayXp(Player player,Profile p) {
         player.setLevel(p.level); player.setTotalExperience(0);
-        player.setExp(p.level==progression.maxLevel()?1f:(float)Math.min(0.999999,(double)p.xp/progression.required(p.level)));
+        player.setExp(p.level>=classCap(p.classId)?1f:(float)Math.min(0.999999,(double)p.xp/progression.required(p.level)));
     }
     private void tick() {
-        ticks+=5;
+        ticks+=5;if(ticks%100==0)experienceListener.prune();
         for(Player player:Bukkit.getOnlinePlayers()) {
             Profile p=profile(player); if(p==null)continue;
+            refreshDay(p);if(p.level>=classCap(p.classId))p.xp=0;
             ClassDefinition d=definition(p);
             if(!player.isDead()) p.resource=AbilityRules.regenerate(p.resource,stats(p).mana(),d.regenPerSecond()+d.regenPerLevel()*(p.level-1),0.25);
             p.cooldowns.entrySet().removeIf(e->e.getValue()<=System.currentTimeMillis());
             displayXp(player,p); sync(player);
+            if(ticks%10==0)broadcastGrip(player);
         }
         if(ticks>=Math.max(10,getConfig().getInt("autosave-seconds",60))*20) { profiles.values().forEach(this::save); ticks=0; }
     }
@@ -270,7 +312,11 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
         obj.add("casting",engine.casting(player.getUniqueId()));
         obj.addProperty("world",player.getWorld().getUID().toString());
         obj.addProperty("name",net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer.plainText().serialize(player.displayName())); obj.addProperty("classId",p.classId);
-        obj.addProperty("level",p.level); obj.addProperty("xp",p.xp); obj.addProperty("xpNext",progression.required(p.level));
+        refreshDay(p);boolean capped=p.level>=classCap(p.classId);
+        obj.addProperty("classLevelCap",classCap(p.classId));obj.addProperty("classCapped",capped);
+        obj.addProperty("dailyXp",p.dailyXp);obj.addProperty("dailyCap",progressionSettings.dailyCap());
+        obj.addProperty("dailyCapped",progressionSettings.dailyCap()>0&&p.dailyXp>=progressionSettings.dailyCap());
+        obj.addProperty("level",p.level); obj.addProperty("xp",p.xp); obj.addProperty("xpNext",capped?0:progression.required(p.level));
         obj.addProperty("health",player.getHealth()); obj.addProperty("maxHealth",player.getAttribute(Attribute.MAX_HEALTH).getValue());
         obj.addProperty("resource",p.resource); obj.addProperty("maxResource",stats(player).mana());
         String primary=group(player);obj.addProperty("group",primary);obj.add("hud",hudFor(player,primary).json()); obj.add("stats",gson.toJsonTree(stats(player)));
@@ -343,6 +389,10 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
         if(slot<0||slot>=8||profile(p)==null||!p.hasPermission("castigo.classes.use"))return;
         engine.cast(p,definition(profile(p)).skill(profile(p).slots.get(slot)));
     }
+    private void broadcastGrip(Player p){
+        JsonObject o=new JsonObject();o.addProperty("world",p.getWorld().getUID().toString());o.addProperty("player",p.getUniqueId().toString());o.addProperty("entity",p.getEntityId());o.addProperty("active",twoHanded(p));
+        for(Player observer:p.getWorld().getPlayers())if(clientEffects.contains(observer.getUniqueId())&&observer.getLocation().distanceSquared(p.getLocation())<=64*64)send(observer,"weapon_grip",o);
+    }
     public void stopEffect(UUID world,UUID handle) {
         JsonObject o=new JsonObject();o.addProperty("handle",handle.toString());
         for(Player observer:Bukkit.getOnlinePlayers())if(observer.getWorld().getUID().equals(world)&&meshEffects.contains(observer.getUniqueId()))send(observer,"vfx_stop",o);
@@ -396,8 +446,9 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
     }
     @Override public boolean onCommand(CommandSender sender,Command command,String label,String[] args) {
         try {
-            if(args.length>0&&Set.of("admin","icona","hud").contains(args[0])) {
+            if(args.length>0&&Set.of("admin","icona","hud","progressione").contains(args[0])) {
                 if(!sender.hasPermission("castigo.classes.admin")) { sender.sendMessage("Permesso mancante.");return true; }
+                if(args[0].equals("progressione")){if(sender instanceof Player p)openProgression(p);else sender.sendMessage("Apri la GUI da un giocatore.");return true;}
                 if(args[0].equals("hud")){if(sender instanceof Player p)openHud(p);else sender.sendMessage("Apri la GUI da un giocatore.");return true;}
                 if(args[0].equals("admin")) {
                     if(sender instanceof Player p)adminGui.open(p);else sender.sendMessage("Apri la GUI da un giocatore.");return true;
@@ -414,9 +465,9 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
                     catch(Exception invalid) { getConfig().loadFromString(oldConfig); throw invalid; }
                     engine.shutdown();
                     for(Player p:Bukkit.getOnlinePlayers()) if(profile(p)!=null) {
-                        Profile profile=profile(p);progression.add(profile,0);statPoints.reconcile(profile);
+                        Profile profile=profile(p);normalizeXp(profile);statPoints.reconcile(profile);
                         profile.normalize(definition(profile),stats(profile));save(profile);
-                        applyStats(p);if(connected.contains(p.getUniqueId()))catalog(p);
+                        applyStats(p);syncClassGroup(p);if(connected.contains(p.getUniqueId()))catalog(p);
                     }
                     sender.sendMessage("Classi ricaricate.");return true;
                 }
@@ -425,7 +476,7 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
                 if(args[0].equals("xp")) {
                     long amount=Long.parseLong(args[2]);if(amount<0)throw new IllegalArgumentException("Usa XP positivi");grantXp(target,amount);
                 } else if(args[0].equals("livello")) {
-                    int level=Integer.parseInt(args[2]);if(level<1||level>progression.maxLevel())throw new IllegalArgumentException("Livello da 1 a "+progression.maxLevel());
+                    int level=Integer.parseInt(args[2]);if(level<1||level>classCap(profile(target).classId))throw new IllegalArgumentException("Livello da 1 a "+classCap(profile(target).classId));
                     Profile data=profile(target);engine.clear(target.getUniqueId());data.level=level;data.xp=0;statPoints.reconcile(data);
                     data.normalize(definition(data),stats(data));applyStats(target);displayXp(target,data);sync(target);
                 } else changeClass(target,args[2]);
@@ -444,7 +495,7 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
             if(args.length==2&&args[0].equals("sottoclasse")) {
                 ClassDefinition next=catalog.get(args[1]);
                 if(next==null||!next.parent().equals(data.classId)||data.level<next.requiredLevel())throw new IllegalArgumentException("Sottoclasse non disponibile al tuo livello");
-                changeClass(p,next.id());save(data);return true;
+                promote(p,next.id());return true;
             }
             if(args.length>0&&args[0].equals("lista")) {
                 catalog.all().values().forEach(d->p.sendMessage("§d"+d.id()+" §f"+d.name()+(d.parent().isEmpty()?"":" (da "+d.parent()+", lv. "+d.requiredLevel()+")")));return true;
@@ -462,16 +513,37 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
         } catch(Exception e) { sender.sendMessage("§c"+e.getMessage()); }
         return true;
     }
+    public void promote(Player p,String id){
+        var data=profile(p);var next=catalog.get(id);
+        if(data==null||next==null||!next.parent().equals(data.classId)||data.level<classCap(data.classId)||data.level<next.requiredLevel()||p.isDead()||!p.hasPermission("castigo.classes.use"))throw new IllegalArgumentException("Raggiungi il cap della classe attuale prima della promozione.");
+        String required=progressionSettings.item(id);if(required.isEmpty())throw new IllegalArgumentException("Lo staff deve configurare l'oggetto di promozione per "+next.name());
+        var held=p.getInventory().getItemInMainHand();
+        try{if(!required.equals(SkillEquipment.identify(held)))throw new IllegalArgumentException("Tieni nella mano principale l'oggetto richiesto: "+required);}catch(ReflectiveOperationException e){throw new IllegalArgumentException("Oggetto ItemsAdder non disponibile");}
+        var before=held.clone();held.setAmount(held.getAmount()-1);p.getInventory().setItemInMainHand(held);
+        try{changeClass(p,id);}catch(RuntimeException e){p.getInventory().setItemInMainHand(before);throw e;}
+        p.sendMessage("§aPromozione completata. Consumato 1 oggetto.");
+    }
+    @EventHandler(ignoreCancelled=false,priority=EventPriority.HIGHEST) public void promotionItem(PlayerInteractEvent e){
+        if(e.getHand()!=org.bukkit.inventory.EquipmentSlot.HAND||!e.getAction().isRightClick()||profile(e.getPlayer())==null||e.useItemInHand()==Event.Result.DENY)return;
+        var p=e.getPlayer();var data=profile(p);String held;try{held=SkillEquipment.identify(e.getItem());}catch(Exception ex){return;}
+        var options=catalog.all().values().stream().filter(d->d.parent().equals(data.classId)&&held.equals(progressionSettings.item(d.id()))).toList();
+        if(options.isEmpty())return;e.setCancelled(true);
+        if(options.size()>1){p.sendMessage("§eScegli la destinazione: /classe sottoclasse <id>");for(var d:options)p.sendMessage(d.id()+" — "+d.name());return;}
+        try{promote(p,options.getFirst().id());}catch(Exception ex){p.sendMessage("§c"+ex.getMessage());}
+    }
     private void changeClass(Player p,String id) {
         ClassDefinition next=catalog.get(id);if(next==null)throw new IllegalArgumentException("Classe sconosciuta");
         Profile data=profile(p);double fraction=data.resource/Math.max(1,stats(p).mana());
-        data.classId=id;data.normalize(next,stats(data));data.resource=stats(data).mana()*fraction;
+        String oldClass=data.classId;long oldXp=data.xp;double oldResource=data.resource;var oldSlots=List.copyOf(data.slots);
+        data.classId=id;data.xp=0;data.normalize(next,stats(data));data.resource=stats(data).mana()*fraction;
+        try{store.save(data);}catch(Exception e){data.classId=oldClass;data.xp=oldXp;data.resource=oldResource;data.slots.clear();data.slots.addAll(oldSlots);throw new IllegalStateException("Cambio classe non salvato",e);}
+        syncClassGroup(p);
         engine.clear(p.getUniqueId());applyStats(p);sync(p);p.sendMessage("§dClasse: "+next.name());
     }
     @Override public List<String> onTabComplete(CommandSender s,Command c,String label,String[] args) {
         List<String> choices=args.length==1?new ArrayList<>(List.of("lista","skill","scambia","sottoclasse","assegna")):new ArrayList<>();
         if(args.length==2&&args[0].equals("assegna"))for(StatAttribute stat:StatAttribute.values())choices.add(stat.label().toLowerCase(Locale.ROOT));
-        if(args.length==1&&s.hasPermission("castigo.classes.admin"))choices.addAll(List.of("reload","set","xp","livello","admin","icona","hud"));
+        if(args.length==1&&s.hasPermission("castigo.classes.admin"))choices.addAll(List.of("reload","set","xp","livello","admin","icona","hud","progressione"));
         if(s.hasPermission("castigo.classes.admin")&&args[0].equals("icona")) {
             if(args.length==2)choices.addAll(catalog.all().keySet());
             if(args.length==3&&catalog.get(args[1])!=null)catalog.get(args[1]).skills().forEach(skill->choices.add(skill.id()));

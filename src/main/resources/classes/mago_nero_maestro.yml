@@ -1,0 +1,9 @@
+id: mago_nero_maestro
+name: Arcimago dell’Ombra
+description: Prosecuzione della disciplina; conserva attributi e abilità apprese.
+parent: mago_nero_esperto
+required-level: 25
+level-cap: 50
+luckperms-group: mago_nero_maestro
+# Le otto skill sono ereditate; unlock-level continua a regolare gli sblocchi.
+# Configura il consumabile di ingresso in /classe progressione.

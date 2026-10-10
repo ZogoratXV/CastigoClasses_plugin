@@ -35,7 +35,7 @@ public final class SkillEngine implements Listener {
     }
     void trail(Player p,Skill s,Location from,Location at) { effects.play(plugin.presentation(p,s),SkillPresentation.Stage.TRAIL,from,at); }
     void targetAura(Player p,Skill skill,LivingEntity target,java.util.function.BooleanSupplier valid) {
-        String color=switch(plugin.profile(p).classId) {
+        String color=switch(plugin.catalog().root(plugin.profile(p).classId)) {
             case "mago_bianco" -> "FFFFD8";
             case "mago_nero" -> "59209B";
             case "arciere" -> "43D66D";

@@ -1,0 +1,9 @@
+id: guerriero_due_mani_esperto
+name: Spadaccino
+description: Prosecuzione della disciplina; conserva attributi e abilità apprese.
+parent: guerriero_due_mani
+required-level: 10
+level-cap: 25
+luckperms-group: guerriero_due_mani_esperto
+# Le otto skill sono ereditate; unlock-level continua a regolare gli sblocchi.
+# Configura il consumabile di ingresso in /classe progressione.

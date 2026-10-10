@@ -21,6 +21,11 @@ public final class SkillEquipment {
     public record Requirement(boolean offhand,String item) {}
     private final File file;
     private YamlConfiguration data;
+    private it.castigo.classes.config.ClassCatalog catalog;
+    public void inherit(it.castigo.classes.config.ClassCatalog catalog){this.catalog=catalog;}
+    private String source(String c,String s,String field){
+        for(String id=c;id!=null&&!id.isEmpty();){if(data.contains(path(id,s)+"."+field))return id;var d=catalog==null?null:catalog.get(id);id=d==null?null:d.parent();}return c;
+    }
     public SkillEquipment(File file) throws Exception {
         this.file=file;data=new YamlConfiguration();if(file.exists())data.load(file);
         var classes=data.getConfigurationSection("classes");
@@ -41,7 +46,7 @@ public final class SkillEquipment {
         return "classes."+c+"."+s;
     }
     public Requirement requirement(String classId,Skill skill,SkillMechanics rules) {
-        String path=path(classId,skill.id());String item=data.getString(path+".item");
+        String path=path(source(classId,skill.id(),"item"),skill.id());String item=data.getString(path+".item");
         if(item!=null)return new Requirement(data.getString(path+".hand","MAIN").equals("OFF"),item);
         return switch(rules.weapon()) {
             case SHIELD -> new Requirement(true,"minecraft:shield");
@@ -69,7 +74,7 @@ public final class SkillEquipment {
         }
         return item.getType().getKey().toString();
     }
-    public String icon(String classId,Skill skill) { return data.getString(path(classId,skill.id())+".icon",defaultIcon(skill)); }
+    public String icon(String classId,Skill skill) { return data.getString(path(source(classId,skill.id(),"icon"),skill.id())+".icon",defaultIcon(skill)); }
     public void setItem(String c,String s,Requirement r) throws Exception {
         validateItem(r.item());var copy=copy();String path=path(c,s);
         copy.set(path+".item",r.item());copy.set(path+".hand",r.offhand()?"OFF":"MAIN");save(copy);

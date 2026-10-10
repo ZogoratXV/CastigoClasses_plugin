@@ -14,7 +14,7 @@ class CatalogTest {
     @Test void shippedMageHasEightPlayableSkills() throws Exception {
         mage();var mage=new ClassCatalog(directory.toFile()).get("mago");
         assertEquals(8,mage.skills().size());assertEquals(100,mage.base().mana());
-        assertTrue(mage.skills().stream().allMatch(s->s.unlockLevel()==1));
+        assertEquals(java.util.List.of(1,5,15,15,30,30,50,50),mage.skills().stream().map(it.castigo.classes.model.Skill::unlockLevel).toList());
     }
     @Test void subclassInheritsSkillsAndOverridesIndividualAttributesAndResource() throws Exception {
         mage();Files.writeString(directory.resolve("paladino.yml"),"id: paladino\nparent: mago\nresource:\n  name: Fede\nattributes:\n  base:\n    health: 40\n");

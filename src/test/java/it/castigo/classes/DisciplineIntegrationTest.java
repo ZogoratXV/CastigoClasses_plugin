@@ -32,6 +32,8 @@ public class DisciplineIntegrationTest {
         MockBukkit.createMockPlugin("CastigoCore");
         plugin=MockBukkit.loadWith(TestClasses.class,getClass().getResourceAsStream("/plugin.yml"));
         assertTrue(plugin.isEnabled());player=new VisiblePlayer(server,"Tester");server.addPlayer(player);
+        // Skill mechanics fixtures deliberately unlock all abilities independently of the new progression gates.
+        for(String id:java.util.List.of("mago","mago_bianco","mago_nero","guerriero_scudo","guerriero_due_mani","arciere"))plugin.progressionSettings().set(id,"level-cap","100");
         player.addAttachment(plugin,"castigo.classes.use",true);
         player.getInventory().setItemInMainHand(new ItemStack(Material.STICK));
         assertNotNull(plugin.profile(player));

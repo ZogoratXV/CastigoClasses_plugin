@@ -1,0 +1,9 @@
+id: guerriero_due_mani_maestro
+name: Maestro della Lama
+description: Prosecuzione della disciplina; conserva attributi e abilità apprese.
+parent: guerriero_due_mani_esperto
+required-level: 25
+level-cap: 50
+luckperms-group: guerriero_due_mani_maestro
+# Le otto skill sono ereditate; unlock-level continua a regolare gli sblocchi.
+# Configura il consumabile di ingresso in /classe progressione.

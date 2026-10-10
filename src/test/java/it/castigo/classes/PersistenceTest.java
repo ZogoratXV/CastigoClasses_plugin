@@ -19,10 +19,11 @@ class PersistenceTest {
     @Test void reconnectPreservesProgressResourceOrderAndActiveCooldowns() throws Exception {
         ClassDefinition mage=mage();ProfileStore store=new ProfileStore(directory.resolve("players").toFile());
         UUID uuid=UUID.randomUUID();Profile p=store.load(uuid,mage,100);
-        p.level=7;p.xp=43;p.resource=17.5;Collections.swap(p.slots,0,7);
+        p.level=7;p.xp=43;p.resource=17.5;p.dailyXp=450;p.xpDay="2026-10-10";p.xpResetToken="staff-reset";p.managedClassGroup="mago";Collections.swap(p.slots,0,7);
         p.cooldowns.put("meteora",System.currentTimeMillis()+25000);store.save(p);
         Profile loaded=store.load(uuid,mage,100);loaded.normalize(mage);
         assertEquals(7,loaded.level);assertEquals(43,loaded.xp);assertEquals(17.5,loaded.resource);
+        assertEquals(450,loaded.dailyXp);assertEquals("2026-10-10",loaded.xpDay);assertEquals("staff-reset",loaded.xpResetToken);assertEquals("mago",loaded.managedClassGroup);
         assertEquals("meteora",loaded.slots.getFirst());assertEquals(p.cooldowns,loaded.cooldowns);
     }
     @Test void malformedExistingProfileIsNotReplacedWithFreshData() throws Exception {

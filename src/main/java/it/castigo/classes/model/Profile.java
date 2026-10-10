@@ -7,6 +7,8 @@ public final class Profile {
     public String classId;
     public int level = 1;
     public long xp;
+    public long dailyXp;
+    public String xpDay="",xpResetToken="",managedClassGroup="";
     public double resource;
     public int earnedStatPoints;
     public int statPointsRewardedThroughLevel=1;

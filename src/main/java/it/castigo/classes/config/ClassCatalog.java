@@ -27,6 +27,10 @@ public final class ClassCatalog {
     }
     public Map<String, ClassDefinition> all() { return Collections.unmodifiableMap(definitions); }
     public ClassDefinition get(String id) { return definitions.get(id); }
+    public int levelCap(String id,int fallback){return (int)number(raw.get(id),"level-cap",fallback,1,1000);}
+    public String root(String id){var d=get(id);while(d!=null&&!d.parent().isEmpty())d=get(d.parent());return d==null?id:d.id();}
+    public String group(String id){return raw.get(id).getString("luckperms-group",id);}
+    public boolean descendsFrom(String id,String ancestor){for(ClassDefinition d=get(id);d!=null;d=get(d.parent()))if(d.id().equals(ancestor))return true;return false;}
     public SkillPresentation presentation(Skill skill) { return presentations.get(skill); }
     public SkillMechanics mechanics(Skill skill) { return mechanics.get(skill); }
     private ClassDefinition resolve(String id, Set<String> path) {
@@ -47,7 +51,7 @@ public final class ClassCatalog {
             Skill skill=new Skill(sid, text(s,"name",sid), text(s,"description",""),
                     Skill.Effect.valueOf(s.getString("effect", "BOLT").toUpperCase(Locale.ROOT)),
                     text(s,"icon","minecraft:amethyst_shard"), color(s.getString("color","AA77FF")),
-                    (int)number(s,"unlock-level",1,1,1000), number(s,"cost",10,0,1000000),
+                    (int)number(s,"unlock-level",id.equals("mago")?new int[]{1,5,15,15,30,30,50,50}[Math.min(7,skills.size())]:1,1,1000), number(s,"cost",10,0,1000000),
                     (long)(number(s,"cooldown-seconds",2,0.1,86400)*1000), number(s,"power",5,0,10000),
                     number(s,"intelligence-scale",0.5,0,100), number(s,"range",24,1,64),
                     number(s,"radius",4,0.5,12), (int)(number(s,"duration-seconds",5,0.05,120)*20));

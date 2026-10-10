@@ -1,0 +1,9 @@
+id: guerriero_scudo_esperto
+name: Difensore
+description: Prosecuzione della disciplina; conserva attributi e abilità apprese.
+parent: guerriero_scudo
+required-level: 10
+level-cap: 25
+luckperms-group: guerriero_scudo_esperto
+# Le otto skill sono ereditate; unlock-level continua a regolare gli sblocchi.
+# Configura il consumabile di ingresso in /classe progressione.
