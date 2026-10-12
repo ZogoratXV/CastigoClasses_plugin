@@ -20,6 +20,7 @@ public final class HudSettings {
     public Set<String> groups(){return Set.copyOf(data.keySet());}
     public HudTheme theme(String group){var e=data.getAsJsonObject(group);var t=new HudTheme(e==null?null:e.getAsJsonObject("layout"));String path=t.text("texture");for(String id:HudPresets.NAMES)if(path.equals("castigo:textures/gui/hud/"+id+".png"))return HudPresets.theme(id);return t;}
     public int priority(String group){var e=data.getAsJsonObject(group);int n=e==null?0:e.get("priority").getAsInt();if(n<0||n>10000)throw new IllegalArgumentException("Priorità 0–10000");return n;}
+    public HudTheme civilianTheme(){return data.has("popolano")?theme("popolano"):HudPresets.theme("popolano");}
     public HudTheme resolve(Collection<String> groups,String primary) {
         String winner=groups.stream().filter(data::has).sorted(Comparator.<String>comparingInt(this::priority).reversed()
                 .thenComparingInt(g->g.equals(primary)?0:1).thenComparing(Comparator.naturalOrder())).findFirst().orElse("default");

@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class DisciplineIntegrationTest {
     @Test void removingClassPersistsAcrossJoinAndAllowsLaterAssignment()throws Exception {
         var old=plugin.profile(player);old.dailyXp=77;old.level=4;old.earnedStatPoints=3;
+        plugin.hudSettings().preset("default","mago_bianco");
         command("rimuovi",player.getName());
         assertNull(plugin.profile(player));assertEquals(20,player.getAttribute(Attribute.MAX_HEALTH).getValue());assertEquals(0,player.getLevel());
         var stored=new it.castigo.classes.storage.ProfileStore(new java.io.File(plugin.getDataFolder(),"players")).load(player.getUniqueId(),plugin.catalog().get("mago_bianco"),100);
@@ -18,6 +19,7 @@ public class DisciplineIntegrationTest {
         assertTrue(plugin.civilianState(player).getAsJsonObject("hud").toString().contains("popolano"));
         assertFalse(stored.classAssigned);assertEquals(77,stored.dailyXp);assertEquals(3,stored.earnedStatPoints);
         plugin.join(new org.bukkit.event.player.PlayerJoinEvent(player,""));assertNull(plugin.profile(player));
+        assertTrue(plugin.civilianState(player).getAsJsonObject("hud").toString().contains("popolano"));
         command("set",player.getName(),"arciere");assertNotNull(plugin.profile(player));assertEquals("arciere",plugin.profile(player).classId);assertEquals(77,plugin.profile(player).dailyXp);
     }
     @Test void classWeaponPoolsPersistInheritAndEnforceExactItems()throws Exception {

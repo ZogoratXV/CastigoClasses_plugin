@@ -183,6 +183,7 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
         return result;
     }
     private HudTheme hudFor(Player p,String primary){
+        if(profile(p)==null)return hudSettings.civilianTheme();
         var groups=new HashSet<String>();if(!primary.isBlank())groups.add(primary);
         if(getServer().getPluginManager().isPluginEnabled("LuckPerms"))try{
             var lp=getServer().getServicesManager().load(LuckPerms.class);var user=lp==null?null:lp.getUserManager().getUser(p.getUniqueId());

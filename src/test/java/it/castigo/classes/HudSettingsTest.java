@@ -15,6 +15,12 @@ class HudSettingsTest {
         var restored=new HudSettings(file);assertEquals("AAAAAA",restored.resolve(List.of("unknown"),"unknown").text("border"));
         restored.reset("mago");assertEquals("AAAAAA",restored.resolve(List.of("mago"),"mago").text("border"));
     }
+    @Test void civilianThemeIgnoresClassDefaultsAndKeepsCustomPopolanoSettings()throws Exception{
+        var s=new HudSettings(dir.resolve("hud.json"));s.preset("default","mago_nero");s.preset("mago_nero","mago_nero");s.set("mago_nero","priority","100");
+        assertEquals("castigoclasses:textures/gui/hud/popolano.png",s.civilianTheme().text("texture"));
+        s.preset("popolano","popolano");s.set("popolano","texture","regno:textures/gui/civile.png");
+        assertEquals("regno:textures/gui/civile.png",new HudSettings(dir.resolve("hud.json")).civilianTheme().text("texture"));
+    }
     @Test void invalidUpdatesCannotReplaceSavedSettings()throws Exception{
         var s=new HudSettings(dir.resolve("hud.json"));s.set("test","texture","castigo:textures/gui/hud/test.png");
         assertThrows(IllegalArgumentException.class,()->s.set("test","texture","https://example.com/file.png"));
