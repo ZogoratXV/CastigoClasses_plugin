@@ -1,3 +1,9 @@
+## 0.1.0-beta.17
+- Compatibilità compilata e verificata con CastigoCore beta.28; nome RP dalla sua API.
+- Undici HUD integrate, coordinate dedicate e selezione automatica gruppo/classe.
+- Quaranta VFX Blockbench animati, fasi di proiettile/impatto e bersagli sincronizzati.
+- Nuove pose cosmetiche per benedizioni, maledizioni, canalizzazione e tecniche fisiche.
+
 # Changelog
 
 ## 0.1.0-beta.7 — 2026-10-08

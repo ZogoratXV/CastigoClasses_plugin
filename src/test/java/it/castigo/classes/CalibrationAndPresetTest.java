@@ -15,7 +15,7 @@ class CalibrationAndPresetTest {
     @Test void presetKeepsPriorityAndAllLayoutsStayInsideCanvas()throws Exception{
         var s=new HudSettings(dir.resolve("hud.json"));s.set("admin","priority","500");
         for(var id:HudPresets.NAMES){s.preset("admin",id);var t=s.theme("admin");assertEquals(500,s.priority("admin"));assertEquals(172,t.number("width"));assertTrue(t.number("barsX")+t.number("barsWidth")<172);assertTrue(t.number("xpY")+2<64);assertTrue(t.number("healthY")+t.number("barHeight")<t.number("resourceY"));}
-        assertThrows(IllegalArgumentException.class,()->s.set("admin","textScale","49"));assertEquals(70,s.theme("admin").number("textScale"));
+        assertThrows(IllegalArgumentException.class,()->s.set("admin","textScale","49"));assertEquals(65,s.theme("admin").number("textScale"));
     }
     @Test void nextResetHandlesBothDstTransitions()throws Exception{
         var s=new ProgressionSettings(dir.resolve("progression.yml"));s.set(null,"reset-time","02:30");

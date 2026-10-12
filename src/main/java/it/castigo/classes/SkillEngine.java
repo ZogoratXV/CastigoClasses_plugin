@@ -34,7 +34,7 @@ public final class SkillEngine implements Listener {
     void loop(Player p,Skill s,SkillPresentation.Stage stage,java.util.function.Supplier<Location> at,UUID target,boolean link,java.util.function.BooleanSupplier valid) {
         visualLoops.start(p,s,stage,p::getEyeLocation,at,target,link,valid);
     }
-    void trail(Player p,Skill s,Location from,Location at) { effects.play(plugin.presentation(p,s),SkillPresentation.Stage.TRAIL,from,at); }
+    void trail(Player p,Skill s,Location from,Location at) { effects.play(plugin.presentation(p,s),SkillPresentation.Stage.TRAIL,from,at,null,s); }
     void targetAura(Player p,Skill skill,LivingEntity target,java.util.function.BooleanSupplier valid) {
         String color=switch(plugin.catalog().root(plugin.profile(p).classId)) {
             case "mago_bianco" -> "FFFFD8";
@@ -54,19 +54,19 @@ public final class SkillEngine implements Listener {
         var cue=SkillPresentation.read(config,skill).cues().get(SkillPresentation.Stage.CAST);
         visualLoops.start(p,skill,SkillPresentation.Stage.CAST,target::getLocation,target::getLocation,target.getUniqueId(),false,valid,cue);
     }
-    void pulse(Player p,Skill s,SkillPresentation.Stage stage,LivingEntity at) { effects.play(plugin.presentation(p,s),stage,p.getEyeLocation(),at.getLocation(),at.getUniqueId()); }
+    void pulse(Player p,Skill s,SkillPresentation.Stage stage,LivingEntity at) { effects.play(plugin.presentation(p,s),stage,p.getEyeLocation(),at.getLocation(),at.getUniqueId(),s); }
     public double defenseFactor(UUID id) { return disciplines.defenseFactor(id); }
     public com.google.gson.JsonObject casting(UUID id) { return disciplines.casting(id); }
-    void castVisual(Player p,Skill s) { plugin.weaponMotion(p,s,"release",12);effects.play(plugin.presentation(p,s),SkillPresentation.Stage.CAST,p.getLocation(),p.getLocation(),p.getUniqueId()); }
+    void castVisual(Player p,Skill s) { plugin.weaponMotion(p,s,"release",12);effects.play(plugin.presentation(p,s),SkillPresentation.Stage.CAST,p.getLocation(),p.getLocation(),p.getUniqueId(),s); }
     boolean allowed(Player p,Location at) { return protection.interact(p,at); }
     void visual(Player p,Skill s,Location at) {
-        effects.play(plugin.presentation(p,s),SkillPresentation.Stage.IMPACT,p.getEyeLocation(),at);
+        effects.play(plugin.presentation(p,s),SkillPresentation.Stage.IMPACT,p.getEyeLocation(),at,null,s);
     }
     void visual(Player p,Skill s,LivingEntity target) {
         var fx=plugin.presentation(p,s);
         boolean beam=fx.cues().get(SkillPresentation.Stage.IMPACT).hasMesh();
         Location at=target.getLocation().add(0,beam?0:1,0);
-        effects.play(fx,SkillPresentation.Stage.IMPACT,beam?at:p.getEyeLocation(),at,target.getUniqueId());
+        effects.play(fx,SkillPresentation.Stage.IMPACT,beam&&s.effect()!=Skill.Effect.DRAIN?at:p.getEyeLocation(),at,target.getUniqueId(),s);
     }
 
     public void cast(Player p,Skill skill) {
@@ -135,7 +135,7 @@ public final class SkillEngine implements Listener {
                 RayTraceResult hit=locked==null?ray(p,s.range()):new RayTraceResult(locked.getEyeLocation().toVector(),locked);
                 if(hit==null||!(hit.getHitEntity() instanceof LivingEntity target)) { plugin.feedback(p,"Nessun bersaglio valido nella linea di mira.");return false; }
                 boolean accepted=damageAccepted(target,p,power);
-                effects.play(fx,SkillPresentation.Stage.TRAIL,s.effect()==Skill.Effect.LIGHTNING?target.getLocation().add(0,8,0):from,hit.getHitPosition().toLocation(p.getWorld()));
+                effects.play(fx,SkillPresentation.Stage.TRAIL,s.effect()==Skill.Effect.LIGHTNING?target.getLocation().add(0,8,0):from,hit.getHitPosition().toLocation(p.getWorld()),null,s);
                 if(accepted)visual(p,s,target);
             }
             case FIREBALL -> {

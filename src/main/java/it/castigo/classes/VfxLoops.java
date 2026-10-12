@@ -59,6 +59,7 @@ final class VfxLoops {
         packet.getAsJsonObject("particles").addProperty("enabled",false);
         PresentationPlayer.target(packet,loop.target);
         if(loop.link) { packet.addProperty("source",loop.owner.getUniqueId().toString());packet.addProperty("anchorHeight",1); }
+        if(loop.custom==null)BlockbenchVfx.decorate(packet,loop.skill,loop.stage,true);
         plugin.broadcastEffect(from,at,packet);
     }
     void clear(){for(var loop:loops.values())plugin.stopEffect(loop.world,loop.id);loops.clear();}

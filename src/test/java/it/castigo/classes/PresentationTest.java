@@ -56,10 +56,11 @@ class PresentationTest {
         assertEquals("LINE",packet.get("shape").getAsString());assertEquals(8,packet.get("durationTicks").getAsInt());
         assertEquals(id.toString(),packet.get("world").getAsString());assertFalse(packet.toString().contains("org.bukkit"));
     }
-    @Test void linkedCoreExposesRequiredBeta9Apis() throws Exception {
+    @Test void linkedCoreExposesRequiredBeta28Apis() throws Exception {
         assertNotNull(ParticleStyle.class.getMethod("read",org.bukkit.configuration.ConfigurationSection.class));
         assertNotNull(CoreApi.class.getMethod("atomicWrite",Path.class,String.class));
         assertNotNull(it.castigo.core.Reflect.class.getMethod("call",Object.class,String.class,Object[].class));
-        assertThrows(NoSuchMethodException.class,()->it.castigo.core.Protection.class.getMethod("interact",org.bukkit.entity.Player.class,Location.class));
+        assertNotNull(it.castigo.core.Protection.class.getMethod("interact",org.bukkit.entity.Player.class,Location.class));
+        assertNotNull(it.castigo.core.PlayerNames.class.getMethod("name",org.bukkit.OfflinePlayer.class));
     }
 }

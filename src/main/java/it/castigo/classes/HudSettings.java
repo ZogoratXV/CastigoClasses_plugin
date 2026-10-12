@@ -18,12 +18,18 @@ public final class HudSettings {
     }
     public static void validateGroup(String group){if(!group.matches("[a-z0-9_.-]{1,64}"))throw new IllegalArgumentException("Nome gruppo LuckPerms non valido");}
     public Set<String> groups(){return Set.copyOf(data.keySet());}
-    public HudTheme theme(String group){var e=data.getAsJsonObject(group);return new HudTheme(e==null?null:e.getAsJsonObject("layout"));}
+    public HudTheme theme(String group){var e=data.getAsJsonObject(group);var t=new HudTheme(e==null?null:e.getAsJsonObject("layout"));String path=t.text("texture");for(String id:HudPresets.NAMES)if(path.equals("castigo:textures/gui/hud/"+id+".png"))return HudPresets.theme(id);return t;}
     public int priority(String group){var e=data.getAsJsonObject(group);int n=e==null?0:e.get("priority").getAsInt();if(n<0||n>10000)throw new IllegalArgumentException("Priorità 0–10000");return n;}
     public HudTheme resolve(Collection<String> groups,String primary) {
         String winner=groups.stream().filter(data::has).sorted(Comparator.<String>comparingInt(this::priority).reversed()
                 .thenComparingInt(g->g.equals(primary)?0:1).thenComparing(Comparator.naturalOrder())).findFirst().orElse("default");
         return theme(winner);
+    }
+    public HudTheme resolve(Collection<String> groups,String primary,String classId) {
+        if(groups.stream().anyMatch(data::has)||data.has("default"))return resolve(groups,primary);
+        for(String role:List.of("archangel","arcangelo","admin","arcidemone","criminale","guardia","popolano"))
+            if(groups.contains(role))return HudPresets.theme(role.equals("admin")||role.equals("arcangelo")?"archangel":role);
+        return HudPresets.theme(HudPresets.NAMES.contains(classId)?classId:"popolano");
     }
     public void set(String group,String field,String value) throws Exception {
         validateGroup(group);var next=data.deepCopy();var entry=new JsonObject();int priority=priority(group);HudTheme theme=theme(group);

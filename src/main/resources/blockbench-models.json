@@ -1,0 +1,162 @@
+{
+  "mago_bianco_orison": [
+    "01_orison_di_cura",
+    32
+  ],
+  "mago_bianco_dardo_consacrato": [
+    "02_dardo_consacrato",
+    24
+  ],
+  "mago_bianco_benedizione": [
+    "03_benedizione_rigenerante",
+    60
+  ],
+  "mago_bianco_purificazione": [
+    "04_purificazione",
+    48
+  ],
+  "mago_bianco_vincolo_custode": [
+    "05_vincolo_del_custode",
+    48
+  ],
+  "mago_bianco_luce_respingente": [
+    "06_luce_respingente",
+    32
+  ],
+  "mago_bianco_intercessione": [
+    "07_grande_intercessione",
+    60
+  ],
+  "mago_bianco_santuario": [
+    "08_santuario_di_luce",
+    480
+  ],
+  "mago_nero_dardo_maledetto": [
+    "09_dardo_maledetto",
+    24
+  ],
+  "mago_nero_malocchio": [
+    "10_malocchio",
+    120
+  ],
+  "mago_nero_consunzione": [
+    "11_consunzione",
+    80
+  ],
+  "mago_nero_terrore": [
+    "12_terrore_sussurrato",
+    120
+  ],
+  "mago_nero_cerchio_rovina": [
+    "13_cerchio_della_rovina",
+    240
+  ],
+  "mago_nero_sigillo_tormento": [
+    "14_sigillo_del_tormento",
+    120
+  ],
+  "mago_nero_patto_sangue": [
+    "15_patto_del_sangue",
+    44
+  ],
+  "mago_nero_vortice_tenebre": [
+    "16_vortice_delle_tenebre",
+    80
+  ],
+  "guerriero_scudo_affondo_disciplinato": [
+    "17_affondo_disciplinato",
+    32
+  ],
+  "guerriero_scudo_urto_scudo": [
+    "18_urto_di_scudo",
+    36
+  ],
+  "guerriero_scudo_guardia_salda": [
+    "19_guardia_salda",
+    60
+  ],
+  "guerriero_scudo_passo_guardiano": [
+    "20_passo_del_guardiano",
+    40
+  ],
+  "guerriero_scudo_difesa_compagno": [
+    "21_difesa_del_compagno",
+    60
+  ],
+  "guerriero_scudo_contrattacco": [
+    "22_contrattacco_del_veterano",
+    44
+  ],
+  "guerriero_scudo_riscossa": [
+    "23_riscossa",
+    40
+  ],
+  "guerriero_scudo_baluardo": [
+    "24_baluardo",
+    80
+  ],
+  "guerriero_due_mani_fendente_pesante": [
+    "25_fendente_pesante",
+    44
+  ],
+  "guerriero_due_mani_affondo_lungo": [
+    "26_affondo_lungo",
+    40
+  ],
+  "guerriero_due_mani_carica": [
+    "27_carica_travolgente",
+    44
+  ],
+  "guerriero_due_mani_arresto": [
+    "28_colpo_di_arresto",
+    36
+  ],
+  "guerriero_due_mani_circolare": [
+    "29_fendente_circolare",
+    44
+  ],
+  "guerriero_due_mani_falciata": [
+    "30_falciata_bassa",
+    38
+  ],
+  "guerriero_due_mani_spezzaguardia": [
+    "31_spezzaguardia",
+    40
+  ],
+  "guerriero_due_mani_sequenza": [
+    "32_sequenza_del_campione",
+    68
+  ],
+  "arciere_tiro_preciso": [
+    "33_tiro_preciso",
+    48
+  ],
+  "arciere_passo_cacciatore": [
+    "34_passo_del_cacciatore",
+    36
+  ],
+  "arciere_occhio_cacciatore": [
+    "35_occhio_del_cacciatore",
+    60
+  ],
+  "arciere_disimpegno": [
+    "36_disimpegno",
+    36
+  ],
+  "arciere_tiro_ostacolante": [
+    "37_tiro_ostacolante",
+    64
+  ],
+  "arciere_tiro_copertura": [
+    "38_tiro_di_copertura",
+    72
+  ],
+  "arciere_doppio_tiro": [
+    "39_doppio_tiro",
+    44
+  ],
+  "arciere_colpo_maestro": [
+    "40_colpo_del_maestro",
+    68
+  ]
+}

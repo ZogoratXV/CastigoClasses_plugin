@@ -1,3 +1,5 @@
+**Aggiornamento beta.17:** [installazione, HUD incluse e 40 modelli Blockbench](docs/AGGIORNAMENTO-BETA17.md). Richiede CastigoCore beta.28 sul server.
+
 # CastigoClasses — plugin
 
 Versione di test **0.1.0-beta.16** per **Purpur Minecraft 26.2**, Java 25 e **CastigoCore 2.1.0-beta.9**.

@@ -397,6 +397,12 @@ public final class DisciplineEngine implements Listener {
         shots.put(arrow.getUniqueId(),new Shot(source(p),skill,power,p.getEyeLocation().clone(),tick+100,arrow,p.getEyeLocation().clone()));
         engine.castVisual(p,skill);
     }
+    @EventHandler(priority=EventPriority.MONITOR,ignoreCancelled=true)
+    public void arrowBlockImpact(ProjectileHitEvent event){
+        if(event.getHitBlock()==null)return;var shot=shots.get(event.getEntity().getUniqueId());if(shot==null)return;
+        var owner=resolve(shot.source());var at=event.getEntity().getLocation();
+        if(owner!=null&&at.getWorld().equals(owner.getWorld())&&at.distanceSquared(shot.origin())<=shot.skill().range()*shot.skill().range()&&engine.allowed(owner,at))engine.visual(owner,shot.skill(),at);
+    }
     private void interrupt(LivingEntity entity) {
         UUID id=entity.getUniqueId();boolean cancelled=endPreparation(id);cancelled|=sequences.remove(id)!=null;
         if(entity instanceof Player p) { stopDash(id,p);if(cancelled)plugin.feedback(p,"Tecnica interrotta."); }

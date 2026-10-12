@@ -49,6 +49,7 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
     private WeaponCalibrationGui calibrationGui;
     private AdminTools adminTools;
     public AdminTools adminTools(){return adminTools;}
+    private final Set<UUID> modelClients=new HashSet<>();
     private final Set<UUID> animationClients=new HashSet<>();
     private final Map<UUID,AttackVisualGate> attackVisuals=new HashMap<>();
     private final Map<UUID,Integer> skillVariants=new HashMap<>();
@@ -65,7 +66,7 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
         for(String base:List.of("mago","mago_bianco","mago_nero","guerriero_scudo","guerriero_due_mani","arciere"))
             for(String tier:List.of("esperto","maestro"))if(!new File(getDataFolder(),"classes/"+base+"_"+tier+".yml").exists())saveResource("classes/"+base+"_"+tier+".yml",false);
         try {
-            Class.forName("it.castigo.core.ParticleStyle").getMethod("read",org.bukkit.configuration.ConfigurationSection.class);
+            Class.forName("it.castigo.core.PlayerNames").getMethod("name",org.bukkit.OfflinePlayer.class);
             loadConfiguration();
             getConfig().options().copyDefaults(true);
             saveConfig();
@@ -179,7 +180,7 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
             var lp=getServer().getServicesManager().load(LuckPerms.class);var user=lp==null?null:lp.getUserManager().getUser(p.getUniqueId());
             if(user!=null)for(var g:user.getInheritedGroups(lp.getContextManager().getQueryOptions(user).orElse(lp.getContextManager().getStaticQueryOptions())))groups.add(g.getName());
         }catch(LinkageError ignored){}
-        return hudSettings.resolve(groups,primary);
+        return hudSettings.resolve(groups,primary,catalog.root(profile(p).classId));
     }
     public SkillPresentation presentation(Player p,Skill skill) { return vfxSettings.resolve(profile(p).classId,skill,catalog.presentation(skill)); }
     public JsonObject casting(Player p) { return engine.casting(p.getUniqueId()); }
@@ -219,7 +220,7 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
     @EventHandler public void quit(PlayerQuitEvent e) {
         Player p=e.getPlayer(); Profile data=profiles.remove(p.getUniqueId()); if(data!=null) save(data);
         connected.remove(p.getUniqueId()); lastRequest.remove(p.getUniqueId()); lastCatalog.remove(p.getUniqueId()); removeModifiers(p);
-        animationClients.remove(p.getUniqueId());attackVisuals.remove(p.getUniqueId());skillVariants.remove(p.getUniqueId());
+        modelClients.remove(p.getUniqueId());animationClients.remove(p.getUniqueId());attackVisuals.remove(p.getUniqueId());skillVariants.remove(p.getUniqueId());
         clientEffects.remove(p.getUniqueId());effectPackets.remove(p.getUniqueId());
         healingEffects.remove(p.getUniqueId());meshEffects.remove(p.getUniqueId());
         engine.clear(p.getUniqueId());
@@ -333,7 +334,7 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
         JsonObject obj=new JsonObject();
         obj.add("casting",engine.casting(player.getUniqueId()));
         obj.addProperty("world",player.getWorld().getUID().toString());
-        obj.addProperty("name",net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer.plainText().serialize(player.displayName())); obj.addProperty("classId",p.classId);
+        obj.addProperty("name",it.castigo.core.PlayerNames.name(player)); obj.addProperty("classId",p.classId);
         refreshDay(p);boolean capped=p.level>=classCap(p.classId);
         obj.addProperty("classLevelCap",classCap(p.classId));obj.addProperty("classCapped",capped);
         obj.addProperty("dailyResetAt",progressionSettings.nextReset(java.time.Instant.now()).toEpochMilli());
@@ -388,6 +389,7 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
             lastRequest.put(player.getUniqueId(),now);
             if(type.equals("hello")) {
                 if(now-lastCatalog.getOrDefault(player.getUniqueId(),0L)<1000)return;
+                if(o.has("blockbenchVfx")&&o.get("blockbenchVfx").getAsInt()==1)modelClients.add(player.getUniqueId());else modelClients.remove(player.getUniqueId());
                 if(o.has("weaponAnimations")&&o.get("weaponAnimations").getAsInt()==2)animationClients.add(player.getUniqueId());else animationClients.remove(player.getUniqueId());
                 int vfx=o.has("clientVfx")?o.get("clientVfx").getAsInt():0;
                 if(vfx==1||vfx==2)clientEffects.add(player.getUniqueId());
@@ -449,11 +451,12 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
     public void weaponMotion(Player p,it.castigo.classes.model.Skill skill,String phase,int ticks) {
         boolean off=skill!=null&&profile(p)!=null&&equipment().requirement(profile(p).classId,skill,catalog.mechanics(skill)).offhand();
         JsonObject o=motionBase(p,off);o.addProperty("phase",phase);o.addProperty("duration",Math.clamp(ticks,0,600));
-        String style=skill==null?"CAST":WeaponMotion.style(skill.effect());o.addProperty("style",style);
+        String style=skill==null?"CAST":WeaponMotion.style(skill);o.addProperty("style",style);
         String profile=animationProfile(p,off?p.getInventory().getItemInOffHand():p.getInventory().getItemInMainHand(),!off);
         String clip=switch(style){case "CAST"->"CAST";case "BOW"->"BOW";case "SHIELD"->"SHIELD";case "THRUST"->"THRUST";case "HEAVY"->"AXE";default->profile.equals("VANILLA")?"SWORD":profile;};
         // An explicit vanilla override disables skill gestures too, except the existing two-handed stance.
         var values=poseFor(off?p.getInventory().getItemInOffHand():p.getInventory().getItemInMainHand());if(values.has("profile")&&values.get("profile").getAsString().equals("VANILLA")&&!twoHanded(p))clip="VANILLA";
+        if(skill!=null&&!clip.equals("VANILLA")&&!WeaponMotion.gesture(skill).isEmpty())o.addProperty("gesture",WeaponMotion.gesture(skill));
         o.addProperty("profile",clip);o.addProperty("normal",false);o.addProperty("variant",phase.equals("release")?skillVariants.merge(p.getUniqueId(),1,(x,y)->1-x):0);
         for(Player observer:p.getWorld().getPlayers())if(clientEffects.contains(observer.getUniqueId())&&observer.getLocation().distanceSquared(p.getLocation())<=64*64)send(observer,animationClients.contains(observer.getUniqueId())?"weapon_motion_v2":"weapon_motion",o);
     }
@@ -473,6 +476,11 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
             if(effect.get("shape").getAsString().startsWith("MESH_")&&!meshEffects.contains(id)) {
                 outgoing=effect.deepCopy();outgoing.addProperty("shape","RING");outgoing.remove("mesh");
                 outgoing.getAsJsonObject("particles").addProperty("enabled",true);
+            }
+            if(outgoing.has("model")) {
+                outgoing=outgoing.deepCopy();
+                if(!modelClients.contains(id)){outgoing.remove("model");outgoing.remove("modelTicks");}
+                else outgoing.getAsJsonObject("particles").addProperty("enabled",false);
             }
             send(observer,"vfx",outgoing);
         }
