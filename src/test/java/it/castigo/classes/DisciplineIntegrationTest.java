@@ -20,7 +20,7 @@ public class DisciplineIntegrationTest {
         final java.util.List<com.google.gson.JsonObject> effects=new java.util.ArrayList<>();
         final java.util.List<java.util.UUID> stopped=new java.util.ArrayList<>();
         final java.util.List<String> motions=new java.util.ArrayList<>();
-        @Override public void weaponMotion(org.bukkit.entity.Player p,it.castigo.classes.model.Skill skill,String phase,int ticks) { motions.add(phase);super.weaponMotion(p,skill,phase,ticks); }
+        @Override public void weaponMotion(org.bukkit.entity.Player p,it.castigo.classes.model.Skill skill,String phase,int ticks,int strike) { motions.add(phase);super.weaponMotion(p,skill,phase,ticks,strike); }
         @Override public void broadcastEffect(Location from,Location at,com.google.gson.JsonObject effect) { effects.add(effect.deepCopy()); }
         @Override public void stopEffect(java.util.UUID world,java.util.UUID handle) { stopped.add(handle); }
         @Override protected void scheduleTick(Runnable task) { getServer().getScheduler().runTaskTimer(this,task,5,5); }

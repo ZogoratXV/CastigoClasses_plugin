@@ -17,6 +17,9 @@ public final class PresentationPlayer {
         play(fx,stage,from,at,target,null);
     }
     public void play(SkillPresentation fx,SkillPresentation.Stage stage,Location from,Location at,java.util.UUID target,it.castigo.classes.model.Skill skill) {
+        play(fx,stage,from,at,target,skill,0);
+    }
+    public void play(SkillPresentation fx,SkillPresentation.Stage stage,Location from,Location at,java.util.UUID target,it.castigo.classes.model.Skill skill,int strike) {
         if(fx==null||!fx.enabled()||at==null||at.getWorld()==null||!at.getWorld().isChunkLoaded(at.getBlockX()>>4,at.getBlockZ()>>4))return;
         var cue=fx.cues().get(stage);if(cue==null||!cue.enabled())return;
         if(!cue.hasMesh()&&!cue.particles().enabled()&&!cue.sound().enabled())return;
@@ -24,6 +27,7 @@ public final class PresentationPlayer {
             JsonObject packet=packet(cue,from,at);
             target(packet,target);
             BlockbenchVfx.decorate(packet,skill,stage,false);
+            BlockbenchVfx.combo(packet,skill,stage,strike);
             plugin.broadcastEffect(from,at,packet);
         }
         catch(RuntimeException ex) {

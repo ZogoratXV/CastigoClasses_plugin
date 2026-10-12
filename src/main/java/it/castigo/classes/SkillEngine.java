@@ -57,7 +57,8 @@ public final class SkillEngine implements Listener {
     void pulse(Player p,Skill s,SkillPresentation.Stage stage,LivingEntity at) { effects.play(plugin.presentation(p,s),stage,p.getEyeLocation(),at.getLocation(),at.getUniqueId(),s); }
     public double defenseFactor(UUID id) { return disciplines.defenseFactor(id); }
     public com.google.gson.JsonObject casting(UUID id) { return disciplines.casting(id); }
-    void castVisual(Player p,Skill s) { plugin.weaponMotion(p,s,"release",12);effects.play(plugin.presentation(p,s),SkillPresentation.Stage.CAST,p.getLocation(),p.getLocation(),p.getUniqueId(),s); }
+    void castVisual(Player p,Skill s) { castVisual(p,s,0); }
+    void castVisual(Player p,Skill s,int strike) { plugin.weaponMotion(p,s,"release",12,strike);effects.play(plugin.presentation(p,s),SkillPresentation.Stage.CAST,p.getLocation(),p.getLocation(),p.getUniqueId(),s,strike); }
     boolean allowed(Player p,Location at) { return protection.interact(p,at); }
     void visual(Player p,Skill s,Location at) {
         effects.play(plugin.presentation(p,s),SkillPresentation.Stage.IMPACT,p.getEyeLocation(),at,null,s);

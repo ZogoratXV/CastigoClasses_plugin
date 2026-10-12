@@ -7,6 +7,11 @@ public final class WeaponMotion {
     private WeaponMotion() {}
     public static String style(Skill skill){return skill.id().startsWith("guerriero_scudo_")&&skill.effect()==Skill.Effect.LINK?"SHIELD":style(skill.effect());}
     public static String gesture(Skill skill){
+        if(skill.id().startsWith("guerriero_due_mani_")){
+            if(skill.effect()==Skill.Effect.HEAVY_STRIKE)return "HEAVY_TWO_HANDED";
+            if(skill.effect()==Skill.Effect.LONG_THRUST||skill.effect()==Skill.Effect.GUARD_BREAK)return "THRUST_TWO_HANDED";
+        }
+        if(skill.effect()==Skill.Effect.COUNTER)return "THRUST";
         if(skill.id().startsWith("guerriero_scudo_")&&skill.effect()==Skill.Effect.LINK)return "SHIELD";
         return switch(skill.effect()){
             case ALLY_HEAL,HOT,CLEANSE -> "BLESS";

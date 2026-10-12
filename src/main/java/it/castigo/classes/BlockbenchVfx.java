@@ -10,6 +10,10 @@ import java.util.*;
 final class BlockbenchVfx {
     private static final JsonObject MODELS=load();
     private static JsonObject load(){try(var in=BlockbenchVfx.class.getResourceAsStream("/blockbench-models.json")){return JsonParser.parseReader(new InputStreamReader(Objects.requireNonNull(in),StandardCharsets.UTF_8)).getAsJsonObject();}catch(IOException ex){throw new UncheckedIOException(ex);}}
+    static void combo(JsonObject packet,Skill skill,SkillPresentation.Stage stage,int strike){
+        if(skill==null||skill.effect()!=Skill.Effect.COMBO||stage!=SkillPresentation.Stage.CAST||!packet.has("model")||!packet.get("model").getAsString().equals("32_sequenza_del_campione:full"))return;
+        packet.addProperty("modelStrike",Math.clamp(strike,0,2));packet.addProperty("modelTicks",strike>=2?36:12);
+    }
     static Set<String> skills(){return MODELS.keySet();}
     static void decorate(JsonObject packet,Skill skill,SkillPresentation.Stage stage,boolean persistent){
         if(skill==null||!MODELS.has(skill.id()))return;

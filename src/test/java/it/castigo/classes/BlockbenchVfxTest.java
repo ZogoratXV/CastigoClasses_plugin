@@ -7,6 +7,13 @@ import java.nio.file.Path;
 import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 class BlockbenchVfxTest {
+    @Test void comboSendsOneSegmentForEachServerConfirmedStrike(){
+        var s=new Skill("guerriero_due_mani_sequenza","Test","",Skill.Effect.COMBO,"minecraft:stick",0xffffff,1,1,1,1,1,24,3,100);
+        for(int strike=0;strike<3;strike++){
+            var p=packet();BlockbenchVfx.decorate(p,s,SkillPresentation.Stage.CAST,false);BlockbenchVfx.combo(p,s,SkillPresentation.Stage.CAST,strike);
+            assertEquals(strike,p.get("modelStrike").getAsInt());assertEquals(strike==2?36:12,p.get("modelTicks").getAsInt());
+        }
+    }
     @TempDir Path dir;
     private Skill skill(String id){return new Skill(id,"Test","",Skill.Effect.ALLY_HEAL,"minecraft:stick",0xffffff,1,1,1,1,1,24,3,100);}
     private JsonObject packet(){var p=new JsonObject();var pos=new JsonArray();pos.add(0);pos.add(64);pos.add(0);p.add("from",pos);p.add("at",pos.deepCopy());return p;}

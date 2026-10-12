@@ -141,7 +141,7 @@ public final class DisciplineEngine implements Listener {
             if(seq.skill.effect()==Skill.Effect.COMBO) {
                 if(seq.target==null||!engine.targetAllowed(p,seq.target)||!p.hasLineOfSight(seq.target)||p.getLocation().distanceSquared(seq.target.getLocation())>seq.skill.range()*seq.skill.range()) { sequences.remove(entry.getKey());continue; }
                 if(hit(p,seq.target,seq.power).accepted())engine.visual(p,seq.skill,seq.target);
-                engine.castVisual(p,seq.skill);
+                engine.castVisual(p,seq.skill,3-seq.left);
             } else fire(p,seq.skill,seq.power,seq.at);
             if(--seq.left<=0)sequences.remove(entry.getKey());
         }

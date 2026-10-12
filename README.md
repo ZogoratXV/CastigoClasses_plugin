@@ -1,8 +1,10 @@
+**Aggiornamento beta.18:** [animazioni con Player Animation Library e correzione dei tempi VFX](docs/AGGIORNAMENTO-BETA18.md). Aggiornare entrambi i JAR.
+
 **Aggiornamento beta.17:** [installazione, HUD incluse e 40 modelli Blockbench](docs/AGGIORNAMENTO-BETA17.md). Richiede CastigoCore beta.28 sul server.
 
 # CastigoClasses — plugin
 
-Versione di test **0.1.0-beta.16** per **Purpur Minecraft 26.2**, Java 25 e **CastigoCore 2.1.0-beta.9**.
+Versione di test **0.1.0-beta.18** per **Purpur Minecraft 26.2**, Java 25 e **CastigoCore 2.1.0-beta.28**.
 Client: [CastigoClasses Fabric](https://github.com/ZogoratXV/CastigoClasses_fabricmod), Minecraft 26.2 / Fabric Loader 0.19.5.
 
 ## Animazioni di combattimento — beta.16

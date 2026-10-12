@@ -449,6 +449,9 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
         JsonObject o=new JsonObject();o.addProperty("world",p.getWorld().getUID().toString());o.addProperty("player",p.getUniqueId().toString());o.addProperty("entity",p.getEntityId());o.addProperty("sequence",++motionSequence);o.addProperty("offhand",off);o.add("calibration",poseFor(off?p.getInventory().getItemInOffHand():p.getInventory().getItemInMainHand()));return o;
     }
     public void weaponMotion(Player p,it.castigo.classes.model.Skill skill,String phase,int ticks) {
+        weaponMotion(p,skill,phase,ticks,0);
+    }
+    public void weaponMotion(Player p,it.castigo.classes.model.Skill skill,String phase,int ticks,int strike) {
         boolean off=skill!=null&&profile(p)!=null&&equipment().requirement(profile(p).classId,skill,catalog.mechanics(skill)).offhand();
         JsonObject o=motionBase(p,off);o.addProperty("phase",phase);o.addProperty("duration",Math.clamp(ticks,0,600));
         String style=skill==null?"CAST":WeaponMotion.style(skill);o.addProperty("style",style);
@@ -458,6 +461,7 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
         var values=poseFor(off?p.getInventory().getItemInOffHand():p.getInventory().getItemInMainHand());if(values.has("profile")&&values.get("profile").getAsString().equals("VANILLA")&&!twoHanded(p))clip="VANILLA";
         if(skill!=null&&!clip.equals("VANILLA")&&!WeaponMotion.gesture(skill).isEmpty())o.addProperty("gesture",WeaponMotion.gesture(skill));
         o.addProperty("profile",clip);o.addProperty("normal",false);o.addProperty("variant",phase.equals("release")?skillVariants.merge(p.getUniqueId(),1,(x,y)->1-x):0);
+        if(skill!=null&&skill.effect()==it.castigo.classes.model.Skill.Effect.COMBO&&!clip.equals("VANILLA")){o.addProperty("gesture",strike>=2?"HEAVY_TWO_HANDED":"TWO_HANDED");o.addProperty("variant",strike&1);}
         for(Player observer:p.getWorld().getPlayers())if(clientEffects.contains(observer.getUniqueId())&&observer.getLocation().distanceSquared(p.getLocation())<=64*64)send(observer,animationClients.contains(observer.getUniqueId())?"weapon_motion_v2":"weapon_motion",o);
     }
     public void broadcastEffect(Location from,Location at,JsonObject effect) {
