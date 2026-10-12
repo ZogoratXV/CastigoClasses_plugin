@@ -5,6 +5,7 @@ import java.util.*;
 public final class Profile {
     public final UUID uuid;
     public String classId;
+    public boolean classAssigned=true;
     public int level = 1;
     public long xp;
     public long dailyXp;

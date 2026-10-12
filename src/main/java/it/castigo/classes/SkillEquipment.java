@@ -28,6 +28,13 @@ public final class SkillEquipment {
     }
     public SkillEquipment(File file) throws Exception {
         this.file=file;data=new YamlConfiguration();if(file.exists())data.load(file);
+        var pools=data.getConfigurationSection("weapon-pools");
+        if(pools!=null)for(String c:pools.getKeys(false))for(boolean off:new boolean[]{false,true}){
+            String key=poolPath(c,off);if(!data.contains(key))continue;
+            if(!data.isList(key))throw new IllegalArgumentException("Lista armi non valida: "+key);
+            var values=data.getList(key);if(values.size()>180)throw new IllegalArgumentException("Troppe armi: "+key);
+            for(Object value:values){if(!(value instanceof String id))throw new IllegalArgumentException("ID arma non valido");validateItem(id);}
+        }
         var classes=data.getConfigurationSection("classes");
         if(classes!=null)for(String c:classes.getKeys(false)) {
             var skills=data.getConfigurationSection("classes."+c);
@@ -59,10 +66,34 @@ public final class SkillEquipment {
         Requirement r=requirement(classId,skill,mechanics);
         ItemStack item=r.offhand()?p.getInventory().getItemInOffHand():p.getInventory().getItemInMainHand();
         try {
-            if(!r.item().equals(identify(item)))return false;
+            String id=identify(item);var pool=pool(classId,r.offhand());
+            if(pool!=null&&!pool.contains(id))return false;
+            // A configured pool replaces defaults; an explicit per-skill item stays restrictive.
+            boolean explicit=data.contains(path(source(classId,skill.id(),"item"),skill.id())+".item");
+            if((pool==null||explicit)&&!r.item().equals(id))return false;
             if(mechanics.weapon()==SkillMechanics.Weapon.BOW&&(r.offhand()||p.getInventory().getItemInMainHand().getType()!=Material.BOW))return false;
             return mechanics.weapon()!=SkillMechanics.Weapon.SHIELD||!p.hasCooldown(item.getType());
         } catch(ReflectiveOperationException|LinkageError|IllegalArgumentException e) { return false; }
+    }
+    private static String poolPath(String c,boolean off){
+        if(!c.matches("[a-z0-9_]{1,40}"))throw new IllegalArgumentException("Classe non valida");
+        return "weapon-pools."+c+(off?".off":".main");
+    }
+    /** null means unrestricted/inherited; an explicit empty list permits no items. */
+    public java.util.List<String> pool(String c,boolean off){
+        for(String id=c;id!=null&&!id.isEmpty();){
+            String key=poolPath(id,off);if(data.contains(key))return java.util.List.copyOf(data.getStringList(key));
+            var d=catalog==null?null:catalog.get(id);id=d==null?null:d.parent();
+        }return null;
+    }
+    public boolean ownPool(String c,boolean off){return data.contains(poolPath(c,off));}
+    public boolean allowed(String c,boolean off,ItemStack item){
+        var pool=pool(c,off);if(pool==null)return true;
+        try{return pool.contains(identify(item));}catch(Exception|LinkageError ex){return false;}
+    }
+    public void setPool(String c,boolean off,java.util.List<String> items)throws Exception{
+        if(items!=null){if(items.size()>180)throw new IllegalArgumentException("Massimo 180 armi per lista");for(String id:items)validateItem(id);}
+        var next=copy();next.set(poolPath(c,off),items==null?null:new java.util.ArrayList<>(new java.util.LinkedHashSet<>(items)));save(next);
     }
     public static String identify(ItemStack item) throws ReflectiveOperationException {
         if(item==null||item.getType().isAir())throw new IllegalArgumentException("Scegli un oggetto, non una mano vuota.");

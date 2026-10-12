@@ -9,6 +9,37 @@ import org.mockbukkit.mockbukkit.entity.PlayerMock;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class DisciplineIntegrationTest {
+    @Test void removingClassPersistsAcrossJoinAndAllowsLaterAssignment()throws Exception {
+        var old=plugin.profile(player);old.dailyXp=77;old.level=4;old.earnedStatPoints=3;
+        command("rimuovi",player.getName());
+        assertNull(plugin.profile(player));assertEquals(20,player.getAttribute(Attribute.MAX_HEALTH).getValue());assertEquals(0,player.getLevel());
+        var stored=new it.castigo.classes.storage.ProfileStore(new java.io.File(plugin.getDataFolder(),"players")).load(player.getUniqueId(),plugin.catalog().get("mago_bianco"),100);
+        assertFalse(stored.classAssigned);assertEquals(77,stored.dailyXp);assertEquals(3,stored.earnedStatPoints);
+        plugin.join(new org.bukkit.event.player.PlayerJoinEvent(player,""));assertNull(plugin.profile(player));
+        command("set",player.getName(),"arciere");assertNotNull(plugin.profile(player));assertEquals("arciere",plugin.profile(player).classId);assertEquals(77,plugin.profile(player).dailyXp);
+    }
+    @Test void classWeaponPoolsPersistInheritAndEnforceExactItems()throws Exception {
+        var eq=plugin.equipment();var skill=plugin.catalog().get("mago_bianco").skills().getFirst();
+        eq.setPool("mago_bianco",false,java.util.List.of("minecraft:blaze_rod","itemsadder:regno:bastone"));
+        assertEquals(eq.pool("mago_bianco",false),eq.pool("mago_bianco_esperto",false));
+        player.getInventory().setItemInMainHand(new ItemStack(Material.STICK));assertFalse(plugin.equipped(player,skill));
+        player.getInventory().setItemInMainHand(new ItemStack(Material.BLAZE_ROD));assertTrue(plugin.equipped(player,skill));
+        eq.setItem("mago_bianco",skill.id(),new SkillEquipment.Requirement(false,"minecraft:stick"));assertFalse(plugin.equipped(player,skill));
+        eq.setPool("mago_bianco_esperto",false,java.util.List.of());assertTrue(eq.pool("mago_bianco_esperto",false).isEmpty());assertEquals(2,eq.pool("mago_bianco",false).size());
+        eq.setPool("mago_bianco_esperto",false,null);assertEquals(2,eq.pool("mago_bianco_esperto",false).size());
+        var disk=new SkillEquipment(new java.io.File(plugin.getDataFolder(),"skill-equipment.yml"));disk.inherit(plugin.catalog());assertEquals(eq.pool("mago_bianco",false),disk.pool("mago_bianco_esperto",false));
+    }
+    @Test void weaponPoolGuiCopiesItemsWithoutMovingThemAndNormalAttacksAreRestricted()throws Exception {
+        player.addAttachment(plugin,"castigo.classes.admin",true);
+        player.getInventory().setItem(9,new ItemStack(Material.IRON_SWORD));plugin.openWeapons(player,"mago_bianco");clickMenu(54);
+        assertEquals(java.util.List.of("minecraft:iron_sword"),plugin.equipment().pool("mago_bianco",false));assertEquals(Material.IRON_SWORD,player.getInventory().getItem(9).getType());
+        var target=server.addPlayer("Enemy");
+        var blocked=new org.bukkit.event.entity.EntityDamageByEntityEvent(player,target,org.bukkit.event.entity.EntityDamageEvent.DamageCause.ENTITY_ATTACK,4);
+        server.getPluginManager().callEvent(blocked);assertTrue(blocked.isCancelled());
+        player.getInventory().setItemInMainHand(new ItemStack(Material.IRON_SWORD));
+        var allowed=new org.bukkit.event.entity.EntityDamageByEntityEvent(player,target,org.bukkit.event.entity.EntityDamageEvent.DamageCause.ENTITY_ATTACK,4);
+        server.getPluginManager().callEvent(allowed);assertFalse(allowed.isCancelled());
+    }
     // MockBukkit does not implement visibility ray tests; these fixtures use an unobstructed world.
     static class VisiblePlayer extends PlayerMock {
         VisiblePlayer(ServerMock server,String name){super(server,name);}

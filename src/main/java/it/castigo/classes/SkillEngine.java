@@ -75,7 +75,7 @@ public final class SkillEngine implements Listener {
         if(skill==null||data==null||p.isDead()||p.getGameMode()==GameMode.SPECTATOR)return;
         if(!plugin.equipped(p,skill)) {
             var required=plugin.equipment().requirement(data.classId,skill,plugin.catalog().mechanics(skill));
-            plugin.feedback(p,"Serve "+required.item()+" nella mano "+(required.offhand()?"secondaria":"principale"));return;
+            plugin.feedback(p,plugin.equipment().pool(data.classId,required.offhand())==null?"Serve "+required.item()+" nella mano "+(required.offhand()?"secondaria":"principale"):"Equipaggia un oggetto consentito per questa classe e per la skill nella mano "+(required.offhand()?"secondaria":"principale"));return;
         }
         if(disciplines.busy(p)) { plugin.feedback(p,"Stai preparando una tecnica.");return; }
         if(!protection.interact(p,p.getLocation())) { plugin.feedback(p,"Non puoi usare abilità qui.");return; }

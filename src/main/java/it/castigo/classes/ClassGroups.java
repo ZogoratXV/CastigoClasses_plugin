@@ -12,10 +12,10 @@ public final class ClassGroups {
     public static synchronized void assign(CastigoClasses plugin,UUID id,String previous,String next){
         LuckPerms lp=plugin.getServer().getServicesManager().load(LuckPerms.class);if(lp==null)return;
         var future=pending.getOrDefault(id,CompletableFuture.completedFuture(null)).handle((v,e)->null)
-            .thenCompose(v->lp.getGroupManager().createAndLoadGroup(next))
+            .thenCompose(v->next.isBlank()?CompletableFuture.completedFuture(null):lp.getGroupManager().createAndLoadGroup(next))
             .thenCompose(g->lp.getUserManager().modifyUser(id,user->{
                 if(!previous.isBlank()&&!previous.equals(next))user.data().remove(lp.getNodeBuilderRegistry().forInheritance().group(previous).build());
-                user.data().add(lp.getNodeBuilderRegistry().forInheritance().group(next).build());
+                if(!next.isBlank())user.data().add(lp.getNodeBuilderRegistry().forInheritance().group(next).build());
             }));
         pending.put(id,future);
         future.whenComplete((v,error)->{

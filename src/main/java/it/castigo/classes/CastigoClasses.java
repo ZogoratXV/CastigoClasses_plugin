@@ -38,6 +38,8 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
     private StatPointRules statPoints;
     private SkillEngine engine;
     private SkillEquipment equipment;
+    private ClassWeapons classWeapons;
+    public void openWeapons(Player p,String id){classWeapons.open(p,id,false,0);}
     private VfxSettings vfxSettings;
     private SkillAdminGui adminGui;
     private HudSettings hudSettings;
@@ -75,6 +77,7 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
         adminTools=new AdminTools(this);getServer().getPluginManager().registerEvents(adminTools,this);
         engine=new SkillEngine(this);
         adminGui=new SkillAdminGui(this);
+        classWeapons=new ClassWeapons(this);getServer().getPluginManager().registerEvents(classWeapons,this);
         hudGui=new HudAdminGui(this);
         calibrationGui=new WeaponCalibrationGui(this);
         getServer().getPluginManager().registerEvents(calibrationGui,this);
@@ -150,6 +153,7 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
     public boolean twoHanded(Player player){
         var data=profile(player);if(data==null||!catalog.descendsFrom(data.classId,"guerriero_due_mani")||!player.getInventory().getItemInOffHand().getType().isAir())return false;
         try {String held=SkillEquipment.identify(player.getInventory().getItemInMainHand());
+            var pool=equipment.pool(data.classId,false);if(pool!=null)return pool.contains(held);
             for(var d=definition(data);d!=null;d=catalog.get(d.parent()))if(progressionSettings.weapons(d.id()).contains(held))return true;
         }catch(ReflectiveOperationException|IllegalArgumentException|LinkageError ignored){}return false;
     }
@@ -196,6 +200,11 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
     private void load(Player player) {
         try {
             Profile p=store.load(player.getUniqueId(),catalog.get(getConfig().getString("default-class","mago")),progression.maxLevel());
+            if(!p.classAssigned){
+                removeModifiers(player);player.setLevel(0);player.setExp(0);player.setTotalExperience(0);
+                if(getServer().getPluginManager().isPluginEnabled("LuckPerms"))ClassGroups.assign(this,player.getUniqueId(),p.managedClassGroup,"");
+                return;
+            }
             if(catalog.get(p.classId)==null) throw new IllegalStateException("Classe salvata non trovata: "+p.classId);
             normalizeXp(p); statPoints.reconcile(p);p.normalize(definition(p),stats(p));
             store.save(p); // Persist migration/retroactive awards before the profile becomes usable.
@@ -330,7 +339,7 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
     }
     public void sync(Player player) {
         if(!connected.contains(player.getUniqueId()))return;
-        Profile p=profile(player); if(p==null)return;
+        Profile p=profile(player); if(p==null){send(player,"disabled",new JsonObject());return;}
         JsonObject obj=new JsonObject();
         obj.add("casting",engine.casting(player.getUniqueId()));
         obj.addProperty("world",player.getWorld().getUID().toString());
@@ -427,6 +436,7 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
         for(Player observer:Bukkit.getOnlinePlayers())if(observer.getWorld().getUID().equals(world)&&meshEffects.contains(observer.getUniqueId()))send(observer,"vfx_stop",o);
     }
     public String animationProfile(Player p,org.bukkit.inventory.ItemStack item,boolean main){
+        var data=profile(p);if(data!=null&&!equipment.allowed(data.classId,!main,item))return "VANILLA";
         if(main&&twoHanded(p))return "TWO_HANDED";
         var values=poseFor(item);String configured=values.has("profile")?values.get("profile").getAsString():"AUTO";
         if(!configured.equals("AUTO"))return configured;
@@ -508,6 +518,17 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
     }
     @Override public boolean onCommand(CommandSender sender,Command command,String label,String[] args) {
         try {
+            if(args.length>0&&args[0].equals("rimuovi")){
+                if(!sender.hasPermission("castigo.classes.admin"))throw new IllegalArgumentException("Permesso mancante");
+                if(args.length!=2)throw new IllegalArgumentException("Uso: /classe rimuovi <giocatore online>");
+                Player target=Bukkit.getPlayerExact(args[1]);if(target==null)throw new IllegalArgumentException("Giocatore non online");
+                removeClass(target);sender.sendMessage("Classe rimossa da "+target.getName()+". Profilo conservato.");return true;
+            }
+            if(args.length>0&&args[0].equals("armi")){
+                if(!sender.hasPermission("castigo.classes.admin"))throw new IllegalArgumentException("Permesso mancante");
+                if(!(sender instanceof Player player)||args.length!=2)throw new IllegalArgumentException("Uso in gioco: /classe armi <classe>");
+                openWeapons(player,args[1]);return true;
+            }
             if(args.length>0&&Set.of("admin","icona","hud","progressione","pose","prova","diagnosi").contains(args[0])) {
                 if(!sender.hasPermission("castigo.classes.admin")) { sender.sendMessage("Permesso mancante.");return true; }
                 if(Set.of("pose","prova","diagnosi").contains(args[0])){if(sender instanceof Player p){switch(args[0]){case "pose"->openCalibration(p);case "diagnosi"->adminTools.diagnose(p);case "prova"->adminTools.command(p,args.length>1?args[1]:"report");}}else sender.sendMessage("Comando da giocatore");return true;}
@@ -535,7 +556,7 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
                     sender.sendMessage("Classi ricaricate.");return true;
                 }
                 if(args.length!=3)throw new IllegalArgumentException("Uso: /classe "+args[0]+" <giocatore> <valore>");
-                Player target=Bukkit.getPlayerExact(args[1]);if(target==null||profile(target)==null)throw new IllegalArgumentException("Giocatore non disponibile");
+                Player target=Bukkit.getPlayerExact(args[1]);if(target==null||(profile(target)==null&&!args[0].equals("set")))throw new IllegalArgumentException("Giocatore non disponibile");
                 if(args[0].equals("xp")) {
                     long amount=Long.parseLong(args[2]);if(amount<0)throw new IllegalArgumentException("Usa XP positivi");grantXp(target,amount);
                 } else if(args[0].equals("livello")) {
@@ -546,7 +567,8 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
                 save(profile(target));sender.sendMessage("Profilo aggiornato.");return true;
             }
             if(!(sender instanceof Player p)) { sender.sendMessage("Comandi staff: /classe set|xp|reload");return true; }
-            if(profile(p)==null||!p.hasPermission("castigo.classes.use"))return true;
+            if(profile(p)==null){p.sendMessage("Non hai una classe assegnata.");return true;}
+            if(!p.hasPermission("castigo.classes.use"))return true;
             Profile data=profile(p);
             
         if(args.length==2&&args[0].equals("assegna")) { allocate(p,StatAttribute.parse(args[1]));return true; }
@@ -595,9 +617,28 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
         if(options.size()>1){p.sendMessage("§eScegli la destinazione: /classe sottoclasse <id>");for(var d:options)p.sendMessage(d.id()+" — "+d.name());return;}
         try{promote(p,options.getFirst().id());}catch(Exception ex){p.sendMessage("§c"+ex.getMessage());}
     }
+    public void removeClass(Player p)throws Exception {
+        Profile data=profile(p);if(data==null)throw new IllegalArgumentException("Il giocatore non ha una classe");
+        data.classAssigned=false;try{store.save(data);}catch(Exception ex){data.classAssigned=true;throw ex;}
+        engine.clear(p.getUniqueId());weaponMotion(p,null,"stop",0);profiles.remove(p.getUniqueId());
+        removeModifiers(p);p.setLevel(0);p.setExp(0);p.setTotalExperience(0);broadcastGrip(p);
+        attackVisuals.remove(p.getUniqueId());skillVariants.remove(p.getUniqueId());
+        if(getServer().getPluginManager().isPluginEnabled("LuckPerms"))ClassGroups.assign(this,p.getUniqueId(),data.managedClassGroup,"");
+        send(p,"disabled",new JsonObject());p.sendMessage("Classe rimossa. Skill e bonus disattivati.");
+    }
     private void changeClass(Player p,String id) {
         ClassDefinition next=catalog.get(id);if(next==null)throw new IllegalArgumentException("Classe sconosciuta");
-        Profile data=profile(p);double fraction=data.resource/Math.max(1,stats(p).mana());
+        Profile data=profile(p);
+        if(data==null){
+            try{
+                data=store.load(p.getUniqueId(),next,progression.maxLevel());
+                if(data.classAssigned)throw new IllegalStateException("Profilo non disponibile");
+                data.classAssigned=true;data.classId=id;data.xp=0;data.level=Math.min(data.level,classCap(id));statPoints.reconcile(data);
+                data.normalize(next,stats(data));data.resource=stats(data).mana();store.save(data);profiles.put(p.getUniqueId(),data);
+                syncClassGroup(p);applyStats(p);displayXp(p,data);if(connected.contains(p.getUniqueId()))catalog(p);p.sendMessage("Classe: "+next.name());return;
+            }catch(Exception ex){throw new IllegalStateException("Classe non assegnata: "+ex.getMessage(),ex);}
+        }
+        double fraction=data.resource/Math.max(1,stats(p).mana());
         String oldClass=data.classId;long oldXp=data.xp;double oldResource=data.resource;var oldSlots=List.copyOf(data.slots);
         data.classId=id;data.xp=0;data.normalize(next,stats(data));data.resource=stats(data).mana()*fraction;
         try{store.save(data);}catch(Exception e){data.classId=oldClass;data.xp=oldXp;data.resource=oldResource;data.slots.clear();data.slots.addAll(oldSlots);throw new IllegalStateException("Cambio classe non salvato",e);}
@@ -608,14 +649,15 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
         List<String> choices=args.length==1?new ArrayList<>(List.of("lista","skill","scambia","sottoclasse","assegna")):new ArrayList<>();
         if(args.length==2&&args[0].equals("prova")&&s.hasPermission("castigo.classes.admin"))choices.addAll(List.of("crea","report","reset","rimuovi"));
         if(args.length==2&&args[0].equals("assegna"))for(StatAttribute stat:StatAttribute.values())choices.add(stat.label().toLowerCase(Locale.ROOT));
-        if(args.length==1&&s.hasPermission("castigo.classes.admin"))choices.addAll(List.of("reload","set","xp","livello","admin","icona","hud","progressione","pose","prova","diagnosi"));
+        if(args.length==1&&s.hasPermission("castigo.classes.admin"))choices.addAll(List.of("reload","set","xp","livello","admin","icona","hud","progressione","pose","prova","diagnosi","rimuovi","armi"));
         if(s.hasPermission("castigo.classes.admin")&&args[0].equals("icona")) {
             if(args.length==2)choices.addAll(catalog.all().keySet());
             if(args.length==3&&catalog.get(args[1])!=null)catalog.get(args[1]).skills().forEach(skill->choices.add(skill.id()));
             if(args.length==4)choices.addAll(List.of("reset","texture:castigo:textures/gui/skills/nome.png"));
         }
+        if(args.length==2&&args[0].equals("armi")&&s.hasPermission("castigo.classes.admin"))choices.addAll(catalog.all().keySet());
         if(args.length==2&&args[0].equals("sottoclasse")||args.length==3&&args[0].equals("set"))choices.addAll(catalog.all().keySet());
-        if(args.length==2&&Set.of("set","xp","livello").contains(args[0])&&s.hasPermission("castigo.classes.admin"))Bukkit.getOnlinePlayers().forEach(p->choices.add(p.getName()));
+        if(args.length==2&&Set.of("set","xp","livello","rimuovi").contains(args[0])&&s.hasPermission("castigo.classes.admin"))Bukkit.getOnlinePlayers().forEach(p->choices.add(p.getName()));
         String prefix=args[args.length-1].toLowerCase(Locale.ROOT);return choices.stream().filter(x->x.startsWith(prefix)).toList();
     }
 }

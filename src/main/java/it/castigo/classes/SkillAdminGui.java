@@ -48,6 +48,7 @@ public final class SkillAdminGui implements Listener {
                 inv.setItem(24,button(Material.SHIELD,"Seleziona mano secondaria",off?"SELEZIONATA":"Clicca per selezionare"));
                 inv.setItem(31,button(Material.PAINTING,"Configura icona",plugin.equipment().icon(c.id(),s),"Clicca per scegliere un oggetto","o una texture PNG personalizzata."));
             }
+            if(skill<0)inv.setItem(49,button(Material.IRON_SWORD,"Armi consentite per classe","Pool vanilla e ItemsAdder","Liste separate per mano, ereditate dalle sottoclassi"));
             inv.setItem(45,button(Material.ARROW,"Indietro"));
         }
         p.openInventory(inv);
@@ -102,7 +103,8 @@ public final class SkillAdminGui implements Listener {
                 if(slot<45&&index<classes.size())later(p,()->show(p,classes.get(index).id(),-1,0,false));
                 if(slot==45&&m.page>0)later(p,()->show(p,null,-1,m.page-1,false));
                 if(slot==53&&(m.page+1)*45<classes.size())later(p,()->show(p,null,-1,m.page+1,false));
-            } else if(slot==45)later(p,()->show(p,m.skill>=0?m.classId:null,-1,0,false));
+            } else if(m.skill<0&&slot==49)later(p,()->plugin.openWeapons(p,m.classId));
+            else if(slot==45)later(p,()->show(p,m.skill>=0?m.classId:null,-1,0,false));
             else if(m.skill<0&&slot<8) {
                 var c=plugin.catalog().get(m.classId);if(c==null)return;var s=c.skills().get(slot);
                 boolean off=plugin.equipment().requirement(c.id(),s,plugin.catalog().mechanics(s)).offhand();
