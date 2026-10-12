@@ -286,6 +286,18 @@ public class DisciplineIntegrationTest {
         }
         assertEquals(40,ids.size());
     }
+    @Test void citizensNpcIsPveTargetButInvulnerabilityIsRespected(){
+        var npc=server.addPlayer("NPC");npc.setMetadata("NPC",new org.bukkit.metadata.FixedMetadataValue(plugin,true));npc.setGameMode(GameMode.CREATIVE);
+        player.getWorld().setPVP(false);var engine=new SkillEngine(plugin);
+        assertTrue(engine.targetAllowed(player,npc));npc.setInvulnerable(true);assertFalse(engine.targetAllowed(player,npc));
+        var human=server.addPlayer("Human");assertFalse(engine.targetAllowed(player,human));
+    }
+    @Test void customLivingMobRemainsTargetable(){
+        var mob=player.getWorld().spawn(player.getLocation(),org.bukkit.entity.Zombie.class);
+        mob.setCustomName("Boss personalizzato");mob.setMetadata("MythicMob",new org.bukkit.metadata.FixedMetadataValue(plugin,true));
+        var engine=new SkillEngine(plugin);assertTrue(engine.targetAllowed(player,mob));
+        mob.setInvulnerable(true);assertFalse(engine.targetAllowed(player,mob));
+    }
     @Test void healWorksWithoutAnyTeamAndPvpEligibilityIgnoresTeams() {
         var friend=server.addPlayer("Friend");friend.teleport(player.getLocation());friend.setHealth(5);
         var engine=new SkillEngine(plugin);var disciplines=new DisciplineEngine(plugin,engine);

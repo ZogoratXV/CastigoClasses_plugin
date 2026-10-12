@@ -21,6 +21,16 @@ class HudSettingsTest {
         s.preset("popolano","popolano");s.set("popolano","texture","regno:textures/gui/civile.png");
         assertEquals("regno:textures/gui/civile.png",new HudSettings(dir.resolve("hud.json")).civilianTheme().text("texture"));
     }
+    @Test void luckPermsWeightWinsOverLegacyPriorityAndClasslessFallback()throws Exception{
+        var s=new HudSettings(dir.resolve("hud.json"));s.preset("guardia","guardia");s.preset("mago_nero","mago_nero");
+        s.set("mago_nero","priority","9999");
+        var groups=java.util.Map.of("guardia",100,"mago_nero",10,"permission_only",900);
+        assertTrue(s.resolveWeighted(groups,"mago_nero","mago_nero",java.util.Map.of()).text("texture").endsWith("guardia.png"));
+        assertTrue(s.resolveWeighted(groups,"mago_nero","",java.util.Map.of()).text("texture").endsWith("guardia.png"));
+        assertTrue(s.resolveWeighted(java.util.Map.of("guardia",100,"mago_nero",100),"mago_nero","",java.util.Map.of()).text("texture").endsWith("mago_nero.png"));
+        assertTrue(s.resolveWeighted(java.util.Map.of(),"default","",java.util.Map.of()).text("texture").endsWith("popolano.png"));
+        assertTrue(s.resolveWeighted(java.util.Map.of("elite",50),"elite","",java.util.Map.of("elite","arciere")).text("texture").endsWith("arciere.png"));
+    }
     @Test void invalidUpdatesCannotReplaceSavedSettings()throws Exception{
         var s=new HudSettings(dir.resolve("hud.json"));s.set("test","texture","castigo:textures/gui/hud/test.png");
         assertThrows(IllegalArgumentException.class,()->s.set("test","texture","https://example.com/file.png"));

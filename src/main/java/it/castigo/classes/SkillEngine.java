@@ -101,9 +101,9 @@ public final class SkillEngine implements Listener {
         }
     }
     boolean targetAllowed(Player p,Entity target) {
-        if(!(target instanceof LivingEntity living)||target.equals(p)||living.isDead()||target instanceof ArmorStand||target.isInvulnerable()||target.hasMetadata("NPC"))return false;
+        if(!(target instanceof LivingEntity living)||target.equals(p)||living.isDead()||target instanceof ArmorStand||target.isInvulnerable())return false;
         if(target instanceof Tameable tame&&tame.isTamed())return false;
-        if(target instanceof Player other) {
+        if(target instanceof Player other&&!target.hasMetadata("NPC")) {
             if(!p.canSee(other)||!protection.pvp(p,p.getLocation())||!protection.pvp(p,other.getLocation()))return false;
             if(!p.getWorld().getPVP()||other.getGameMode()==GameMode.CREATIVE||other.getGameMode()==GameMode.SPECTATOR)return false;
         }

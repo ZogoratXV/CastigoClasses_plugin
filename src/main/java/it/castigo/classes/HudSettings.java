@@ -20,6 +20,18 @@ public final class HudSettings {
     public Set<String> groups(){return Set.copyOf(data.keySet());}
     public HudTheme theme(String group){var e=data.getAsJsonObject(group);var t=new HudTheme(e==null?null:e.getAsJsonObject("layout"));String path=t.text("texture");for(String id:HudPresets.NAMES)if(path.equals("castigo:textures/gui/hud/"+id+".png"))return HudPresets.theme(id);return t;}
     public int priority(String group){var e=data.getAsJsonObject(group);int n=e==null?0:e.get("priority").getAsInt();if(n<0||n>10000)throw new IllegalArgumentException("Priorità 0–10000");return n;}
+    public HudTheme resolveWeighted(Map<String,Integer> weights,String primary,String classId,Map<String,String> classPresets){
+        var presets=new HashMap<>(classPresets);
+        for(String id:HudPresets.NAMES)presets.putIfAbsent(id,id);
+        presets.put("admin","archangel");presets.put("arcangelo","archangel");
+        String winner=weights.keySet().stream().filter(g->data.has(g)||presets.containsKey(g))
+            .sorted(Comparator.<String>comparingInt(g->weights.getOrDefault(g,0)).reversed()
+                .thenComparingInt(g->g.equals(primary)?0:1).thenComparing(Comparator.naturalOrder()))
+            .findFirst().orElse(null);
+        if(winner!=null)return data.has(winner)?theme(winner):HudPresets.theme(presets.get(winner));
+        if(classId.isEmpty())return civilianTheme();
+        return HudPresets.theme(HudPresets.NAMES.contains(classId)?classId:"popolano");
+    }
     public HudTheme civilianTheme(){return data.has("popolano")?theme("popolano"):HudPresets.theme("popolano");}
     public HudTheme resolve(Collection<String> groups,String primary) {
         String winner=groups.stream().filter(data::has).sorted(Comparator.<String>comparingInt(this::priority).reversed()

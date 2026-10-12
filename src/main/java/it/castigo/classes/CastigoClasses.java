@@ -183,13 +183,14 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
         return result;
     }
     private HudTheme hudFor(Player p,String primary){
-        if(profile(p)==null)return hudSettings.civilianTheme();
-        var groups=new HashSet<String>();if(!primary.isBlank())groups.add(primary);
+        var weights=new HashMap<String,Integer>();
         if(getServer().getPluginManager().isPluginEnabled("LuckPerms"))try{
             var lp=getServer().getServicesManager().load(LuckPerms.class);var user=lp==null?null:lp.getUserManager().getUser(p.getUniqueId());
-            if(user!=null)for(var g:user.getInheritedGroups(lp.getContextManager().getQueryOptions(user).orElse(lp.getContextManager().getStaticQueryOptions())))groups.add(g.getName());
+            if(user!=null)for(var g:user.getInheritedGroups(lp.getContextManager().getQueryOptions(user).orElse(lp.getContextManager().getStaticQueryOptions())))weights.put(g.getName(),g.getWeight().orElse(0));
         }catch(LinkageError ignored){}
-        return hudSettings.resolve(groups,primary,profile(p)==null?"":catalog.root(profile(p).classId));
+        var presets=new HashMap<String,String>();
+        for(var d:catalog.all().values())presets.put(progressionSettings.group(d.id(),catalog),catalog.root(d.id()));
+        return hudSettings.resolveWeighted(weights,primary,profile(p)==null?"":catalog.root(profile(p).classId),presets);
     }
     public SkillPresentation presentation(Player p,Skill skill) { return vfxSettings.resolve(profile(p).classId,skill,catalog.presentation(skill)); }
     public JsonObject casting(Player p) { return engine.casting(p.getUniqueId()); }

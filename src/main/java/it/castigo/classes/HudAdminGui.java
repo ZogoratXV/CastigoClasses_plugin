@@ -14,7 +14,7 @@ public final class HudAdminGui implements Listener {
     private record Input(String group,String field,long expires){}
     private final Map<UUID,Input> pending=new java.util.concurrent.ConcurrentHashMap<>();
     private static final List<String> FIELDS;
-    static{var list=new ArrayList<>(HudTheme.DEFAULTS.keySet());list.add("priority");FIELDS=List.copyOf(list);}
+    static{var list=new ArrayList<>(HudTheme.DEFAULTS.keySet());FIELDS=List.copyOf(list);}
     private static final Map<String,String> LABELS=Map.ofEntries(
         Map.entry("textScale","Scala testo %"),Map.entry("barTextScale","Scala testo barre %"),Map.entry("barHeight","Altezza barre"),Map.entry("texture","Layout PNG"),Map.entry("frame","Stile cornice"),Map.entry("background","Colore sfondo"),Map.entry("border","Colore cornice"),
         Map.entry("text","Colore testo"),Map.entry("healthColor","Colore vita"),Map.entry("resourceColor","Colore risorsa"),Map.entry("width","Larghezza HUD"),Map.entry("height","Altezza HUD"),
@@ -34,7 +34,7 @@ public final class HudAdminGui implements Listener {
         if(!p.hasPermission("castigo.classes.admin"))return;
         var menu=new Menu(p,group,page,plugin.hudGroups());menu.inventory=Bukkit.createInventory(menu,54,"Castigo · HUD LuckPerms");
         if(group==null){
-            for(int i=0;i<45&&page*45+i<menu.groups.size();i++){String g=menu.groups.get(page*45+i);menu.inventory.setItem(i,button(Material.PAINTING,g,"Configura layout del gruppo",g.equals("default")?"Anche tema di riserva":"Priorità: "+plugin.hudSettings().priority(g)));}
+            for(int i=0;i<45&&page*45+i<menu.groups.size();i++){String g=menu.groups.get(page*45+i);menu.inventory.setItem(i,button(Material.PAINTING,g,"Configura layout del gruppo",g.equals("default")?"Anche tema di riserva":"Precedenza: peso del gruppo LuckPerms"));}
             if(page>0)menu.inventory.setItem(45,button(Material.ARROW,"Pagina precedente"));
             if((page+1)*45<menu.groups.size())menu.inventory.setItem(53,button(Material.ARROW,"Pagina successiva"));
             menu.inventory.setItem(49,button(Material.NAME_TAG,"Aggiungi gruppo","Scrivi il nome del gruppo in chat"));
