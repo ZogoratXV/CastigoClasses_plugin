@@ -88,7 +88,7 @@ public final class ProgressionAdminGui implements Listener {
         e.setCancelled(true);String value=e.getMessage().strip();var p=e.getPlayer();
         later(p,()->{if(inputs.get(p.getUniqueId())!=in)return;try{
             if(!value.equalsIgnoreCase("annulla")){
-                if(in.field.equals("player-reset")){Player target=Bukkit.getPlayerExact(value);if(target==null)throw new IllegalArgumentException("Giocatore non online");plugin.resetDaily(target);}
+                if(in.field.equals("player-reset")){Player target=RpPlayers.online(value);if(target==null)throw new IllegalArgumentException("Giocatore non online");plugin.resetDaily(target);}
                 else {if(in.field.equals("level-cap"))plugin.validateClassCap(in.id,Integer.parseInt(value));plugin.progressionSettings().set(in.id,in.field,value);if(in.field.equals("group"))for(var online:Bukkit.getOnlinePlayers())if(plugin.profile(online)!=null&&plugin.profile(online).classId.equals(in.id))plugin.syncClassGroup(online);}
                 plugin.syncHud();p.sendMessage("§aImpostazione salvata.");
             }

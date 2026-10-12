@@ -152,6 +152,9 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
     public void resetDaily(Player p){var data=profile(p);if(data==null)return;refreshDay(data);data.dailyXp=0;save(data);sync(p);}
     private void refreshDay(Profile p){ExperienceBudget.rollover(p,progressionSettings.day(java.time.Instant.now()),progressionSettings.token());}
     public boolean twoHanded(Player player){
+        if(!player.getInventory().getItemInOffHand().getType().isAir())return false;
+        var configured=poseFor(player.getInventory().getItemInMainHand());
+        if(configured.has("profile")&&configured.get("profile").getAsString().equals("TWO_HANDED"))return true;
         var data=profile(player);if(data==null||!catalog.descendsFrom(data.classId,"guerriero_due_mani")||!player.getInventory().getItemInOffHand().getType().isAir())return false;
         try {String held=SkillEquipment.identify(player.getInventory().getItemInMainHand());
             var pool=equipment.pool(data.classId,false);if(pool!=null)return pool.contains(held);
@@ -293,7 +296,7 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
     private void tick() {
         ticks+=5;if(ticks%100==0)experienceListener.prune();
         for(Player player:Bukkit.getOnlinePlayers()) {
-            Profile p=profile(player); if(p==null){sync(player);continue;}
+            Profile p=profile(player); if(p==null){sync(player);if(ticks%10==0)broadcastGrip(player);continue;}
             refreshDay(p);if(p.level>=classCap(p.classId))p.xp=0;
             ClassDefinition d=definition(p);
             if(!player.isDead()) p.resource=AbilityRules.regenerate(p.resource,stats(p).mana(),d.regenPerSecond()+d.regenPerLevel()*(p.level-1),0.25);
@@ -380,7 +383,8 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
         o.addProperty("name",it.castigo.core.PlayerNames.name(player));o.addProperty("group",primary);
         o.addProperty("world",player.getWorld().getUID().toString());o.addProperty("level",classlessLevels.getOrDefault(player.getUniqueId(),1));
         o.addProperty("health",player.getHealth());o.addProperty("maxHealth",player.getAttribute(Attribute.MAX_HEALTH).getValue());
-        o.add("hud",hudFor(player,primary).json());return o;
+        o.add("hud",hudFor(player,primary).json());
+        if(animationClients.contains(player.getUniqueId())){o.addProperty("weaponAnimations",2);o.addProperty("weaponProfile",animationProfile(player,player.getInventory().getItemInMainHand(),true));o.addProperty("weaponSlot",player.getInventory().getHeldItemSlot());o.add("weaponCalibration",poseFor(player.getInventory().getItemInMainHand()));}return o;
     }
     private String group(Player p) {
         if(!getServer().getPluginManager().isPluginEnabled("LuckPerms"))return "";
@@ -402,7 +406,7 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
             JsonObject o=JsonParser.parseString(new String(bytes,StandardCharsets.UTF_8)).getAsJsonObject();
             if(o.get("v").getAsInt()!=1) { feedback(player,"Versione mod non compatibile."); return; }
             String type=o.get("type").getAsString();
-            if(type.equals("attack_visual")){if(profile(player)!=null&&animationClients.contains(player.getUniqueId())&&connected.contains(player.getUniqueId()))normalAttack(player,o,now);return;}
+            if(type.equals("attack_visual")){if(animationClients.contains(player.getUniqueId())&&connected.contains(player.getUniqueId()))normalAttack(player,o,now);return;}
             if(now-lastRequest.getOrDefault(player.getUniqueId(),0L)<80)return;
             lastRequest.put(player.getUniqueId(),now);
             if(type.equals("hello")) {
@@ -452,7 +456,7 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
         String material=item.getType().name();return material.endsWith("_SWORD")?"SWORD":material.endsWith("_AXE")?"AXE":"VANILLA";
     }
     private void normalAttack(Player p,JsonObject request,long now){
-        if(!p.hasPermission("castigo.classes.use")||p.isDead()||p.getGameMode()==GameMode.SPECTATOR||p.isHandRaised()||engine.busy(p)||profile(p).globalReadyAt>now)return;
+        if(!p.hasPermission("castigo.classes.use")||p.isDead()||p.getGameMode()==GameMode.SPECTATOR||p.isHandRaised()||engine.busy(p)||(profile(p)!=null&&profile(p).globalReadyAt>now))return;
         long prediction=request.get("id").getAsLong();if(prediction<0||prediction>9_007_199_254_740_991L)return;
         String profile=animationProfile(p,p.getInventory().getItemInMainHand(),true);
         String held;try{held=SkillEquipment.identify(p.getInventory().getItemInMainHand());}catch(Exception|LinkageError ex){return;}
@@ -529,9 +533,9 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
         try {
             if(args.length>0&&args[0].equals("rimuovi")){
                 if(!sender.hasPermission("castigo.classes.admin"))throw new IllegalArgumentException("Permesso mancante");
-                if(args.length!=2)throw new IllegalArgumentException("Uso: /classe rimuovi <giocatore online>");
-                Player target=Bukkit.getPlayerExact(args[1]);if(target==null)throw new IllegalArgumentException("Giocatore non online");
-                removeClass(target);sender.sendMessage("Classe rimossa da "+target.getName()+". Profilo conservato.");return true;
+                if(args.length<2)throw new IllegalArgumentException("Uso: /classe rimuovi <nome RP o UUID>");
+                Player target=RpPlayers.online(String.join(" ",java.util.Arrays.copyOfRange(args,1,args.length)));if(target==null)throw new IllegalArgumentException("Giocatore non online");
+                removeClass(target);sender.sendMessage("Classe rimossa da "+it.castigo.core.PlayerNames.name(target)+". Profilo conservato.");return true;
             }
             if(args.length>0&&args[0].equals("armi")){
                 if(!sender.hasPermission("castigo.classes.admin"))throw new IllegalArgumentException("Permesso mancante");
@@ -564,15 +568,16 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
                     }
                     sender.sendMessage("Classi ricaricate.");return true;
                 }
-                if(args.length!=3)throw new IllegalArgumentException("Uso: /classe "+args[0]+" <giocatore> <valore>");
-                Player target=Bukkit.getPlayerExact(args[1]);if(target==null||(profile(target)==null&&!args[0].equals("set")))throw new IllegalArgumentException("Giocatore non disponibile");
+                if(args.length<3)throw new IllegalArgumentException("Uso: /classe "+args[0]+" <giocatore> <valore>");
+                String value=args[args.length-1];
+                Player target=RpPlayers.online(String.join(" ",java.util.Arrays.copyOfRange(args,1,args.length-1)));if(target==null||(profile(target)==null&&!args[0].equals("set")))throw new IllegalArgumentException("Giocatore non disponibile");
                 if(args[0].equals("xp")) {
-                    long amount=Long.parseLong(args[2]);if(amount<0)throw new IllegalArgumentException("Usa XP positivi");grantXp(target,amount);
+                    long amount=Long.parseLong(value);if(amount<0)throw new IllegalArgumentException("Usa XP positivi");grantXp(target,amount);
                 } else if(args[0].equals("livello")) {
-                    int level=Integer.parseInt(args[2]);if(level<1||level>classCap(profile(target).classId))throw new IllegalArgumentException("Livello da 1 a "+classCap(profile(target).classId));
+                    int level=Integer.parseInt(value);if(level<1||level>classCap(profile(target).classId))throw new IllegalArgumentException("Livello da 1 a "+classCap(profile(target).classId));
                     Profile data=profile(target);engine.clear(target.getUniqueId());data.level=level;data.xp=0;statPoints.reconcile(data);
                     data.normalize(definition(data),stats(data));applyStats(target);displayXp(target,data);sync(target);
-                } else changeClass(target,args[2]);
+                } else changeClass(target,value);
                 save(profile(target));sender.sendMessage("Profilo aggiornato.");return true;
             }
             if(!(sender instanceof Player p)) { sender.sendMessage("Comandi staff: /classe set|xp|reload");return true; }
@@ -655,6 +660,15 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
         engine.clear(p.getUniqueId());applyStats(p);sync(p);p.sendMessage("§dClasse: "+next.name());
     }
     @Override public List<String> onTabComplete(CommandSender s,Command c,String label,String[] args) {
+        if(args.length>=2&&Set.of("set","xp","livello","rimuovi").contains(args[0])&&s.hasPermission("castigo.classes.admin")){
+            String typed=String.join(" ",java.util.Arrays.copyOfRange(args,1,args.length));
+            String prior=String.join(" ",java.util.Arrays.copyOfRange(args,1,args.length-1));
+            var names=Bukkit.getOnlinePlayers().stream().map(it.castigo.core.PlayerNames::name)
+                .filter(n->n.toLowerCase(Locale.ROOT).startsWith(typed.toLowerCase(Locale.ROOT)))
+                .map(n->prior.isEmpty()?n:n.substring(Math.min(n.length(),prior.length()+1))).toList();
+            if(!names.isEmpty())return names;
+            if(args[0].equals("set"))return catalog.all().keySet().stream().filter(n->n.startsWith(args[args.length-1])).toList();
+        }
         List<String> choices=args.length==1?new ArrayList<>(List.of("lista","skill","scambia","sottoclasse","assegna")):new ArrayList<>();
         if(args.length==2&&args[0].equals("prova")&&s.hasPermission("castigo.classes.admin"))choices.addAll(List.of("crea","report","reset","rimuovi"));
         if(args.length==2&&args[0].equals("assegna"))for(StatAttribute stat:StatAttribute.values())choices.add(stat.label().toLowerCase(Locale.ROOT));
@@ -666,7 +680,7 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
         }
         if(args.length==2&&args[0].equals("armi")&&s.hasPermission("castigo.classes.admin"))choices.addAll(catalog.all().keySet());
         if(args.length==2&&args[0].equals("sottoclasse")||args.length==3&&args[0].equals("set"))choices.addAll(catalog.all().keySet());
-        if(args.length==2&&Set.of("set","xp","livello","rimuovi").contains(args[0])&&s.hasPermission("castigo.classes.admin"))Bukkit.getOnlinePlayers().forEach(p->choices.add(p.getName()));
+        if(args.length==2&&Set.of("set","xp","livello","rimuovi").contains(args[0])&&s.hasPermission("castigo.classes.admin"))Bukkit.getOnlinePlayers().forEach(p->choices.add(it.castigo.core.PlayerNames.name(p)));
         String prefix=args[args.length-1].toLowerCase(Locale.ROOT);return choices.stream().filter(x->x.startsWith(prefix)).toList();
     }
 }

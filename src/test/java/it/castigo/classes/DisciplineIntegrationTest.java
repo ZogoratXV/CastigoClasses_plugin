@@ -54,6 +54,23 @@ public class DisciplineIntegrationTest {
         var hit=new org.bukkit.event.entity.EntityDamageByEntityEvent(player,target,org.bukkit.event.entity.EntityDamageEvent.DamageCause.ENTITY_ATTACK,7);
         server.getPluginManager().callEvent(hit);assertFalse(hit.isCancelled());
     }
+    @Test void rpNamesWithSpacesAndUuidResolveTheSameProfile()throws Exception{
+        var target=server.addPlayer("Account123");plugin.join(new org.bukkit.event.player.PlayerJoinEvent(target,""));
+        server.getServicesManager().register(it.castigo.identita.IdentityService.class,new it.castigo.identita.IdentityService(){
+            public java.util.Optional<String> name(java.util.UUID id){return id.equals(target.getUniqueId())?java.util.Optional.of("Aldo della Torre"):java.util.Optional.empty();}
+            public java.util.Optional<java.util.UUID> resolve(String name){return name.equalsIgnoreCase("Aldo della Torre")?java.util.Optional.of(target.getUniqueId()):java.util.Optional.empty();}
+        },plugin,org.bukkit.plugin.ServicePriority.Normal);
+        command("set","Aldo","della","Torre","arciere");assertEquals("arciere",plugin.profile(target).classId);
+        assertTrue(plugin.onTabComplete(server.getConsoleSender(),plugin.getCommand("classe"),"classe",new String[]{"set","Aldo","d"}).contains("della Torre"));
+        command("rimuovi","Aldo","della","Torre");assertNull(plugin.profile(target));
+        command("set",target.getUniqueId().toString(),"mago_bianco");assertNotNull(plugin.profile(target));
+    }
+    @Test void civilianReceivesWeaponAnimationContext()throws Exception{
+        command("rimuovi",player.getName());player.getInventory().setItemInMainHand(new ItemStack(Material.IRON_SWORD));
+        plugin.onPluginMessageReceived(CastigoClasses.CHANNEL,player,"{\"v\":1,\"type\":\"hello\",\"weaponAnimations\":2}".getBytes(java.nio.charset.StandardCharsets.UTF_8));
+        assertEquals("SWORD",plugin.animationProfile(player,player.getInventory().getItemInMainHand(),true));
+        assertEquals(2,plugin.civilianState(player).get("weaponAnimations").getAsInt());
+    }
     // MockBukkit does not implement visibility ray tests; these fixtures use an unobstructed world.
     static class VisiblePlayer extends PlayerMock {
         VisiblePlayer(ServerMock server,String name){super(server,name);}
