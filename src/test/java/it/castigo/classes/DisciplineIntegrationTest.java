@@ -128,6 +128,24 @@ public class DisciplineIntegrationTest {
         plugin.profile(player).resource=1000;plugin.profile(player).globalReadyAt=0;
         plugin.onCommand(player,plugin.getCommand("classe"),"classe",new String[]{"skill",Integer.toString(slot)});
     }
+    @Test void lethalComboCompletesCosmeticStrikesWithoutMoreDamage() {
+        command("set",player.getName(),"guerriero_due_mani");
+        player.getInventory().setItemInMainHand(new ItemStack(Material.IRON_SWORD));
+        var target=server.addPlayer("FinisherTarget");target.teleport(player.getLocation().add(0,0,2));target.setHealth(1);
+        player.getWorld().loadChunk(player.getLocation().getChunk());
+        var engine=new SkillEngine(plugin);var discipline=new DisciplineEngine(plugin,engine,(p,r)->target);
+        server.getPluginManager().registerEvents(discipline,plugin);
+        var skill=plugin.catalog().get("guerriero_due_mani").skills().stream().filter(s->s.effect()==it.castigo.classes.model.Skill.Effect.COMBO).findFirst().orElseThrow();
+        var test=(TestClasses)plugin;test.motions.clear();test.effects.clear();
+        assertTrue(discipline.cast(player,skill,1000));assertTrue(target.isDead());
+        // A respawn must not turn the cosmetic remainder into fresh attacks.
+        target.setHealth(20);
+        for(int i=0;i<25;i++)discipline.tick();
+        assertEquals(20,target.getHealth());
+        assertEquals(3,test.motions.stream().filter("release"::equals).count());
+        assertEquals(3,test.effects.stream().filter(e->e.has("modelStrike")).count());
+        assertFalse(discipline.busy(player));
+    }
     @Test void startsWithAllFiveDisciplinesAndKeepsEightSkills() {
         for(String id:new String[]{"mago_bianco","mago_nero","guerriero_scudo","guerriero_due_mani","arciere"})assertEquals(8,plugin.catalog().get(id).skills().size());
         assertEquals("mago_bianco",plugin.profile(player).classId);

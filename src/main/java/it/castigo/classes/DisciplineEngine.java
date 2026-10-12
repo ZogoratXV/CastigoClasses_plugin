@@ -27,7 +27,7 @@ public final class DisciplineEngine implements Listener {
     private record Preparation(Source source,Skill skill,double power,Location start,ItemStack weapon,long ready,int total,LivingEntity target) {}
     private static final class Sequence {
         final Source source;final Skill skill;final double power;final LivingEntity target;final Location at;
-        int left;long next;
+        int left;long next;boolean cosmeticOnly;
         Sequence(Source source,Skill skill,double power,LivingEntity target,Location at,int left,long next) {
             this.source=source;this.skill=skill;this.power=power;this.target=target;this.at=at;this.left=left;this.next=next;
         }
@@ -139,8 +139,12 @@ public final class DisciplineEngine implements Listener {
             if(tick<seq.next)continue;
             seq.next=tick+12;
             if(seq.skill.effect()==Skill.Effect.COMBO) {
-                if(seq.target==null||!engine.targetAllowed(p,seq.target)||!p.hasLineOfSight(seq.target)||p.getLocation().distanceSquared(seq.target.getLocation())>seq.skill.range()*seq.skill.range()) { sequences.remove(entry.getKey());continue; }
-                if(hit(p,seq.target,seq.power).accepted())engine.visual(p,seq.skill,seq.target);
+                if(seq.target!=null&&seq.target.isDead())seq.cosmeticOnly=true;
+                if(!seq.cosmeticOnly&&(seq.target==null||!engine.targetAllowed(p,seq.target)||!p.hasLineOfSight(seq.target)||p.getLocation().distanceSquared(seq.target.getLocation())>seq.skill.range()*seq.skill.range())) { sequences.remove(entry.getKey());continue; }
+                if(!seq.cosmeticOnly) {
+                    if(hit(p,seq.target,seq.power).accepted())engine.visual(p,seq.skill,seq.target);
+                    seq.cosmeticOnly=seq.target.isDead()||!seq.target.isValid();
+                }
                 engine.castVisual(p,seq.skill,3-seq.left);
             } else fire(p,seq.skill,seq.power,seq.at);
             if(--seq.left<=0)sequences.remove(entry.getKey());
@@ -241,7 +245,11 @@ public final class DisciplineEngine implements Listener {
                     }
                     default -> { }
                 }
-                if(s.effect()==Skill.Effect.COMBO)sequences.put(p.getUniqueId(),new Sequence(source(p),s,power,target,null,2,tick+12));
+                if(s.effect()==Skill.Effect.COMBO) {
+                    var sequence=new Sequence(source(p),s,power,target,null,2,tick+12);
+                    sequence.cosmeticOnly=strike.accepted()&&(target.isDead()||!target.isValid());
+                    sequences.put(p.getUniqueId(),sequence);
+                }
                 if(strike.accepted()||strike.blocked())engine.visual(p,s,target);
             }
             default -> { return false; }
@@ -308,6 +316,7 @@ public final class DisciplineEngine implements Listener {
     }
     private Buff buff(Entity e,Kind kind) { Buff b=buffs.get(new Key(e.getUniqueId(),kind));return b!=null&&b.end>tick?b:null; }
     private void put(Player p,LivingEntity target,Kind kind,Skill s,double power,double fraction) {
+        if(target.isDead()||!target.isValid())return;
         Key key=new Key(target.getUniqueId(),kind);if(buffs.size()>=4096&&!buffs.containsKey(key))return;
         Buff added=new Buff(key,source(p),s,power,fraction,tick);buffs.put(key,added);refresh(target);
         if(kind!=Kind.EXPOSED)engine.loop(p,s,SkillPresentation.Stage.TELEGRAPH,
