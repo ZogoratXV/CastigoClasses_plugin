@@ -14,6 +14,8 @@ public class DisciplineIntegrationTest {
         command("rimuovi",player.getName());
         assertNull(plugin.profile(player));assertEquals(20,player.getAttribute(Attribute.MAX_HEALTH).getValue());assertEquals(0,player.getLevel());
         var stored=new it.castigo.classes.storage.ProfileStore(new java.io.File(plugin.getDataFolder(),"players")).load(player.getUniqueId(),plugin.catalog().get("mago_bianco"),100);
+        assertEquals(4,plugin.civilianState(player).get("level").getAsInt());assertEquals(20,plugin.civilianState(player).get("maxHealth").getAsDouble());
+        assertTrue(plugin.civilianState(player).getAsJsonObject("hud").toString().contains("popolano"));
         assertFalse(stored.classAssigned);assertEquals(77,stored.dailyXp);assertEquals(3,stored.earnedStatPoints);
         plugin.join(new org.bukkit.event.player.PlayerJoinEvent(player,""));assertNull(plugin.profile(player));
         command("set",player.getName(),"arciere");assertNotNull(plugin.profile(player));assertEquals("arciere",plugin.profile(player).classId);assertEquals(77,plugin.profile(player).dailyXp);
@@ -39,6 +41,18 @@ public class DisciplineIntegrationTest {
         player.getInventory().setItemInMainHand(new ItemStack(Material.IRON_SWORD));
         var allowed=new org.bukkit.event.entity.EntityDamageByEntityEvent(player,target,org.bukkit.event.entity.EntityDamageEvent.DamageCause.ENTITY_ATTACK,4);
         server.getPluginManager().callEvent(allowed);assertFalse(allowed.isCancelled());
+    }
+    @Test void mageCannotDealNormalSwordDamageWhenOnlyStaffsAreAllowed()throws Exception {
+        plugin.equipment().setPool("mago_bianco",false,java.util.List.of("minecraft:stick"));
+        var target=server.addPlayer("SwordTarget");
+        for(var material:java.util.List.of(Material.IRON_SWORD,Material.DIAMOND_SWORD,Material.NETHERITE_SWORD)){
+            player.getInventory().setItemInMainHand(new ItemStack(material));
+            var hit=new org.bukkit.event.entity.EntityDamageByEntityEvent(player,target,org.bukkit.event.entity.EntityDamageEvent.DamageCause.ENTITY_ATTACK,7);
+            server.getPluginManager().callEvent(hit);assertTrue(hit.isCancelled(),material.toString());
+        }
+        player.getInventory().setItemInMainHand(new ItemStack(Material.STICK));
+        var hit=new org.bukkit.event.entity.EntityDamageByEntityEvent(player,target,org.bukkit.event.entity.EntityDamageEvent.DamageCause.ENTITY_ATTACK,7);
+        server.getPluginManager().callEvent(hit);assertFalse(hit.isCancelled());
     }
     // MockBukkit does not implement visibility ray tests; these fixtures use an unobstructed world.
     static class VisiblePlayer extends PlayerMock {
