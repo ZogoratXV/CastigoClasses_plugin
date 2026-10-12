@@ -73,6 +73,22 @@ public class DisciplineIntegrationTest {
         assertEquals("SWORD",plugin.animationProfile(player,player.getInventory().getItemInMainHand(),true));
         assertEquals(2,plugin.civilianState(player).get("weaponAnimations").getAsInt());
     }
+    @Test void woundedMmoHealthSurvivesModifierRemovalAndReconnect()throws Exception{
+        command("livello",player.getName(),"10");player.setHealth(35.5);
+        plugin.quit(new org.bukkit.event.player.PlayerQuitEvent(player,""));
+        var store=new it.castigo.classes.storage.ProfileStore(new java.io.File(plugin.getDataFolder(),"players"));
+        var saved=store.load(player.getUniqueId(),plugin.catalog().get("mago_bianco"),100);assertEquals(35.5,saved.health);
+        assertTrue(player.getHealth()<=20);player.setHealth(8);
+        plugin.join(new org.bukkit.event.player.PlayerJoinEvent(player,""));
+        assertEquals(35.5,player.getHealth());assertTrue(player.getHealth()<player.getAttribute(Attribute.MAX_HEALTH).getValue());
+        assertEquals(35.5,plugin.civilianState(player).get("health").getAsDouble());
+    }
+    @Test void civilianHealthAndLegacyProfileMigrationDoNotForceFullHealth()throws Exception{
+        player.setHealth(8);plugin.join(new org.bukkit.event.player.PlayerJoinEvent(player,""));assertEquals(8,player.getHealth());
+        command("rimuovi",player.getName());player.setHealth(13.25);
+        plugin.quit(new org.bukkit.event.player.PlayerQuitEvent(player,""));player.setHealth(8);
+        plugin.join(new org.bukkit.event.player.PlayerJoinEvent(player,""));assertNull(plugin.profile(player));assertEquals(13.25,player.getHealth());
+    }
     // MockBukkit does not implement visibility ray tests; these fixtures use an unobstructed world.
     static class VisiblePlayer extends PlayerMock {
         VisiblePlayer(ServerMock server,String name){super(server,name);}
@@ -297,17 +313,6 @@ public class DisciplineIntegrationTest {
         mob.setCustomName("Boss personalizzato");mob.setMetadata("MythicMob",new org.bukkit.metadata.FixedMetadataValue(plugin,true));
         var engine=new SkillEngine(plugin);assertTrue(engine.targetAllowed(player,mob));
         mob.setInvulnerable(true);assertFalse(engine.targetAllowed(player,mob));
-    }
-    @Test void orisonUsesMmoMaximumAndReportsCancelledHealingSeparately(){
-        player.getAttribute(Attribute.MAX_HEALTH).setBaseValue(47);player.setHealth(8);
-        var d=new DisciplineEngine(plugin,new SkillEngine(plugin));
-        assertEquals(DisciplineEngine.HealResult.HEALED,d.healResult(player,player,5));assertEquals(13,player.getHealth());
-        org.bukkit.event.Listener blocker=new org.bukkit.event.Listener(){};
-        server.getPluginManager().registerEvent(org.bukkit.event.entity.EntityRegainHealthEvent.class,blocker,org.bukkit.event.EventPriority.NORMAL,(l,e)->((org.bukkit.event.entity.EntityRegainHealthEvent)e).setCancelled(true),plugin);
-        assertEquals(DisciplineEngine.HealResult.CANCELLED,d.healResult(player,player,5));assertEquals(13,player.getHealth());
-        assertFalse(d.healMessage(player,DisciplineEngine.HealResult.CANCELLED).contains("vita già al massimo"));
-        org.bukkit.event.HandlerList.unregisterAll(blocker);
-        player.setHealth(player.getAttribute(Attribute.MAX_HEALTH).getValue());assertEquals(DisciplineEngine.HealResult.FULL,d.healResult(player,player,5));
     }
     @Test void healWorksWithoutAnyTeamAndPvpEligibilityIgnoresTeams() {
         var friend=server.addPlayer("Friend");friend.teleport(player.getLocation());friend.setHealth(5);

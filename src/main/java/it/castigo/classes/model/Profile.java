@@ -11,6 +11,8 @@ public final class Profile {
     public long dailyXp;
     public String xpDay="",xpResetToken="",managedClassGroup="";
     public double resource;
+    /** NaN means an older profile with no saved health; zero records death. */
+    public double health=Double.NaN;
     public int earnedStatPoints;
     public int statPointsRewardedThroughLevel=1;
     public final EnumMap<StatAttribute,Integer> allocatedStats=new EnumMap<>(StatAttribute.class);

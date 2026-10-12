@@ -17,6 +17,11 @@ public final class ProfileStore {
         Profile p = new Profile(id,fallback.id());
         if (!file.exists()) { p.resource=fallback.stats(1).mana(); p.normalize(fallback); return p; }
         YamlConfiguration y = new YamlConfiguration(); y.load(file);
+        if(y.contains("health")){
+            Object value=y.get("health");
+            if(!(value instanceof Number n)||!Double.isFinite(n.doubleValue())||n.doubleValue()<0)throw new IOException("Vita salvata non valida: "+id);
+            p.health=((Number)value).doubleValue();
+        }
         p.classAssigned=y.getBoolean("class-assigned",true);
         p.classId=y.getString("class",fallback.id()); p.level=Math.max(1,Math.min(maxLevel,y.getInt("level",1)));
         p.dailyXp=Math.max(0,y.getLong("daily-xp.amount"));p.xpDay=y.getString("daily-xp.day","");p.xpResetToken=y.getString("daily-xp.reset-token","");p.managedClassGroup=y.getString("managed-class-group","");
@@ -43,7 +48,8 @@ public final class ProfileStore {
     public void save(Profile p) throws IOException {
         YamlConfiguration y=new YamlConfiguration();
         y.set("daily-xp.amount",p.dailyXp);y.set("daily-xp.day",p.xpDay);y.set("daily-xp.reset-token",p.xpResetToken);y.set("managed-class-group",p.managedClassGroup);
-        y.set("schema",4);y.set("class-assigned",p.classAssigned); y.set("class",p.classId); y.set("level",p.level); y.set("xp",p.xp);
+        y.set("schema",5);
+        if(Double.isFinite(p.health)&&p.health>=0)y.set("health",p.health);y.set("class-assigned",p.classAssigned); y.set("class",p.classId); y.set("level",p.level); y.set("xp",p.xp);
         y.set("stat-points.earned",p.earnedStatPoints);
         y.set("stat-points.rewarded-through-level",p.statPointsRewardedThroughLevel);
         p.allocatedStats.forEach((stat,count)->y.set("stat-points.allocated."+stat.id(),count));

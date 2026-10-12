@@ -24,6 +24,7 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
     public static final String CHANNEL="castigo:classes";
     private final Gson gson=new Gson();
     private final Map<UUID,Profile> profiles=new HashMap<>();
+    private final Map<UUID,Profile> civilianProfiles=new HashMap<>();
     private final Map<UUID,Integer> classlessLevels=new HashMap<>();
     private final Set<UUID> connected=new HashSet<>();
     private final Set<UUID> clientEffects=new HashSet<>();
@@ -207,18 +208,25 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
         try {
             Profile p=store.load(player.getUniqueId(),catalog.get(getConfig().getString("default-class","mago")),progression.maxLevel());
             if(!p.classAssigned){
-                classlessLevels.put(player.getUniqueId(),p.level);
-                removeModifiers(player);player.setLevel(0);player.setExp(0);player.setTotalExperience(0);
+                classlessLevels.put(player.getUniqueId(),p.level);civilianProfiles.put(player.getUniqueId(),p);
+                removeModifiers(player);restoreHealth(player,p);player.setLevel(0);player.setExp(0);player.setTotalExperience(0);
                 if(getServer().getPluginManager().isPluginEnabled("LuckPerms"))ClassGroups.assign(this,player.getUniqueId(),p.managedClassGroup,"");
                 return;
             }
             if(catalog.get(p.classId)==null) throw new IllegalStateException("Classe salvata non trovata: "+p.classId);
             normalizeXp(p); statPoints.reconcile(p);p.normalize(definition(p),stats(p));
             store.save(p); // Persist migration/retroactive awards before the profile becomes usable.
-            profiles.put(player.getUniqueId(),p);refreshDay(p);if(p.level>=classCap(p.classId))p.xp=0; applyStats(player); displayXp(player,p);syncClassGroup(player);
+            profiles.put(player.getUniqueId(),p);refreshDay(p);if(p.level>=classCap(p.classId))p.xp=0; applyStats(player);restoreHealth(player,p); displayXp(player,p);syncClassGroup(player);
         } catch(Exception e) { getLogger().severe("Caricamento profilo "+player.getUniqueId()+": "+e.getMessage()); player.kickPlayer("Profilo classi non disponibile. Contatta lo staff."); }
     }
+    private void restoreHealth(Player player,Profile data){
+        // Do not resurrect dead players or apply a previous death's zero after respawn.
+        if(!player.isDead()&&Double.isFinite(data.health)&&data.health>0)
+            player.setHealth(Math.min(data.health,player.getAttribute(Attribute.MAX_HEALTH).getValue()));
+    }
     private void save(Profile p) {
+        Player online=Bukkit.getPlayer(p.uuid);
+        if(online!=null)p.health=online.isDead()?0:online.getHealth();
         try { store.save(p); } catch(Exception e) { getLogger().severe("Salvataggio profilo "+p.uuid+": "+e.getMessage()); }
     }
     @Override public void onDisable() {
@@ -226,15 +234,15 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
         if(engine!=null)engine.shutdown();
         cancelTicks();
         for(Player p:Bukkit.getOnlinePlayers()) {
-            Profile data=profile(p); if(data!=null) save(data);
+            Profile data=profile(p);if(data==null)data=civilianProfiles.get(p.getUniqueId()); if(data!=null) save(data);
             if(connected.contains(p.getUniqueId())) send(p,"disabled",new JsonObject());
             removeModifiers(p);
         }
-        profiles.clear(); connected.clear();clientEffects.clear();healingEffects.clear();meshEffects.clear();effectPackets.clear();
+        profiles.clear();civilianProfiles.clear();classlessLevels.clear(); connected.clear();clientEffects.clear();healingEffects.clear();meshEffects.clear();effectPackets.clear();
     }
     @EventHandler public void join(PlayerJoinEvent e) { load(e.getPlayer()); }
     @EventHandler public void quit(PlayerQuitEvent e) {
-        Player p=e.getPlayer();classlessLevels.remove(p.getUniqueId()); Profile data=profiles.remove(p.getUniqueId()); if(data!=null) save(data);
+        Player p=e.getPlayer();classlessLevels.remove(p.getUniqueId()); Profile data=profiles.remove(p.getUniqueId());if(data==null)data=civilianProfiles.remove(p.getUniqueId()); if(data!=null) save(data);
         connected.remove(p.getUniqueId()); lastRequest.remove(p.getUniqueId()); lastCatalog.remove(p.getUniqueId()); removeModifiers(p);
         modelClients.remove(p.getUniqueId());animationClients.remove(p.getUniqueId());attackVisuals.remove(p.getUniqueId());skillVariants.remove(p.getUniqueId());
         clientEffects.remove(p.getUniqueId());effectPackets.remove(p.getUniqueId());
@@ -306,7 +314,7 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
             displayXp(player,p); sync(player);
             if(ticks%10==0)broadcastGrip(player);
         }
-        if(ticks>=Math.max(10,getConfig().getInt("autosave-seconds",60))*20) { profiles.values().forEach(this::save); ticks=0; }
+        if(ticks>=Math.max(10,getConfig().getInt("autosave-seconds",60))*20) { profiles.values().forEach(this::save);civilianProfiles.values().forEach(this::save); ticks=0; }
     }
     private NamespacedKey key(String name) { return new NamespacedKey(this,name); }
     private void removeModifiers(Player p) {
@@ -635,12 +643,12 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
     }
     public void removeClass(Player p)throws Exception {
         Profile data=profile(p);if(data==null)throw new IllegalArgumentException("Il giocatore non ha una classe");
-        data.classAssigned=false;try{store.save(data);}catch(Exception ex){data.classAssigned=true;throw ex;}
+        data.health=p.getHealth();data.classAssigned=false;try{store.save(data);}catch(Exception ex){data.classAssigned=true;throw ex;}
         engine.clear(p.getUniqueId());weaponMotion(p,null,"stop",0);profiles.remove(p.getUniqueId());
         removeModifiers(p);p.setLevel(0);p.setExp(0);p.setTotalExperience(0);broadcastGrip(p);
         attackVisuals.remove(p.getUniqueId());skillVariants.remove(p.getUniqueId());
         if(getServer().getPluginManager().isPluginEnabled("LuckPerms"))ClassGroups.assign(this,p.getUniqueId(),data.managedClassGroup,"");
-        classlessLevels.put(p.getUniqueId(),data.level);sync(p);p.sendMessage("Classe rimossa. Skill e bonus disattivati.");
+        classlessLevels.put(p.getUniqueId(),data.level);civilianProfiles.put(p.getUniqueId(),data);save(data);sync(p);p.sendMessage("Classe rimossa. Skill e bonus disattivati.");
     }
     private void changeClass(Player p,String id) {
         ClassDefinition next=catalog.get(id);if(next==null)throw new IllegalArgumentException("Classe sconosciuta");
@@ -650,7 +658,7 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
                 data=store.load(p.getUniqueId(),next,progression.maxLevel());
                 if(data.classAssigned)throw new IllegalStateException("Profilo non disponibile");
                 data.classAssigned=true;data.classId=id;data.xp=0;data.level=Math.min(data.level,classCap(id));statPoints.reconcile(data);
-                data.normalize(next,stats(data));data.resource=stats(data).mana();store.save(data);profiles.put(p.getUniqueId(),data);classlessLevels.remove(p.getUniqueId());
+                data.normalize(next,stats(data));data.resource=stats(data).mana();store.save(data);profiles.put(p.getUniqueId(),data);classlessLevels.remove(p.getUniqueId());civilianProfiles.remove(p.getUniqueId());
                 syncClassGroup(p);applyStats(p);displayXp(p,data);if(connected.contains(p.getUniqueId()))catalog(p);p.sendMessage("Classe: "+next.name());return;
             }catch(Exception ex){throw new IllegalStateException("Classe non assegnata: "+ex.getMessage(),ex);}
         }
