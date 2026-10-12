@@ -298,6 +298,17 @@ public class DisciplineIntegrationTest {
         var engine=new SkillEngine(plugin);assertTrue(engine.targetAllowed(player,mob));
         mob.setInvulnerable(true);assertFalse(engine.targetAllowed(player,mob));
     }
+    @Test void orisonUsesMmoMaximumAndReportsCancelledHealingSeparately(){
+        player.getAttribute(Attribute.MAX_HEALTH).setBaseValue(47);player.setHealth(8);
+        var d=new DisciplineEngine(plugin,new SkillEngine(plugin));
+        assertEquals(DisciplineEngine.HealResult.HEALED,d.healResult(player,player,5));assertEquals(13,player.getHealth());
+        org.bukkit.event.Listener blocker=new org.bukkit.event.Listener(){};
+        server.getPluginManager().registerEvent(org.bukkit.event.entity.EntityRegainHealthEvent.class,blocker,org.bukkit.event.EventPriority.NORMAL,(l,e)->((org.bukkit.event.entity.EntityRegainHealthEvent)e).setCancelled(true),plugin);
+        assertEquals(DisciplineEngine.HealResult.CANCELLED,d.healResult(player,player,5));assertEquals(13,player.getHealth());
+        assertFalse(d.healMessage(player,DisciplineEngine.HealResult.CANCELLED).contains("vita già al massimo"));
+        org.bukkit.event.HandlerList.unregisterAll(blocker);
+        player.setHealth(player.getAttribute(Attribute.MAX_HEALTH).getValue());assertEquals(DisciplineEngine.HealResult.FULL,d.healResult(player,player,5));
+    }
     @Test void healWorksWithoutAnyTeamAndPvpEligibilityIgnoresTeams() {
         var friend=server.addPlayer("Friend");friend.teleport(player.getLocation());friend.setHealth(5);
         var engine=new SkillEngine(plugin);var disciplines=new DisciplineEngine(plugin,engine);

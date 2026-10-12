@@ -167,7 +167,7 @@ public final class DisciplineEngine implements Listener {
         switch(s.effect()) {
             case ALLY_HEAL,HOT,CLEANSE,LINK -> {
                 target=locked!=null?locked:friend(p,s.range());if(target==null)return fail(p,"Mira a un giocatore oppure abbassati per selezionare te stesso.");
-                if(s.effect()==Skill.Effect.ALLY_HEAL) { if(!heal(p,target,power))return fail(p,"Cura non possibile o vita già al massimo."); }
+                if(s.effect()==Skill.Effect.ALLY_HEAL) { var result=healResult(p,target,power);if(result!=HealResult.HEALED)return fail(p,healMessage(target,result)); }
                 if(s.effect()==Skill.Effect.HOT)put(p,target,Kind.HOT,s,power,0);
                 if(s.effect()==Skill.Effect.CLEANSE)cleanse(target);
                 if(s.effect()==Skill.Effect.LINK) {
@@ -296,15 +296,36 @@ public final class DisciplineEngine implements Listener {
         try { target.damage(Math.min(10000,power),p);return new Hit(attempt.accepted,Math.max(0,before-target.getHealth()),attempt.blocked); }
         finally { attempts.pop(); }
     }
-    boolean heal(Player p,LivingEntity target,double power) {
-        if(!ally(p,target))return false;
-        var attr=target.getAttribute(Attribute.MAX_HEALTH);if(attr==null)return false;
-        double missing=attr.getValue()-target.getHealth();if(missing<=0||power<=0)return false;
+    enum HealResult { HEALED,FULL,INVALID,ZERO_POWER,CANCELLED,ZERO_AMOUNT,UNCHANGED }
+    boolean heal(Player p,LivingEntity target,double power) {return healResult(p,target,power)==HealResult.HEALED;}
+    HealResult healResult(Player p,LivingEntity target,double power) {
+        if(!ally(p,target))return HealResult.INVALID;
+        var attr=target.getAttribute(Attribute.MAX_HEALTH);if(attr==null)return HealResult.INVALID;
+        double before=target.getHealth(),missing=attr.getValue()-before;
+        if(missing<=0)return HealResult.FULL;
+        if(!Double.isFinite(power)||power<=0)return HealResult.ZERO_POWER;
         var event=new EntityRegainHealthEvent(target,Math.min(missing,power),EntityRegainHealthEvent.RegainReason.CUSTOM);
         plugin.prepareHeal(event,p);
         try{Bukkit.getPluginManager().callEvent(event);}finally{plugin.finishHeal(event);}
-        if(event.isCancelled()||event.getAmount()<=0)return false;
-        target.setHealth(Math.min(attr.getValue(),target.getHealth()+event.getAmount()));return true;
+        if(event.isCancelled())return HealResult.CANCELLED;
+        if(!Double.isFinite(event.getAmount())||event.getAmount()<=0)return HealResult.ZERO_AMOUNT;
+        target.setHealth(Math.min(attr.getValue(),target.getHealth()+event.getAmount()));
+        if(target instanceof Player healed)plugin.sync(healed);
+        return target.getHealth()>before?HealResult.HEALED:HealResult.UNCHANGED;
+    }
+    String healMessage(LivingEntity target,HealResult result){
+        String name=target instanceof Player player?it.castigo.core.PlayerNames.name(player):target.getName();
+        var max=target.getAttribute(Attribute.MAX_HEALTH);
+        String status=name+" ("+String.format(java.util.Locale.ITALIAN,"%.1f/%.1f",target.getHealth(),max==null?0:max.getValue())+" vita): ";
+        return status+switch(result){
+            case FULL -> "vita già al massimo. Per curarti, usa Orison tenendo Shift.";
+            case CANCELLED -> "cura annullata da una protezione o da un altro plugin.";
+            case ZERO_AMOUNT -> "la cura è stata ridotta a zero o a un valore non valido.";
+            case ZERO_POWER -> "potenza di cura nulla: controlla la configurazione della skill.";
+            case INVALID -> "bersaglio non curabile qui.";
+            case UNCHANGED -> "la salute non è aumentata: verifica gli altri sistemi di salute.";
+            case HEALED -> "cura applicata.";
+        };
     }
     private Buff buff(Entity e,Kind kind) { Buff b=buffs.get(new Key(e.getUniqueId(),kind));return b!=null&&b.end>tick?b:null; }
     private void put(Player p,LivingEntity target,Kind kind,Skill s,double power,double fraction) {
