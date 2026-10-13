@@ -1,0 +1,131 @@
+CASTIGO CLASSES — RARITA E CODEX, BETA 28
+
+INSTALLAZIONE
+A server spento sostituisci il vecchio CastigoClasses con il JAR plugin beta.28.
+Mantieni CastigoCore beta.28 e i file di configurazione esistenti.
+Nei client sostituisci CastigoClasses Fabric con la mod beta.28: contiene le
+cornici tooltip colorate. Mantieni Minecraft 26.2, Fabric e Fabric API.
+Le texture/modelli ItemsAdder continuano a richiedere il resource pack del server.
+Non occorre installare mod sul server.
+
+ATTIVARE E DISATTIVARE IL CODEX
+/classe codex on       attiva la funzione
+/classe codex off      disattiva la funzione
+/classe codex admin    apre la configurazione in gioco
+/classe codex          apre la collezione personale (anche senza classe)
+On/off funzionano anche da console. Serve castigo.classes.admin per on/off/admin.
+La scelta resta salvata dopo il riavvio. Da disattivato non registra nuovi
+abbattimenti o armi, non apre la collezione, non riscuote premi e non applica skin.
+Collezioni, ricompense gia riscosse e configurazione restano conservate.
+Gli aspetti gia applicati agli oggetti rimangono; disattivare non modifica gli
+oggetti esistenti. Le rarita sono indipendenti e continuano a funzionare.
+La funzione e attiva di default, ma nessun oggetto e associato al Codex all'inizio.
+
+OGGETTO CODEX
+/classe codex admin > Oggetto Codex > clicca l'oggetto nel tuo inventario.
+Viene salvato il suo ID vanilla o ItemsAdder, senza consumarlo.
+Il clic destro con quell'oggetto apre la collezione personale.
+L'associazione vale per tutte le copie con lo stesso ID; usa un ID ItemsAdder
+dedicato se non vuoi trasformare tutti i libri vanilla in Codex.
+Shift + clic destro sul pulsante rosso rimuove l'associazione.
+
+MOB E BOSS
+La GUI admin mostra le voci registrabili. Ci sono alcune voci vanilla iniziali.
+Aggiungi mob o boss: inserisci minecraft:zombie o mythic:NomeInternoDelMob in chat.
+Clicca una voce per cambiarne nome, categoria e tipo mob/boss; clicca un oggetto
+nel tuo inventario per impostarne l'icona. Le categorie sono identificatori con
+lettere minuscole, numeri e underscore, ad esempio boss_deserto.
+Lo sblocco avviene solo all'abbattimento, per il giocatore cui Minecraft attribuisce
+l'uccisione. I soli danni e gli incontri non sbloccano la voce. Le uccisioni senza
+un giocatore responsabile non registrano nulla. Non viene condiviso con un party.
+Il passaggio mob/boss mantiene lo sblocco esistente.
+L'aspetto visualizzato nella GUI e l'icona configurata, non un modello 3D animato.
+
+ARMI E CATEGORIE
+Nella pagina principale di /classe codex admin clicca un'arma del tuo inventario:
+viene aggiunta come voce e modello della skin. Il tuo oggetto non viene preso.
+Clicca la voce e imposta il nome e la categoria esatta: spade, spade_due_mani,
+staffe, asce, archi, balestre, ecc. Le categorie si creano scrivendone il nome.
+Le armi vanilla comuni ricevono una categoria iniziale suggerita.
+Gli oggetti ItemsAdder iniziano come da_configurare: devi scegliere la categoria,
+per evitare di scambiare una staffa custom per una spada a causa del materiale base.
+La categoria da_configurare non permette di applicare skin.
+Solo gli ID inseriti dall'admin sono collezionabili. Le armi vengono registrate
+quando entrano nell'inventario, anche se comprate, scambiate o ottenute da loot;
+un controllo ogni secondo include anche gli oggetti gia posseduti.
+
+SKIN DAL CODEX
+Tieni l'arma da personalizzare nella mano principale, apri /classe codex,
+entra nella categoria e clicca un aspetto che hai collezionato.
+Sia l'arma in mano sia l'aspetto devono essere registrati e avere la stessa
+categoria esatta. Una staffa non puo essere applicata a una spada se le categorie
+sono state configurate correttamente. Dividi anche spade a una e due mani se vuoi
+impedire lo scambio di aspetti tra queste due famiglie.
+Sono copiati item model e custom model data; materiale, ID ItemsAdder, rarita,
+bonus, danno, requisiti e durabilita dell'arma originale rimangono invariati.
+Il modello originale viene conservato sul singolo oggetto. Il pulsante
+Ripristina aspetto originale lo recupera. L'animazione resta quella dell'arma base.
+Scambiare un'arma con skin non sblocca la skin del donatore: al controllo viene
+ripristinata se il nuovo possessore non l'ha collezionata.
+Per aggiornare il modello di una voce arma, clicca nella sua pagina un oggetto
+originale con lo stesso ID. Modelli speciali gestiti interamente da altri plugin
+potrebbero richiedere un adattamento; questa versione copia i componenti standard.
+
+TRAGUARDI E RICOMPENSE
+/classe codex admin > Traguardi e ricompense > Nuovo traguardo.
+Imposta categoria e numero di voci diverse richieste. Clicca un oggetto del tuo
+inventario per copiarlo come premio, quantita inclusa. Puoi aggiungere anche un
+comando console; {player} viene sostituito con il nickname Minecraft tecnico e
+{uuid} con l'UUID. Esempio, se il tuo plugin economia lo supporta:
+eco give {player} 100
+Il comando viene eseguito solo quando il giocatore riscuote dalla pagina Ricompense.
+Clic destro sull'oggetto premio lo rimuove; nel campo comando scrivi - per svuotarlo.
+Shift + clic destro sul pulsante rosso elimina il traguardo.
+Ogni traguardo ha un ID stabile: modificandolo non si azzerano le riscossioni.
+Eliminandolo e ricreandolo si crea un nuovo premio riscuotibile una volta.
+I premi con oggetti richiedono uno slot libero nello zaino; se manca, non si
+consuma la riscossione. Le riscossioni sono registrate prima di consegnare premi
+ed eseguire comandi per impedire duplicazioni. Se il server si interrompe proprio
+in quel momento o il comando fallisce, lo staff deve verificare e compensare
+manualmente: non viene rilanciato automaticamente un comando potenzialmente eseguito.
+
+RARITA DA /classe equipaggiamento
+Clicca un oggetto nel tuo inventario, poi configura i pulsanti della prima riga:
+- Rarita: Comune, Raro, Epico, Leggendario, applicata a quell'ID oggetto.
+- Colore: cambia nome e cornice tooltip per la rarita selezionata.
+- Danno base %: bonus sul danno dell'arma, non sulle statistiche totali del personaggio.
+- Armatura base %: bonus sulla protezione vanilla originale, non sulla difesa MMO.
+Colore e percentuali sono comuni a tutti gli oggetti della stessa rarita.
+Valori iniziali: Comune 0%, Raro 3%, Epico 6%, Leggendario 10%.
+Colori iniziali: bianco, blu, viola chiaro, oro. Disponibili i 16 colori vanilla.
+Percentuali modificabili tra 0 e 100. Il nome mostra anche la rarita in testo.
+Esempio: una spada con danno base 6, Leggendaria +10%, aggiunge 0,6 danni;
+non aumenta del 10% tutta la forza o l'attacco del personaggio.
+Una corazza con 6 punti nativi riceve 0,6 punti extra. I punti aggiuntivi configurati
+separatamente rimangono aggiuntivi, senza essere moltiplicati dalla rarita.
+Restano validi slot, livelli minimi e pool armi. I bonus nello zaino sono inattivi.
+Archi/balestre aumentano il danno base dei proiettili normali; le skill continuano
+ad avere il proprio calcolo del danno. Lo scudo usa la sua percentuale di parata:
+la rarita dell'armatura non moltiplica automaticamente quella percentuale.
+Gli oggetti generati col pulsante Genera un oggetto casuale conservano sia i valori
+casuali sia la rarita al momento della creazione. Le copie normali seguono la
+rarita assegnata al loro ID. Le percentuali della rarita restano aggiornabili.
+
+FILE E SALVATAGGI
+plugins/CastigoClasses/codex.yml: attivazione, oggetto, voci, categorie e traguardi.
+plugins/CastigoClasses/codex-players/<UUID>.yml: sblocchi e premi riscossi.
+plugins/CastigoClasses/rarities.yml: colori, percentuali e rarita per ID.
+plugins/CastigoClasses/gear-settings.yml: impostazioni equipaggiamento esistenti.
+I bonus casuali e l'aspetto originale delle skin sono salvati sui singoli oggetti.
+Le modifiche GUI sono immediate e salvate. Per modifiche manuali ai file di
+configurazione usa /classe reload; modifica i progressi giocatori solo a server
+spento. Esegui un backup prima di cambiare manualmente i dati.
+
+VERIFICA DELLA RELEASE
+Plugin: 160 test superati, 1 test preesistente escluso.
+Mod: 64 test superati. Entrambi compilati per Minecraft 26.2 / Java 25.
+Test automatici coprono on/off persistente, permessi, uccisioni, acquisizione,
+GUI, categorie, skin reversibili, scambio armi, ricompense uniche e rarita.
+ItemsAdder verificato con una simulazione dell'identita degli oggetti.
+Rendering tooltip e integrazione completa con ItemsAdder/MythicMobs vanno
+verificati sul server e sul client reali; non sono stati avviati in questa sessione.

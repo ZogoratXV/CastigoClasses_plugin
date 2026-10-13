@@ -18,7 +18,7 @@ public final class GearService implements Listener {
     private final CastigoClasses plugin;
     private final java.util.function.BiFunction<ItemStack,Double,ItemStack> shieldAdapter;
     private final NamespacedKey rolls,id,serial,armorKey;
-    private record Snapshot(Stats bonus,double armor) {}
+    private record Snapshot(Stats bonus,double armor,double attack) {}
     private final Map<UUID,Snapshot> previous=new HashMap<>();
     public GearService(CastigoClasses plugin){this(plugin,NativeShield::configure);}
     GearService(CastigoClasses plugin,java.util.function.BiFunction<ItemStack,Double,ItemStack> adapter){this.shieldAdapter=adapter;this.plugin=plugin;rolls=new NamespacedKey(plugin,"gear_rolls");id=new NamespacedKey(plugin,"gear_id");serial=new NamespacedKey(plugin,"gear_serial");armorKey=new NamespacedKey(plugin,"gear_armor");}
@@ -48,7 +48,7 @@ public final class GearService implements Listener {
         lore.add("§6Attributi Castigo · livello "+r.level());
         for(var s:StatAttribute.values()){double lo=r.min().getOrDefault(s,0d),hi=r.max().getOrDefault(s,0d);double value=lo==hi?lo:lo+rng.nextDouble()*(hi-lo);obj.addProperty(s.id(),value);double total=r.bonus().getOrDefault(s,0d)+value;if(total>0)lore.add("§7"+s.label()+": +"+String.format(Locale.ROOT,"%.2f",total));}
         if(r.armor()>0)lore.add("§7Protezione vanilla aggiuntiva: "+r.armor());if(r.shield()>=0)lore.add("§7Parata: "+r.shield()+"%");
-        data.set(id,PersistentDataType.STRING,r.id());data.set(serial,PersistentDataType.STRING,UUID.randomUUID().toString());data.set(rolls,PersistentDataType.STRING,obj.toString());meta.setLore(lore);item.setItemMeta(meta);return item;
+        data.set(id,PersistentDataType.STRING,r.id());data.set(serial,PersistentDataType.STRING,UUID.randomUUID().toString());data.set(rolls,PersistentDataType.STRING,obj.toString());meta.setLore(lore);item.setItemMeta(meta);return plugin.itemRarities().pin(item,r.id());
     }
     static EquipmentSlot suggestedSlot(Material material){
         String name=material.name();
@@ -78,14 +78,17 @@ public final class GearService implements Listener {
             for(var overflow:p.getInventory().addItem(item).values()){var drop=p.getWorld().dropItem(p.getLocation(),overflow);drop.setOwner(p.getUniqueId());drop.setPickupDelay(20);}
             plugin.feedback(p,"Livello insufficiente: armatura rimossa. Se l'inventario è pieno cade ai tuoi piedi.");
         }
-        double armor=0;for(var slot:List.of(EquipmentSlot.HEAD,EquipmentSlot.CHEST,EquipmentSlot.LEGS,EquipmentSlot.FEET)){var item=p.getInventory().getItem(slot);if(valid(p,item,slot))armor+=rule(item).armor();}
-        var next=new Snapshot(bonus(p),Math.min(30,armor));
+        double armor=0;for(var slot:List.of(EquipmentSlot.HEAD,EquipmentSlot.CHEST,EquipmentSlot.LEGS,EquipmentSlot.FEET)){var item=p.getInventory().getItem(slot);if(valid(p,item,slot))armor+=rule(item).armor()+rarityBonus(item,Attribute.ARMOR,slot);}
+        var held=p.getInventory().getItemInMainHand();double attack=valid(p,held,EquipmentSlot.HAND)?rarityBonus(held,Attribute.ATTACK_DAMAGE,EquipmentSlot.HAND):0;
+        var next=new Snapshot(bonus(p),Math.min(30,armor),attack);
         if(!next.equals(previous.put(p.getUniqueId(),next))){
             var attribute=p.getAttribute(Attribute.ARMOR);if(attribute!=null){var old=attribute.getModifier(armorKey);if(old!=null)attribute.removeModifier(old);
             if(armor>0)attribute.addTransientModifier(new AttributeModifier(armorKey,next.armor(),AttributeModifier.Operation.ADD_NUMBER));}
+            var damage=p.getAttribute(Attribute.ATTACK_DAMAGE);var rarityKey=new NamespacedKey(plugin,"gear_rarity_attack");if(damage!=null){var old=damage.getModifier(rarityKey);if(old!=null)damage.removeModifier(old);if(attack>0)damage.addTransientModifier(new AttributeModifier(rarityKey,attack,AttributeModifier.Operation.ADD_NUMBER));}
             plugin.applyStats(p);var profile=plugin.profile(p);if(profile!=null)profile.resource=Math.min(profile.resource,plugin.stats(p).mana());plugin.sync(p);
         }
     }
+    private double rarityBonus(ItemStack item,Attribute attribute,EquipmentSlot slot){double pct=plugin.itemRarities().percent(item,attribute.equals(Attribute.ARMOR));return pct==0?0:ItemRarities.nativeValue(item,attribute,slot)*pct;}
     public void invalidate(){previous.clear();for(var p:Bukkit.getOnlinePlayers())refresh(p);}
     private void later(Player p){Bukkit.getScheduler().runTask(plugin,()->{if(p.isOnline())refresh(p);});}
     @EventHandler public void quit(PlayerQuitEvent e){previous.remove(e.getPlayer().getUniqueId());}

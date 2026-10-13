@@ -47,6 +47,16 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
     private GearSettings gearSettings;
     private GearService gear;
     private GearAdminGui gearGui;
+    private RaritySettings rarities;
+    private ItemRarities itemRarities;
+    private CodexSettings codexSettings;
+    private CodexService codex;
+    private CodexGui codexGui;
+    public RaritySettings rarities(){return rarities;}
+    public ItemRarities itemRarities(){return itemRarities;}
+    public CodexSettings codexSettings(){return codexSettings;}
+    public CodexService codex(){return codex;}
+    public void openCodex(Player p,boolean admin){adminGui.cancelInput(p);closeProgressionInput(p);closeHudInput(p);codexGui.open(p,admin);}
     public GearSettings gearSettings(){return gearSettings;}
     public GearService gear(){return gear;}
     public void openGear(Player p){adminGui.cancelInput(p);gearGui.open(p);}
@@ -87,6 +97,10 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
         engine=new SkillEngine(this);
         adminGui=new SkillAdminGui(this);
         gear=createGearService();gearGui=new GearAdminGui(this);
+        itemRarities=new ItemRarities(this);codex=new CodexService(this);codexGui=new CodexGui(this);
+        getServer().getPluginManager().registerEvents(itemRarities,this);
+        getServer().getPluginManager().registerEvents(codex,this);
+        getServer().getPluginManager().registerEvents(codexGui,this);
         getServer().getPluginManager().registerEvents(gear,this);getServer().getPluginManager().registerEvents(gearGui,this);
         classWeapons=new ClassWeapons(this);getServer().getPluginManager().registerEvents(classWeapons,this);
         hudGui=new HudAdminGui(this);
@@ -137,6 +151,9 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
         }
         WeaponCalibration nextCalibration=new WeaponCalibration(new File(getDataFolder(),"weapon-poses.json").toPath());
         GearSettings nextGear=new GearSettings(new File(getDataFolder(),"gear-settings.yml").toPath());
+        RaritySettings nextRarities=new RaritySettings(getDataFolder().toPath().resolve("rarities.yml"));
+        CodexSettings nextCodex=new CodexSettings(getDataFolder().toPath().resolve("codex.yml"));
+        rarities=nextRarities;codexSettings=nextCodex;
         gearSettings=nextGear;
         calibration=nextCalibration;
         progressionSettings=nextProgression;
@@ -161,7 +178,7 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
     public ProgressionSettings progressionSettings(){return progressionSettings;}
     public int classCap(String id){return progressionSettings.cap(id,catalog,progression.maxLevel());}
     public void openProgression(Player p){if(gearGui!=null)gearGui.cancel(p);if(calibrationGui!=null)calibrationGui.cancel(p);adminGui.cancelInput(p);hudGui.cancelInput(p);progressionGui.open(p);}
-    public void closeProgressionInput(Player p){if(gearGui!=null)gearGui.cancel(p);if(calibrationGui!=null)calibrationGui.cancel(p);if(progressionGui!=null)progressionGui.cancelInput(p);}
+    public void closeProgressionInput(Player p){if(codexGui!=null)codexGui.cancel(p);if(gearGui!=null)gearGui.cancel(p);if(calibrationGui!=null)calibrationGui.cancel(p);if(progressionGui!=null)progressionGui.cancelInput(p);}
     public void resetDaily(Player p){var data=profile(p);if(data==null)return;refreshDay(data);data.dailyXp=0;save(data);sync(p);}
     private void refreshDay(Profile p){ExperienceBudget.rollover(p,progressionSettings.day(java.time.Instant.now()),progressionSettings.token());}
     public boolean twoHanded(Player player){
@@ -325,6 +342,7 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
     private void tick() {
         ticks+=5;if(ticks%100==0)experienceListener.prune();
         for(Player player:Bukkit.getOnlinePlayers()) {
+            if(ticks%20==0){itemRarities.refresh(player);codex.scan(player);}
             if(gear!=null)gear.refresh(player);
             Profile p=profile(player); if(p==null){sync(player);if(ticks%10==0)broadcastGrip(player);continue;}
             refreshDay(p);if(p.level>=classCap(p.classId))p.xp=0;
@@ -561,6 +579,14 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
     }
     @Override public boolean onCommand(CommandSender sender,Command command,String label,String[] args) {
         try {
+            if(args.length>0&&args[0].equalsIgnoreCase("codex")){
+                String action=args.length>1?args[1].toLowerCase(java.util.Locale.ROOT):"apri";
+                if(Set.of("on","off","admin").contains(action)&&!sender.hasPermission("castigo.classes.admin"))throw new IllegalArgumentException("Permesso mancante");
+                if(action.equals("on")||action.equals("off")){codexSettings.enabled(action.equals("on"));codexGui.closePlayers();sender.sendMessage("Codex "+(codexSettings.enabled()?"attivato":"disattivato")+". Collezioni e ricompense conservate.");return true;}
+                if(!Set.of("admin","apri").contains(action))throw new IllegalArgumentException("Uso: /classe codex [admin|on|off]");
+                if(!(sender instanceof Player p))throw new IllegalArgumentException("Apri il Codex in gioco");
+                openCodex(p,action.equals("admin"));return true;
+            }
             if(args.length>0&&args[0].equals("equipaggiamento")){
                 if(!sender.hasPermission("castigo.classes.admin"))throw new IllegalArgumentException("Permesso mancante");
                 if(!(sender instanceof Player p))throw new IllegalArgumentException("Apri la GUI in gioco");
@@ -705,7 +731,7 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
             if(!names.isEmpty())return names;
             if(args[0].equals("set"))return catalog.all().keySet().stream().filter(n->n.startsWith(args[args.length-1])).toList();
         }
-        List<String> choices=args.length==1?new ArrayList<>(List.of("lista","skill","scambia","sottoclasse","assegna")):new ArrayList<>();
+        List<String> choices=args.length==1?new ArrayList<>(List.of("lista","skill","scambia","sottoclasse","assegna","codex")):new ArrayList<>();
         if(args.length==2&&args[0].equals("prova")&&s.hasPermission("castigo.classes.admin"))choices.addAll(List.of("crea","report","reset","rimuovi"));
         if(args.length==2&&args[0].equals("assegna"))for(StatAttribute stat:StatAttribute.values())choices.add(stat.label().toLowerCase(Locale.ROOT));
         if(args.length==1&&s.hasPermission("castigo.classes.admin"))choices.addAll(List.of("reload","set","xp","livello","admin","icona","hud","progressione","pose","prova","diagnosi","rimuovi","armi","equipaggiamento"));
@@ -717,6 +743,7 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
         if(args.length==2&&args[0].equals("armi")&&s.hasPermission("castigo.classes.admin"))choices.addAll(catalog.all().keySet());
         if(args.length==2&&args[0].equals("sottoclasse")||args.length==3&&args[0].equals("set"))choices.addAll(catalog.all().keySet());
         if(args.length==2&&Set.of("set","xp","livello","rimuovi").contains(args[0])&&s.hasPermission("castigo.classes.admin"))Bukkit.getOnlinePlayers().forEach(p->choices.add(it.castigo.core.PlayerNames.name(p)));
+        if(args.length==2&&args[0].equals("codex")&&s.hasPermission("castigo.classes.admin"))choices.addAll(List.of("admin","on","off"));
         String prefix=args[args.length-1].toLowerCase(Locale.ROOT);return choices.stream().filter(x->x.startsWith(prefix)).toList();
     }
 }

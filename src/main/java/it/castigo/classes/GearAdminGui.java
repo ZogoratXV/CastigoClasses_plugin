@@ -37,6 +37,11 @@ public final class GearAdminGui implements Listener {
             inv.setItem(2,button(Material.HOPPER,"Slot attivo: "+r.slot(),"Clic: cambia slot","Bonus attivi solo se equipaggiato in questo slot"));
             inv.setItem(3,button(Material.IRON_CHESTPLATE,"Protezione vanilla aggiuntiva: "+r.armor(),"Punti armatura, non percentuale","Si sommano alla protezione originale del pezzo","Solo negli slot armatura; 2 punti = 1 icona"));
             inv.setItem(4,button(Material.SHIELD,"Protezione scudo: "+r.shield(),"Da 0 a 100%; -1 mantiene la parata originale","Richiede uno scudo realmente in parata"));
+            var tier=plugin.rarities().tier(id);var style=plugin.rarities().style(tier);
+            inv.setItem(5,button(Material.DIAMOND,"Rarità: "+tier.label,"Clic: cambia rarità di questo ID","Gli oggetti generati conservano la loro rarità"));
+            inv.setItem(6,button(Material.PAINTING,"Colore: "+style.color(),"Clic: cambia colore della rarità selezionata","Vale per tutti gli oggetti di questa rarità"));
+            inv.setItem(7,button(Material.IRON_SWORD,"Danno base: +"+style.damage()+"%","Clic: percentuale della rarità selezionata"));
+            inv.setItem(8,button(Material.IRON_CHESTPLATE,"Armatura base: +"+style.armor()+"%","Clic: percentuale della rarità selezionata"));
             var stats=StatAttribute.values();for(int i=0;i<stats.length;i++){var s=stats[i];inv.setItem(9+i,button(Material.PAPER,s.label()+" · bonus fisso: "+r.bonus().getOrDefault(s,0d),"Clic: modifica bonus"));inv.setItem(18+i,button(Material.REDSTONE,s.label()+" · casuale minimo: "+r.min().getOrDefault(s,0d),"Si aggiunge al bonus fisso"));inv.setItem(27+i,button(Material.GLOWSTONE_DUST,s.label()+" · casuale massimo: "+r.max().getOrDefault(s,0d),"Aumenta il massimo prima del minimo"));}
             inv.setItem(45,button(Material.ARROW,"Indietro"));inv.setItem(48,button(Material.BARRIER,"Rimuovi regola","Shift + clic destro per confermare","I bonus di questo ID diventeranno inattivi"));inv.setItem(50,button(Material.NETHER_STAR,"Genera un oggetto casuale","Crea 1 copia con valori salvati sull'oggetto","Non rilancia i valori degli oggetti già esistenti"));
         }
@@ -61,7 +66,8 @@ public final class GearAdminGui implements Listener {
             if(slot==45){later(p,()->show(p,null,m.page));return;}
             if(slot==50){if(p.getInventory().firstEmpty()<0)throw new IllegalArgumentException("Libera uno slot nell'inventario");var item=plugin.gear().generate(r,java.util.concurrent.ThreadLocalRandom.current());p.getInventory().addItem(item);p.sendMessage("§aOggetto casuale generato.");return;}
             if(slot==2){plugin.gearSettings().put(r.slot(GearSettings.SLOTS.get((GearSettings.SLOTS.indexOf(r.slot())+1)%GearSettings.SLOTS.size())));plugin.gear().invalidate();later(p,()->show(p,m.id,m.page));return;}
-            String field=switch(slot){case 1->"level";case 3->"armor";case 4->"shield";default->null;};
+            if(slot==5||slot==6){var tier=plugin.rarities().tier(m.id);if(slot==5)plugin.rarities().set(m.id,RaritySettings.Tier.values()[(tier.ordinal()+1)%4]);else{var colors=new ArrayList<>(net.kyori.adventure.text.format.NamedTextColor.NAMES.keys());Collections.sort(colors);var style=plugin.rarities().style(tier);plugin.rarities().set(tier,new RaritySettings.Style(colors.get((colors.indexOf(style.color())+1)%colors.size()),style.damage(),style.armor()));}plugin.gear().invalidate();later(p,()->show(p,m.id,m.page));return;}
+            String field=switch(slot){case 1->"level";case 3->"armor";case 4->"shield";case 7->"rarity.damage";case 8->"rarity.armor";default->null;};
             for(int i=0;i<7;i++){String id=StatAttribute.values()[i].id();if(slot==9+i)field="bonus."+id;if(slot==18+i)field="min."+id;if(slot==27+i)field="max."+id;}
             if(field!=null)ask(p,m.id,field);
         }catch(Exception ex){p.sendMessage("§c"+ex.getMessage());}
@@ -70,7 +76,7 @@ public final class GearAdminGui implements Listener {
     @EventHandler(priority=EventPriority.LOWEST) public void chat(AsyncPlayerChatEvent e){
         var input=inputs.remove(e.getPlayer().getUniqueId());if(input==null)return;e.setCancelled(true);String text=e.getMessage();Player p=e.getPlayer();
         later(p,()->{if(!p.hasPermission("castigo.classes.admin")||System.nanoTime()>input.expires())return;if(text.equalsIgnoreCase("annulla")){show(p,input.id(),0);return;}
-            try{var rule=plugin.gearSettings().get(input.id());if(rule==null)throw new IllegalArgumentException("Oggetto rimosso");plugin.gearSettings().put(rule.field(input.field(),Double.parseDouble(text.replace(',','.'))));plugin.gear().invalidate();p.sendMessage("§aConfigurazione salvata.");}catch(Exception ex){p.sendMessage("§cValore non salvato: "+ex.getMessage());}show(p,input.id(),0);
+            try{var rule=plugin.gearSettings().get(input.id());if(rule==null)throw new IllegalArgumentException("Oggetto rimosso");double value=Double.parseDouble(text.replace(',','.'));if(input.field().startsWith("rarity.")){var tier=plugin.rarities().tier(input.id());var style=plugin.rarities().style(tier);plugin.rarities().set(tier,new RaritySettings.Style(style.color(),input.field().equals("rarity.damage")?value:style.damage(),input.field().equals("rarity.armor")?value:style.armor()));}else plugin.gearSettings().put(rule.field(input.field(),value));plugin.gear().invalidate();p.sendMessage("§aConfigurazione salvata.");}catch(Exception ex){p.sendMessage("§cValore non salvato: "+ex.getMessage());}show(p,input.id(),0);
         });
     }
     @EventHandler public void quit(PlayerQuitEvent e){cancel(e.getPlayer());}

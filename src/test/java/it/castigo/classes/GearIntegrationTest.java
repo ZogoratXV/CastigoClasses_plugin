@@ -59,7 +59,7 @@ class GearIntegrationTest {
     @Test void itemsAdderIdentitySurvivesGenerationAndDoesNotAffectVanillaBaseItem()throws Exception{
         MockBukkit.createMockPlugin("ItemsAdder");var custom=new ItemStack(Material.IRON_SWORD);var meta=custom.getItemMeta();meta.setDisplayName("Lama del regno");meta.getPersistentDataContainer().set(new NamespacedKey("itemsadder","test_id"),org.bukkit.persistence.PersistentDataType.STRING,"regno:lama");custom.setItemMeta(meta);
         plugin.gear().register(custom);var r=plugin.gearSettings().get("itemsadder:regno:lama").field("bonus.attack",4);plugin.gearSettings().put(r);
-        var generated=plugin.gear().generate(r,new Random(1));assertEquals("itemsadder:regno:lama",SkillEquipment.identify(generated));assertEquals("Lama del regno",generated.getItemMeta().getDisplayName());
+        var generated=plugin.gear().generate(r,new Random(1));assertEquals("itemsadder:regno:lama",SkillEquipment.identify(generated));assertEquals("Lama del regno · Comune",org.bukkit.ChatColor.stripColor(generated.getItemMeta().getDisplayName()));
         player.getInventory().setItemInMainHand(generated);assertEquals(4,plugin.gear().bonus(player).attack());player.getInventory().setItemInMainHand(new ItemStack(Material.IRON_SWORD));assertEquals(0,plugin.gear().bonus(player).attack());
     }
     void click(int slot){var view=player.getOpenInventory();server.getPluginManager().callEvent(new InventoryClickEvent(view,InventoryType.SlotType.CONTAINER,slot,ClickType.LEFT,InventoryAction.PICKUP_ALL));server.getScheduler().performTicks(1);}
