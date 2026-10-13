@@ -20,17 +20,34 @@ public final class CodexService implements Listener {
         try{
             var found=new HashSet<String>();for(var item:p.getInventory().getContents())if(item!=null&&!item.getType().isAir()){var entry=plugin.codexSettings().identity(SkillEquipment.identify(item));if(entry!=null&&entry.kind()==CodexSettings.Kind.WEAPON)found.add(entry.key());}
             if(progress.discover(p.getUniqueId(),found))plugin.feedback(p,"Codex: nuovi aspetti di armi registrati.");
-            var data=progress(p);for(int i=0;i<p.getInventory().getSize();i++){var item=p.getInventory().getItem(i);String skin=WeaponSkins.source(item);if(skin==null)continue;var entry=plugin.codexSettings().get(skin);var target=plugin.codexSettings().identity(SkillEquipment.identify(item));if(entry==null||!data.found().contains(skin)||!compatible(target,entry))p.getInventory().setItem(i,WeaponSkins.restore(item));}
+            var data=progress(p);for(int i=0;i<p.getInventory().getSize();i++){
+                var item=p.getInventory().getItem(i);if(item==null||item.getType().isAir())continue;
+                var target=plugin.codexSettings().identity(SkillEquipment.identify(item));
+                String preferred=target==null?null:data.skins().get(target.category());var selected=preferred==null?null:plugin.codexSettings().get(preferred);
+                boolean held=i==p.getInventory().getHeldItemSlot()||i==40;
+                if(held&&selected!=null&&data.found().contains(preferred)&&compatible(target,selected)){
+                    if(!preferred.equals(WeaponSkins.source(item)))p.getInventory().setItem(i,WeaponSkins.apply(item,selected.icon(),preferred));
+                }else if(WeaponSkins.source(item)!=null)p.getInventory().setItem(i,WeaponSkins.restore(item));
+            }
         }catch(Exception ex){failure(ex);}
     }
     public static boolean compatible(CodexSettings.Entry target,CodexSettings.Entry source){return target!=null&&source!=null&&target.kind()==CodexSettings.Kind.WEAPON&&source.kind()==CodexSettings.Kind.WEAPON&&!target.category().equals("da_configurare")&&target.category().equals(source.category());}
     public void skin(Player p,String key)throws Exception{
-        requireEnabled();scan(p);var item=p.getInventory().getItemInMainHand();var target=plugin.codexSettings().identity(SkillEquipment.identify(item));var source=plugin.codexSettings().get(key);
-        if(!progress(p).found().contains(key))throw new IllegalArgumentException("Aspetto non ancora collezionato");
-        if(!compatible(target,source))throw new IllegalArgumentException("Serve un'arma della stessa categoria esatta nella mano principale");
-        p.getInventory().setItemInMainHand(WeaponSkins.apply(item,source.icon(),source.key()));plugin.gear().refresh(p);
+        requireEnabled();scan(p);var source=plugin.codexSettings().get(key);
+        if(source==null||source.kind()!=CodexSettings.Kind.WEAPON||!progress(p).found().contains(key))throw new IllegalArgumentException("Aspetto non ancora collezionato");
+        if(source.category().equals("da_configurare"))throw new IllegalArgumentException("Lo staff deve configurare la categoria di quest'arma");
+        progress.select(p.getUniqueId(),source.category(),source.key());scan(p);
     }
-    public void restore(Player p)throws Exception{requireEnabled();var item=p.getInventory().getItemInMainHand();p.getInventory().setItemInMainHand(WeaponSkins.restore(item));}
+    public void restore(Player p)throws Exception{requireEnabled();progress.clearSkins(p.getUniqueId());scan(p);}
+    public void clearCategory(Player p,String category)throws Exception{requireEnabled();progress.select(p.getUniqueId(),category,null);scan(p);}
+    private void later(Player p){Bukkit.getScheduler().runTask(plugin,()->{if(p.isOnline())scan(p);});}
+    @EventHandler(ignoreCancelled=true) public void held(PlayerItemHeldEvent e){later(e.getPlayer());}
+    @EventHandler(ignoreCancelled=true) public void swap(PlayerSwapHandItemsEvent e){later(e.getPlayer());}
+    @EventHandler(ignoreCancelled=true) public void inventory(org.bukkit.event.inventory.InventoryClickEvent e){if(e.getWhoClicked() instanceof Player p)later(p);}
+    @EventHandler(ignoreCancelled=true) public void drag(org.bukkit.event.inventory.InventoryDragEvent e){if(e.getWhoClicked() instanceof Player p)later(p);}
+    @EventHandler public void close(org.bukkit.event.inventory.InventoryCloseEvent e){if(e.getPlayer() instanceof Player p)later(p);}
+    @EventHandler(priority=EventPriority.HIGH,ignoreCancelled=true) public void drop(PlayerDropItemEvent e){e.getItemDrop().setItemStack(WeaponSkins.restore(e.getItemDrop().getItemStack()));later(e.getPlayer());}
+    @EventHandler(priority=EventPriority.HIGH) public void drops(PlayerDeathEvent e){e.getDrops().replaceAll(WeaponSkins::restore);}
     public int count(Player p,String category)throws Exception{var found=progress(p).found();return (int)plugin.codexSettings().entries().stream().filter(e->e.category().equals(category)&&found.contains(e.key())).count();}
     public void claim(Player p,String id)throws Exception{
         requireEnabled();var reward=plugin.codexSettings().reward(id);if(reward==null||count(p,reward.category())<reward.threshold())throw new IllegalArgumentException("Traguardo non raggiunto");
@@ -49,6 +66,7 @@ public final class CodexService implements Listener {
     private void requireEnabled(){if(!plugin.codexSettings().enabled())throw new IllegalArgumentException("Codex disabilitato");}
     @EventHandler(priority=EventPriority.MONITOR) public void acquired(io.papermc.paper.event.player.PlayerInventorySlotChangeEvent e){
         if(!plugin.codexSettings().enabled()||e.getNewItemStack().getType().isAir())return;
+        later(e.getPlayer());
         try{var entry=plugin.codexSettings().identity(SkillEquipment.identify(e.getNewItemStack()));if(entry!=null&&entry.kind()==CodexSettings.Kind.WEAPON&&progress.discover(e.getPlayer().getUniqueId(),Set.of(entry.key())))plugin.feedback(e.getPlayer(),"Codex: nuovo aspetto di arma registrato.");}catch(Exception ex){failure(ex);}
     }
     public String mobIdentity(LivingEntity entity)throws Exception{

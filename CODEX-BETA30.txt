@@ -1,0 +1,31 @@
+CASTIGO CLASSES BETA.30 — SKIN DEL PERSONAGGIO
+
+Aggiorna soltanto il plugin; la mod beta.29 resta valida.
+Apri il Codex anche tenendo in mano il suo oggetto dedicato.
+Clic sinistro su una skin sbloccata: seleziona l'aspetto preferito per quella categoria.
+Da quel momento le armi impugnate della stessa categoria assumono automaticamente
+l'aspetto scelto, mantenendo danno, durabilita, rarita, requisiti e attributi propri.
+La preferenza e salvata per UUID e rimane dopo uscita e riavvio.
+Puoi scegliere contemporaneamente, per esempio, una skin per spade e una per archi.
+Una staffa non diventa una spada: le categorie impostate dall'admin restano vincolanti.
+Anche le armi su cui applicare l'aspetto devono avere la categoria configurata nel Codex.
+Il cambio viene applicato al cambio slot/mano e controllato periodicamente.
+
+Clic destro su una voce arma: disattiva la preferenza per quella categoria.
+Pulsante Disattiva skin selezionate: rimuove tutte le preferenze del personaggio.
+La GUI indica quale skin e attiva. Le voci non sbloccate restano grigie.
+L'oggetto Codex non viene trasformato solo perche lo tieni in mano.
+Gli oggetti non impugnati tornano al loro aspetto originale durante il controllo.
+Il destinatario di un'arma scambiata usa le proprie preferenze e non eredita gli
+sblocchi o le preferenze del donatore. Oggetti lasciati a terra e drop alla morte
+vengono ripristinati al modello originale.
+
+I vecchi sblocchi e le ricompense vengono conservati. Gli aspetti applicati nella
+vecchia modalita al singolo oggetto vengono sostituiti dalle preferenze personali:
+seleziona nuovamente dal Codex le skin che vuoi utilizzare.
+/classe codex off sospende anche l'applicazione automatica; le preferenze restano
+salvate e riprendono quando il Codex viene riattivato.
+
+Verifica: 162 test plugin superati, 1 test preesistente escluso.
+Include selezione col libro in mano, cambio arma, restrizioni di categoria,
+persistenza e scambio tra giocatori. Da verificare sul server reale.

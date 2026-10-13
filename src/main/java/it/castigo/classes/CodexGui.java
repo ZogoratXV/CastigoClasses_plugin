@@ -26,7 +26,7 @@ public final class CodexGui implements Listener {
     private static ItemStack icon(ItemStack item,String name,String... lore){var copy=item.clone();copy.setAmount(1);var meta=copy.getItemMeta();meta.setDisplayName(name);meta.setLore(List.of(lore));copy.setItemMeta(meta);return copy;}
     private static ItemStack button(Material material,String name,String... lore){return icon(new ItemStack(material),name,lore);}
     static ItemStack collectionIcon(CodexSettings.Entry entry,boolean unlocked){
-        var result=icon(entry.icon(),(unlocked?"§f":"§7")+entry.name(),"§7"+entry.category(),unlocked?"§aSbloccato":"§8Non ancora sbloccato",entry.kind()==CodexSettings.Kind.WEAPON?(unlocked?"§eClic: applica aspetto all'arma in mano":"§7Ottieni quest'arma per sbloccarla"):"§7Si registra dopo l'abbattimento");
+        var result=icon(entry.icon(),(unlocked?"§f":"§7")+entry.name(),"§7"+entry.category(),unlocked?"§aSbloccato":"§8Non ancora sbloccato",entry.kind()==CodexSettings.Kind.WEAPON?(unlocked?"§eClic: scegli skin per questa categoria":"§7Ottieni quest'arma per sbloccarla"):"§7Si registra dopo l'abbattimento");
         if(!unlocked){var meta=result.getItemMeta();meta.setTooltipStyle(new NamespacedKey("castigoclasses","codex_locked"));meta.setEnchantmentGlintOverride(false);result.setItemMeta(meta);}
         return result;
     }
@@ -51,7 +51,7 @@ public final class CodexGui implements Listener {
                 String id=m.keys.get(i);
                 if(view==View.CATEGORIES){long total=settings.entries().stream().filter(e->e.category().equals(id)).count();inv.setItem(i,button(Material.BOOK,id,plugin.codex().count(p,id)+" / "+total+" registrati"));}
                 else if(view==View.REWARDS||view==View.REWARD_LIST){var r=settings.reward(id);boolean claimed=!m.admin()&&plugin.codex().progress(p).claimed().contains(id);inv.setItem(i,button(Material.CHEST,r.category()+" · "+r.threshold()+" registrazioni",m.admin()?"Clic: configura ricompensa":claimed?"Già riscossa":"Clic: riscuoti se hai raggiunto il traguardo"));}
-                else{var e=settings.get(id);inv.setItem(i,m.admin()?icon(e.icon(),e.name(),e.category(),e.identity(),"Clic: configura"):collectionIcon(e,found.contains(id)));}
+                else{var e=settings.get(id);inv.setItem(i,m.admin()?icon(e.icon(),e.name(),e.category(),e.identity(),"Clic: configura"):collectionIcon(e,found.contains(id)));if(!m.admin()&&e.kind()==CodexSettings.Kind.WEAPON&&found.contains(id)){var item=inv.getItem(i);var meta=item.getItemMeta();var lore=new ArrayList<>(meta.getLore());lore.add(e.key().equals(plugin.codex().progress(p).skins().get(e.category()))?"§aSkin attiva per questa categoria":"§7Skin non selezionata");lore.add("§7Clic destro: disattiva skin della categoria");meta.setLore(lore);item.setItemMeta(meta);}}
             }
             if(view==View.ENTRY){var e=settings.get(key);if(e==null){show(p,View.ADMIN,null,0);return;}
                 inv.setItem(0,icon(e.icon(),e.name(),e.identity()));inv.setItem(10,button(Material.NAME_TAG,"Nome: "+e.name()));inv.setItem(11,button(Material.BOOK,"Categoria: "+e.category(),"Stessa categoria esatta = skin compatibili","Separa spade, staffe, asce, archi..."));inv.setItem(12,button(Material.NETHER_STAR,"Tipo: "+e.kind(),"Clic: alterna mob / boss"));
@@ -65,7 +65,7 @@ public final class CodexGui implements Listener {
             inv.setItem(45,button(Material.ARROW,"Pagina precedente"));inv.setItem(53,button(Material.ARROW,"Pagina successiva"));inv.setItem(49,button(Material.ARROW,"Indietro"));
             if(view==View.ADMIN){inv.setItem(46,button(Material.BOOK,"Oggetto Codex"));inv.setItem(47,button(Material.ZOMBIE_HEAD,"Aggiungi mob o boss"));inv.setItem(48,button(Material.CHEST,"Traguardi e ricompense"));inv.setItem(50,button(Material.IRON_SWORD,"Aggiungi arma: clicca il tuo inventario","Gli oggetti non vengono consumati"));inv.setItem(51,button(Material.LEVER,"Codex: "+(settings.enabled()?"attivo":"disattivo"),"Clic: attiva/disattiva, conservando i progressi"));}
             if(view==View.REWARD_LIST)inv.setItem(50,button(Material.EMERALD,"Nuovo traguardo"));
-            if(view==View.CATEGORIES||view==View.COLLECTION){inv.setItem(47,button(Material.CHEST,"Ricompense"));inv.setItem(51,button(Material.MILK_BUCKET,"Ripristina aspetto originale","Dell'arma nella mano principale"));}
+            if(view==View.CATEGORIES||view==View.COLLECTION){inv.setItem(47,button(Material.CHEST,"Ricompense"));inv.setItem(51,button(Material.MILK_BUCKET,"Disattiva skin selezionate","Ripristina tutte le categorie del tuo personaggio"));}
             if(view==View.CATEGORIES)inv.setItem(50,button(Material.BOOKSHELF,"Tutta la collezione","Mostra anche gli oggetti non ancora sbloccati"));
             if(view==View.COLLECTION)inv.setItem(49,button(Material.BOOK,"Sfoglia per categoria"));
             p.openInventory(inv);
@@ -97,7 +97,7 @@ public final class CodexGui implements Listener {
                     case ADMIN->later(p,()->show(p,View.ENTRY,key,0));
                     case REWARD_LIST->later(p,()->show(p,View.REWARD,key,0));
                     case REWARDS->{plugin.codex().claim(p,key);later(p,()->show(p,m.view,m.key,m.page));}
-                    case COLLECTION->{var entry=s.get(key);if(entry!=null&&entry.kind()==CodexSettings.Kind.WEAPON){plugin.codex().skin(p,key);p.sendMessage("§aAspetto applicato.");}}
+                    case COLLECTION->{var entry=s.get(key);if(entry!=null&&entry.kind()==CodexSettings.Kind.WEAPON){if(e.getClick()==ClickType.RIGHT){plugin.codex().clearCategory(p,entry.category());p.sendMessage("§aSkin disattivata per "+entry.category()+".");}else{plugin.codex().skin(p,key);p.sendMessage("§aSkin selezionata per tutte le tue armi della categoria "+entry.category()+".");}later(p,()->show(p,m.view,m.key,m.page));}}
                     default->{}
                 }return;
             }
@@ -106,7 +106,7 @@ public final class CodexGui implements Listener {
                 case ENTRY->{var entry=s.get(m.key);if(entry==null)return;if(slot==10)ask(p,m,"nome");if(slot==11)ask(p,m,"categoria");if(slot==12&&entry.kind()!=CodexSettings.Kind.WEAPON){var next=new CodexSettings.Entry(entry.kind()==CodexSettings.Kind.MOB?CodexSettings.Kind.BOSS:CodexSettings.Kind.MOB,entry.identity(),entry.name(),entry.category(),entry.icon());s.put(next);later(p,()->show(p,View.ENTRY,next.key(),0));}}
                 case REWARD_LIST->{if(slot==50){var r=new CodexSettings.Reward(UUID.randomUUID().toString(),"mob",5,null,"");s.put(r);later(p,()->show(p,View.REWARD,r.id(),0));}}
                 case REWARD->{if(slot==10)ask(p,m,"categoria");if(slot==11)ask(p,m,"traguardo");if(slot==12)ask(p,m,"comando");if(slot==22&&e.getClick()==ClickType.RIGHT){var r=s.reward(m.key);if(r!=null)s.put(new CodexSettings.Reward(r.id(),r.category(),r.threshold(),null,r.command()));later(p,()->show(p,m.view,m.key,0));}}
-                case CATEGORIES,COLLECTION->{if(slot==50&&m.view==View.CATEGORIES)later(p,()->show(p,View.COLLECTION,null,0));if(slot==47)later(p,()->show(p,View.REWARDS,null,0));if(slot==51){plugin.codex().restore(p);p.sendMessage("§aAspetto originale ripristinato.");}}
+                case CATEGORIES,COLLECTION->{if(slot==50&&m.view==View.CATEGORIES)later(p,()->show(p,View.COLLECTION,null,0));if(slot==47)later(p,()->show(p,View.REWARDS,null,0));if(slot==51){plugin.codex().restore(p);p.sendMessage("§aPreferenze skin rimosse: aspetti originali ripristinati.");}}
                 default->{}
             }
         }catch(Exception ex){p.sendMessage("§cCodex: "+ex.getMessage());}

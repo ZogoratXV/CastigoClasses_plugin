@@ -48,7 +48,7 @@ class CodexIntegrationTest {
     @Test void skinCopiesOnlyAppearanceAndRejectsWrongCategoryAndLockedSource()throws Exception{
         var iron=weapon(Material.IRON_SWORD,"spade");var gold=weapon(Material.GOLDEN_SWORD,"spade");var staff=weapon(Material.BLAZE_ROD,"staffe");
         var item=iron.icon();var meta=item.getItemMeta();meta.setDisplayName("Arma originale");meta.getPersistentDataContainer().set(new NamespacedKey("test","damage"),PersistentDataType.INTEGER,99);meta.setItemModel(NamespacedKey.fromString("test:original"));item.setItemMeta(meta);player.getInventory().setItemInMainHand(item);
-        assertThrows(IllegalArgumentException.class,()->plugin.codex().skin(player,gold.key()));player.getInventory().setItem(9,gold.icon());player.getInventory().setItem(10,staff.icon());plugin.codex().scan(player);assertThrows(IllegalArgumentException.class,()->plugin.codex().skin(player,staff.key()));plugin.codex().skin(player,gold.key());var skinned=player.getInventory().getItemInMainHand();assertEquals(Material.IRON_SWORD,skinned.getType());assertEquals("Arma originale",skinned.getItemMeta().getDisplayName());assertEquals(99,skinned.getItemMeta().getPersistentDataContainer().get(new NamespacedKey("test","damage"),PersistentDataType.INTEGER));assertEquals(NamespacedKey.minecraft("golden_sword"),skinned.getItemMeta().getItemModel());
+        assertThrows(IllegalArgumentException.class,()->plugin.codex().skin(player,gold.key()));player.getInventory().setItem(9,gold.icon());player.getInventory().setItem(10,staff.icon());plugin.codex().scan(player);plugin.codex().skin(player,staff.key());assertNull(WeaponSkins.source(player.getInventory().getItemInMainHand()));plugin.codex().skin(player,gold.key());var skinned=player.getInventory().getItemInMainHand();assertEquals(Material.IRON_SWORD,skinned.getType());assertEquals("Arma originale",skinned.getItemMeta().getDisplayName());assertEquals(99,skinned.getItemMeta().getPersistentDataContainer().get(new NamespacedKey("test","damage"),PersistentDataType.INTEGER));assertEquals(NamespacedKey.minecraft("golden_sword"),skinned.getItemMeta().getItemModel());
         plugin.codex().restore(player);assertEquals(item,player.getInventory().getItemInMainHand());
     }
     @Test void tradingSkinnedWeaponDoesNotUnlockSkinForRecipient()throws Exception{
@@ -72,4 +72,15 @@ class CodexIntegrationTest {
         player.getInventory().setItem(9,model);plugin.openCodex(player,false);var unlocked=player.getOpenInventory().getTopInventory().getItem(netheriteSlot);assertFalse(unlocked.getItemMeta().hasTooltipStyle());assertTrue(unlocked.getItemMeta().getEnchantmentGlintOverride());assertEquals(Material.NETHERITE_SWORD,unlocked.getType());
         click(netheriteSlot);assertEquals(netherite.key(),WeaponSkins.source(player.getInventory().getItemInMainHand()));
     }
+    @Test void preferredSkinCanBeSelectedWithCodexInHandAndFollowsCategoryAcrossWeapons()throws Exception{
+        var wood=weapon(Material.WOODEN_SWORD,"spade");var iron=weapon(Material.IRON_SWORD,"spade");var gold=weapon(Material.GOLDEN_SWORD,"spade");var staff=weapon(Material.BLAZE_ROD,"staffe");
+        plugin.codexSettings().book("minecraft:book");player.getInventory().setItemInMainHand(new ItemStack(Material.BOOK));player.getInventory().setItem(9,gold.icon());plugin.codex().scan(player);plugin.codex().skin(player,gold.key());
+        assertEquals(Material.BOOK,player.getInventory().getItemInMainHand().getType());assertNull(WeaponSkins.source(player.getInventory().getItemInMainHand()));
+        assertEquals(gold.key(),new CodexProgress(plugin.getDataFolder().toPath().resolve("codex-players")).get(player.getUniqueId()).skins().get("spade"));
+        for(var entry:List.of(wood,iron)){player.getInventory().setItemInMainHand(entry.icon());plugin.codex().scan(player);assertEquals(entry.icon().getType(),player.getInventory().getItemInMainHand().getType());assertEquals(gold.key(),WeaponSkins.source(player.getInventory().getItemInMainHand()));}
+        player.getInventory().setItemInMainHand(staff.icon());plugin.codex().scan(player);assertNull(WeaponSkins.source(player.getInventory().getItemInMainHand()));
+        player.getInventory().setItemInMainHand(wood.icon());plugin.codex().scan(player);var other=server.addPlayer();other.getInventory().setItemInMainHand(player.getInventory().getItemInMainHand().clone());plugin.codex().scan(other);assertNull(WeaponSkins.source(other.getInventory().getItemInMainHand()));assertEquals(gold.key(),plugin.codex().progress(player).skins().get("spade"));
+        plugin.codex().clearCategory(player,"spade");assertNull(WeaponSkins.source(player.getInventory().getItemInMainHand()));assertFalse(plugin.codex().progress(player).skins().containsKey("spade"));
+    }
+
 }

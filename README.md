@@ -1,3 +1,5 @@
+**Beta.30:** [skin preferite del personaggio per categoria](CODEX-BETA30.txt), selezionabili anche dal Codex tenuto in mano. Aggiornare il plugin; mod beta.29 compatibile.
+
 **Beta.29:** [collezione completa e icone bloccate in grigio](CODEX-BETA29.txt). Aggiornare plugin e mod.
 
 **Aggiornamento beta.28:** rarità e Codex con comando di attivazione, collezioni, ricompense e skin per categoria. [Guida completa](CODEX-GUIDE.txt). Aggiornare entrambi i JAR.
