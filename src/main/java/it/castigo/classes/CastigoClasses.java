@@ -44,6 +44,13 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
     public void openWeapons(Player p,String id){classWeapons.open(p,id,false,0);}
     private VfxSettings vfxSettings;
     private SkillAdminGui adminGui;
+    private GearSettings gearSettings;
+    private GearService gear;
+    private GearAdminGui gearGui;
+    public GearSettings gearSettings(){return gearSettings;}
+    public GearService gear(){return gear;}
+    public void openGear(Player p){adminGui.cancelInput(p);gearGui.open(p);}
+
     private HudSettings hudSettings;
     private HudAdminGui hudGui;
     private ProgressionSettings progressionSettings;
@@ -79,6 +86,8 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
         adminTools=new AdminTools(this);getServer().getPluginManager().registerEvents(adminTools,this);
         engine=new SkillEngine(this);
         adminGui=new SkillAdminGui(this);
+        gear=createGearService();gearGui=new GearAdminGui(this);
+        getServer().getPluginManager().registerEvents(gear,this);getServer().getPluginManager().registerEvents(gearGui,this);
         classWeapons=new ClassWeapons(this);getServer().getPluginManager().registerEvents(classWeapons,this);
         hudGui=new HudAdminGui(this);
         calibrationGui=new WeaponCalibrationGui(this);
@@ -98,6 +107,7 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
         for(var world:Bukkit.getWorlds())for(var orb:world.getEntitiesByClass(org.bukkit.entity.ExperienceOrb.class))orb.remove();
         scheduleTick(this::tick);
     }
+    protected GearService createGearService(){return new GearService(this);}
     protected void scheduleTick(Runnable task) { CoreApi.repeat(this,task,5,5); }
     protected void cancelTicks() { CoreApi.cancel(this); }
     private void loadConfiguration() throws Exception {
@@ -126,6 +136,8 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
             HudSettings.validateGroup(nextProgression.group(d.id(),next));
         }
         WeaponCalibration nextCalibration=new WeaponCalibration(new File(getDataFolder(),"weapon-poses.json").toPath());
+        GearSettings nextGear=new GearSettings(new File(getDataFolder(),"gear-settings.yml").toPath());
+        gearSettings=nextGear;
         calibration=nextCalibration;
         progressionSettings=nextProgression;
         catalog=next; progression=curve; statPoints=pointRules;equipment=nextEquipment;
@@ -144,12 +156,12 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
     public void finishHeal(EntityRegainHealthEvent e){experienceListener.finishHeal(e);}
     public void protectedDamage(EntityDamageByEntityEvent e,Player p,double amount){if(p!=null)experienceListener.protectedDamage(e,p,amount);}
     public WeaponCalibration calibration(){return calibration;}
-    public void openCalibration(Player p){adminGui.cancelInput(p);hudGui.cancelInput(p);progressionGui.cancelInput(p);calibrationGui.open(p,null);}
+    public void openCalibration(Player p){if(gearGui!=null)gearGui.cancel(p);adminGui.cancelInput(p);hudGui.cancelInput(p);progressionGui.cancelInput(p);calibrationGui.open(p,null);}
     private JsonObject poseFor(org.bukkit.inventory.ItemStack item){try{return calibration.get(SkillEquipment.identify(item));}catch(Exception|LinkageError e){return new JsonObject();}}
     public ProgressionSettings progressionSettings(){return progressionSettings;}
     public int classCap(String id){return progressionSettings.cap(id,catalog,progression.maxLevel());}
-    public void openProgression(Player p){if(calibrationGui!=null)calibrationGui.cancel(p);adminGui.cancelInput(p);hudGui.cancelInput(p);progressionGui.open(p);}
-    public void closeProgressionInput(Player p){if(calibrationGui!=null)calibrationGui.cancel(p);if(progressionGui!=null)progressionGui.cancelInput(p);}
+    public void openProgression(Player p){if(gearGui!=null)gearGui.cancel(p);if(calibrationGui!=null)calibrationGui.cancel(p);adminGui.cancelInput(p);hudGui.cancelInput(p);progressionGui.open(p);}
+    public void closeProgressionInput(Player p){if(gearGui!=null)gearGui.cancel(p);if(calibrationGui!=null)calibrationGui.cancel(p);if(progressionGui!=null)progressionGui.cancelInput(p);}
     public void resetDaily(Player p){var data=profile(p);if(data==null)return;refreshDay(data);data.dailyXp=0;save(data);sync(p);}
     private void refreshDay(Profile p){ExperienceBudget.rollover(p,progressionSettings.day(java.time.Instant.now()),progressionSettings.token());}
     public boolean twoHanded(Player player){
@@ -196,20 +208,26 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
     public SkillPresentation presentation(Player p,Skill skill) { return vfxSettings.resolve(profile(p).classId,skill,catalog.presentation(skill)); }
     public JsonObject casting(Player p) { return engine.casting(p.getUniqueId()); }
     public boolean equipped(Player p,Skill skill) {
-        return profile(p)!=null&&equipment.matches(p,profile(p).classId,skill,catalog.mechanics(skill));
+        if(profile(p)==null)return false;
+        var requirement=equipment.requirement(profile(p).classId,skill,catalog.mechanics(skill));
+        var held=requirement.offhand()?p.getInventory().getItemInOffHand():p.getInventory().getItemInMainHand();
+        return (gear==null||gear.allowed(p,held))&&equipment.matches(p,profile(p).classId,skill,catalog.mechanics(skill));
     }
     public void refreshCatalogs() {
         engine.shutdown();
         for(Player p:Bukkit.getOnlinePlayers())if(connected.contains(p.getUniqueId()))catalog(p);
     }
-    public Stats stats(Player p) { return stats(profile(p)); }
+    public Stats stats(Player p) {
+        Stats base=profile(p)==null?new Stats(0,0,20,0,0,0,0):stats(profile(p));
+        return gear==null?base:GearService.add(base,gear.bonus(p));
+    }
     private Stats stats(Profile p) { return statPoints.total(p,definition(p)); }
     private void load(Player player) {
         try {
             Profile p=store.load(player.getUniqueId(),catalog.get(getConfig().getString("default-class","mago")),progression.maxLevel());
             if(!p.classAssigned){
                 classlessLevels.put(player.getUniqueId(),p.level);civilianProfiles.put(player.getUniqueId(),p);
-                removeModifiers(player);restoreHealth(player,p);player.setLevel(0);player.setExp(0);player.setTotalExperience(0);
+                removeModifiers(player);if(gear!=null)applyStats(player);restoreHealth(player,p);player.setLevel(0);player.setExp(0);player.setTotalExperience(0);
                 if(getServer().getPluginManager().isPluginEnabled("LuckPerms"))ClassGroups.assign(this,player.getUniqueId(),p.managedClassGroup,"");
                 return;
             }
@@ -231,6 +249,7 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
     }
     @Override public void onDisable() {
         if(adminTools!=null)adminTools.close();
+        if(gear!=null)gear.restoreShields();
         if(engine!=null)engine.shutdown();
         cancelTicks();
         for(Player p:Bukkit.getOnlinePlayers()) {
@@ -277,7 +296,7 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
         }
     }
     @EventHandler(ignoreCancelled=true,priority=EventPriority.HIGH) public void defense(EntityDamageByEntityEvent e) {
-        if(e.getEntity() instanceof Player p && profile(p)!=null) e.setDamage(Stats.mitigate(e.getDamage(),stats(p).defense()*engine.defenseFactor(p.getUniqueId())));
+        if(e.getEntity() instanceof Player p) e.setDamage(Stats.mitigate(e.getDamage(),stats(p).defense()*engine.defenseFactor(p.getUniqueId())));
     }
     private void normalizeXp(Profile p){if(p.level>=classCap(p.classId))p.xp=0;else new Progression(classCap(p.classId),progression.baseXp(),progression.growth()).add(p,0);}
     public void validateClassCap(String id,int cap){
@@ -306,10 +325,11 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
     private void tick() {
         ticks+=5;if(ticks%100==0)experienceListener.prune();
         for(Player player:Bukkit.getOnlinePlayers()) {
+            if(gear!=null)gear.refresh(player);
             Profile p=profile(player); if(p==null){sync(player);if(ticks%10==0)broadcastGrip(player);continue;}
             refreshDay(p);if(p.level>=classCap(p.classId))p.xp=0;
             ClassDefinition d=definition(p);
-            if(!player.isDead()) p.resource=AbilityRules.regenerate(p.resource,stats(p).mana(),d.regenPerSecond()+d.regenPerLevel()*(p.level-1),0.25);
+            if(!player.isDead()) p.resource=AbilityRules.regenerate(p.resource,stats(player).mana(),d.regenPerSecond()+d.regenPerLevel()*(p.level-1),0.25);
             p.cooldowns.entrySet().removeIf(e->e.getValue()<=System.currentTimeMillis());
             displayXp(player,p); sync(player);
             if(ticks%10==0)broadcastGrip(player);
@@ -318,7 +338,7 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
     }
     private NamespacedKey key(String name) { return new NamespacedKey(this,name); }
     private void removeModifiers(Player p) {
-        for(Attribute a:List.of(Attribute.MAX_HEALTH,Attribute.ATTACK_DAMAGE,Attribute.ATTACK_SPEED)) {
+        for(Attribute a:List.of(Attribute.MAX_HEALTH,Attribute.ATTACK_DAMAGE,Attribute.ATTACK_SPEED,Attribute.ARMOR)) {
             AttributeInstance attr=p.getAttribute(a); if(attr==null)continue;
             for(AttributeModifier m:List.copyOf(attr.getModifiers())) if(m.getKey().getNamespace().equals("castigoclasses")) attr.removeModifier(m);
         }
@@ -380,8 +400,8 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
         JsonObject combat=new JsonObject();
         combat.addProperty("attackDamage",player.getAttribute(Attribute.ATTACK_DAMAGE).getValue());
         combat.addProperty("attackSpeed",player.getAttribute(Attribute.ATTACK_SPEED).getValue());
-        combat.addProperty("meleeBonus",CombatMath.meleeBonus(stats(p),strengthFactor()));
-        combat.addProperty("defenseReductionPercent",CombatMath.defenseReduction(stats(p)));
+        combat.addProperty("meleeBonus",CombatMath.meleeBonus(stats(player),strengthFactor()));
+        combat.addProperty("defenseReductionPercent",CombatMath.defenseReduction(stats(player)));
         obj.add("combat",combat);
         if(animationClients.contains(player.getUniqueId())){obj.addProperty("weaponAnimations",2);obj.addProperty("weaponProfile",animationProfile(player,player.getInventory().getItemInMainHand(),true));obj.addProperty("weaponSlot",player.getInventory().getHeldItemSlot());obj.add("weaponCalibration",poseFor(player.getInventory().getItemInMainHand()));}
         obj.add("slots",gson.toJsonTree(p.slots)); JsonObject cooldowns=new JsonObject();
@@ -541,6 +561,11 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
     }
     @Override public boolean onCommand(CommandSender sender,Command command,String label,String[] args) {
         try {
+            if(args.length>0&&args[0].equals("equipaggiamento")){
+                if(!sender.hasPermission("castigo.classes.admin"))throw new IllegalArgumentException("Permesso mancante");
+                if(!(sender instanceof Player p))throw new IllegalArgumentException("Apri la GUI in gioco");
+                openGear(p);return true;
+            }
             if(args.length>0&&args[0].equals("rimuovi")){
                 if(!sender.hasPermission("castigo.classes.admin"))throw new IllegalArgumentException("Permesso mancante");
                 if(args.length<2)throw new IllegalArgumentException("Uso: /classe rimuovi <nome RP o UUID>");
@@ -576,6 +601,7 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
                         profile.normalize(definition(profile),stats(profile));save(profile);
                         applyStats(p);syncClassGroup(p);if(connected.contains(p.getUniqueId()))catalog(p);
                     }
+                    gear.invalidate();
                     sender.sendMessage("Classi ricaricate.");return true;
                 }
                 if(args.length<3)throw new IllegalArgumentException("Uso: /classe "+args[0]+" <giocatore> <valore>");
@@ -648,7 +674,7 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
         removeModifiers(p);p.setLevel(0);p.setExp(0);p.setTotalExperience(0);broadcastGrip(p);
         attackVisuals.remove(p.getUniqueId());skillVariants.remove(p.getUniqueId());
         if(getServer().getPluginManager().isPluginEnabled("LuckPerms"))ClassGroups.assign(this,p.getUniqueId(),data.managedClassGroup,"");
-        classlessLevels.put(p.getUniqueId(),data.level);civilianProfiles.put(p.getUniqueId(),data);save(data);sync(p);p.sendMessage("Classe rimossa. Skill e bonus disattivati.");
+        classlessLevels.put(p.getUniqueId(),data.level);civilianProfiles.put(p.getUniqueId(),data);gear.invalidate();save(data);sync(p);p.sendMessage("Classe rimossa. Skill e bonus disattivati.");
     }
     private void changeClass(Player p,String id) {
         ClassDefinition next=catalog.get(id);if(next==null)throw new IllegalArgumentException("Classe sconosciuta");
@@ -682,7 +708,7 @@ public class CastigoClasses extends JavaPlugin implements Listener, PluginMessag
         List<String> choices=args.length==1?new ArrayList<>(List.of("lista","skill","scambia","sottoclasse","assegna")):new ArrayList<>();
         if(args.length==2&&args[0].equals("prova")&&s.hasPermission("castigo.classes.admin"))choices.addAll(List.of("crea","report","reset","rimuovi"));
         if(args.length==2&&args[0].equals("assegna"))for(StatAttribute stat:StatAttribute.values())choices.add(stat.label().toLowerCase(Locale.ROOT));
-        if(args.length==1&&s.hasPermission("castigo.classes.admin"))choices.addAll(List.of("reload","set","xp","livello","admin","icona","hud","progressione","pose","prova","diagnosi","rimuovi","armi"));
+        if(args.length==1&&s.hasPermission("castigo.classes.admin"))choices.addAll(List.of("reload","set","xp","livello","admin","icona","hud","progressione","pose","prova","diagnosi","rimuovi","armi","equipaggiamento"));
         if(s.hasPermission("castigo.classes.admin")&&args[0].equals("icona")) {
             if(args.length==2)choices.addAll(catalog.all().keySet());
             if(args.length==3&&catalog.get(args[1])!=null)catalog.get(args[1]).skills().forEach(skill->choices.add(skill.id()));

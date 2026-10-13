@@ -97,6 +97,9 @@ public class DisciplineIntegrationTest {
     // MockBukkit cannot instantiate the supplied final core plugin. Only its scheduling
     // bridge is substituted; ParticleStyle and atomic profile writes use the real core JAR.
     public static class TestClasses extends CastigoClasses {
+        // MockBukkit does not implement Paper data components. Gameplay/rules remain real.
+        final java.util.Map<org.bukkit.Material,Double> nativeShieldPercent=new java.util.HashMap<>();
+        @Override protected GearService createGearService(){return new GearService(this,(item,percent)->{if(item!=null)nativeShieldPercent.put(item.getType(),percent);return item;});}
         final java.util.List<com.google.gson.JsonObject> effects=new java.util.ArrayList<>();
         final java.util.List<java.util.UUID> stopped=new java.util.ArrayList<>();
         final java.util.List<String> motions=new java.util.ArrayList<>();

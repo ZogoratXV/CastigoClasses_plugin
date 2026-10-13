@@ -29,6 +29,7 @@ public final class SkillAdminGui implements Listener {
         var menu=new Menu(p,classId,skill,page,off);menu.inventory=Bukkit.createInventory(menu,54,"Castigo · Configura skill");
         var inv=menu.inventory;
         if(classId==null) {
+            inv.setItem(51,button(Material.DIAMOND_CHESTPLATE,"Equipaggiamento e attributi","Livelli, protezione, bonus e generazione casuale"));
             inv.setItem(46,button(Material.COMPARATOR,"Diagnosi configurazione","Controlli classi e texture client"));
             inv.setItem(50,button(Material.TARGET,"Bersaglio di prova","Crea davanti a te per 10 minuti","Misure: /classe prova report"));
             inv.setItem(47,button(Material.IRON_SWORD,"Calibra animazioni armi","Posizione, angoli e intensità per oggetto"));
@@ -94,6 +95,7 @@ public final class SkillAdminGui implements Listener {
             }
             if(slot<0||slot>=54)return;
             if(m.classId==null) {
+                if(slot==51){later(p,()->plugin.openGear(p));return;}
                 if(slot==46){later(p,()->plugin.adminTools().diagnose(p));return;}
                 if(slot==50){later(p,()->{try{p.closeInventory();plugin.adminTools().command(p,"crea");}catch(Exception ex){p.sendMessage(ex.getMessage());}});return;}
                 if(slot==47){later(p,()->plugin.openCalibration(p));return;}

@@ -1,0 +1,75 @@
+CASTIGO CLASSES — EQUIPAGGIAMENTO, BETA 27
+
+INSTALLAZIONE
+Sostituisci il JAR del plugin a server spento e riavvia. La mod beta.26 resta compatibile.
+Le statistiche totali vengono inviate alla HUD esistente.
+
+MENU ADMIN
+Usa /classe equipaggiamento oppure /classe admin > Equipaggiamento e attributi.
+Serve il permesso castigo.classes.admin.
+Clicca un oggetto nel tuo inventario: viene copiato come modello, senza consumarlo.
+La regola distingue l'ID vanilla dall'ID ItemsAdder: una spada custom non modifica
+automaticamente tutte le spade del materiale su cui è basata.
+
+CONFIGURAZIONE
+- Livello minimo: livello MMO necessario per usare l'oggetto. Senza classe vale 1.
+- Slot attivo: HAND (principale), OFF_HAND (secondaria), HEAD, CHEST, LEGS, FEET.
+  Lo slot è un suggerimento iniziale: correggilo per oggetti custom particolari.
+- Protezione vanilla aggiuntiva: punti ARMOR aggiunti alla protezione originale
+  del pezzo. Non è una percentuale e non sostituisce la protezione nativa.
+  Funziona solo negli slot armatura. Sono conservati robustezza e incantesimi.
+  È soggetta alle formule e ai limiti di Minecraft, non rende invulnerabili.
+- Protezione scudo: percentuale della parata originale. Per uno scudo vanilla,
+  40 significa bloccare il 40% del danno normalmente parabile; 0 non blocca,
+  100 conserva la parata completa, -1 lascia il comportamento originale.
+  Direzione, tipi di danno parabili e tempi restano quelli dello scudo.
+  Un oggetto ItemsAdder deve già essere in grado di parare: questa opzione
+  non trasforma automaticamente una spada o un oggetto cosmetico in uno scudo.
+- Bonus fissi: forza, destrezza, vita, risorsa, intelligenza, attacco, difesa.
+  Si sommano alle statistiche del personaggio quando l'oggetto è nello slot scelto.
+  Difesa è il parametro RPG già esistente; ARMOR è la protezione vanilla.
+  Per usare solo la protezione vanilla, lascia il bonus difesa a 0.
+
+Clicca un valore e scrivi il numero in chat; accetta anche la virgola decimale.
+Scrivi annulla per uscire. Il salvataggio avviene subito e aggiorna i giocatori online.
+Non serve /classe reload dopo una modifica nella GUI.
+Gli oggetti nelle borse non forniscono bonus. Le pool di classe restano valide.
+Equipaggiare un bonus vita aumenta il massimo ma non cura il giocatore.
+Togliere vita/risorsa extra può ridurre il valore corrente fino al nuovo massimo.
+Le armature di livello insufficiente vengono rimesse nell'inventario; se è pieno,
+cadono ai piedi del giocatore con proprietario impostato.
+
+OGGETTI CASUALI
+Per ogni attributo imposta massimo e poi minimo (minimo <= massimo).
+0 e 0 disabilitano il bonus casuale per quell'attributo; valori uguali lo rendono fisso.
+Il pulsante Genera crea una copia del modello, conservando nome, aspetto e dati
+ItemsAdder, e salva un valore casuale per ciascun intervallo direttamente nell'oggetto.
+Il totale è: bonus fisso della regola + bonus casuale salvato nell'oggetto.
+Non vengono consumate risorse: è uno strumento admin, non una ricetta per i player.
+I risultati rimangono gli stessi dopo scambi, riavvii e riconnessioni.
+Cambiare gli intervalli influisce sulle nuove generazioni, non rilancia gli oggetti vecchi.
+Cambiare i bonus fissi influisce anche sugli oggetti già esistenti; la lore generata
+è una descrizione al momento della generazione, mentre la HUD usa i valori correnti.
+Le regole valgono per ID; i valori casuali valgono solo sul singolo esemplare generato.
+Gli oggetti senza valori casuali ricevono comunque i bonus fissi configurati.
+
+ESEMPIO
+Seleziona una spada, lascia HAND, imposta livello 15, bonus attacco 2,
+casuale massimo attacco 5 e minimo attacco 1. Genera una copia.
+La spada fornirà tra 3 e 7 di attacco extra, usabile dal livello 15.
+Seleziona una corazza, scegli CHEST, protezione vanilla aggiuntiva 2,
+bonus vita 10 e difesa 0: aggiunge 2 punti di armatura vanilla e 10 vita massima.
+
+FILE E RIMOZIONE
+Le regole sono in plugins/CastigoClasses/gear-settings.yml, creato al primo salvataggio.
+Contiene anche i modelli degli oggetti: meglio usare la GUI e conservarne un backup.
+Le modifiche manuali richiedono /classe reload.
+Shift + clic destro su Rimuovi regola disattiva requisiti e bonus per quell'ID,
+compresi i valori casuali. Gli oggetti fisici non vengono cancellati.
+Rimettere una regola per lo stesso ID riattiva anche i valori casuali già salvati.
+
+VERIFICA IN GIOCO
+I test automatici coprono regole, bonus, livelli, persistenza, GUI e ID ItemsAdder
+tramite una simulazione della sua API. La parata nativa usa l'API Paper/Purpur 26.2;
+il suo comportamento grafico e il danno finale con gli altri plugin vanno provati
+sul server. Prova uno scudo al 40% con e senza armatura e contro un colpo alle spalle.
