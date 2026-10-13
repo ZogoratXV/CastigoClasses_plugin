@@ -1,0 +1,25 @@
+CASTIGO CLASSES BETA.29 — COLLEZIONE CODEX
+
+Aggiorna il plugin sul server e la mod su tutti i client, sostituendo i vecchi JAR.
+Le configurazioni Codex e gli sblocchi gia salvati restano validi.
+
+/classe codex apre ora tutta la collezione configurata dall'admin, con pagine.
+- Oggetti sbloccati: modello originale a colori e dicitura Sbloccato.
+- Oggetti bloccati: stesso modello in scala di grigi, nome grigio e indicazione
+  di come sbloccarli. Le armi bloccate non possono essere applicate come skin.
+- Sfoglia per categoria apre i filtri; Tutta la collezione torna all'elenco completo.
+
+La desaturazione viene applicata dalla mod alla copia mostrata nella GUI, anche
+per i modelli ItemsAdder e i modelli grandi. Non modifica gli oggetti posseduti,
+le texture del resource pack o le statistiche. Le voci admin restano a colori.
+Serve la mod beta.29 per vedere le immagini grigie: col vecchio client il testo
+indichera comunque lo stato bloccato, ma le immagini non saranno desaturate.
+
+La collezione comprende gli ID inseriti in /classe codex admin, non tutti gli
+oggetti installati automaticamente. Per le armi le categorie devono ancora
+coincidere esattamente tra arma da personalizzare e aspetto selezionato.
+
+Verifica: 161 test plugin superati (1 preesistente escluso), 66 test mod superati.
+Test verificano modello e stato delle icone, sblocco e protezione dalle applicazioni
+premature, oltre agli agganci di rendering di Minecraft 26.2.
+La resa grafica finale va verificata nel client Minecraft: non avviato in questa sessione.

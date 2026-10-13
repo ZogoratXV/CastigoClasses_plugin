@@ -1,3 +1,5 @@
+**Beta.29:** [collezione completa e icone bloccate in grigio](CODEX-BETA29.txt). Aggiornare plugin e mod.
+
 **Aggiornamento beta.28:** rarità e Codex con comando di attivazione, collezioni, ricompense e skin per categoria. [Guida completa](CODEX-GUIDE.txt). Aggiornare entrambi i JAR.
 
 **Aggiornamento beta.18:** [animazioni con Player Animation Library e correzione dei tempi VFX](docs/AGGIORNAMENTO-BETA18.md). Aggiornare entrambi i JAR.

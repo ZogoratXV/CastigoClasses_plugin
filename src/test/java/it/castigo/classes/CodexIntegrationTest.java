@@ -63,4 +63,13 @@ class CodexIntegrationTest {
     @Test void itemsAdderCategoriesAreExplicitAndIdentityIsPreserved()throws Exception{
         MockBukkit.createMockPlugin("ItemsAdder");var item=new ItemStack(Material.IRON_SWORD);var meta=item.getItemMeta();meta.getPersistentDataContainer().set(new NamespacedKey("itemsadder","test_id"),PersistentDataType.STRING,"regno:staff");item.setItemMeta(meta);staff();player.getInventory().setItem(9,item);plugin.openCodex(player,true);click(54);var entry=plugin.codexSettings().identity("itemsadder:regno:staff");assertNotNull(entry);assertEquals("da_configurare",entry.category());assertFalse(CodexService.compatible(entry,entry));assertEquals("itemsadder:regno:staff",SkillEquipment.identify(WeaponSkins.apply(item,new ItemStack(Material.BLAZE_ROD),"test")));
     }
+    @Test void fullCollectionShowsRealLockedIconsAndUnlockRestoresColorWithoutChangingTemplate()throws Exception{
+        var wood=weapon(Material.WOODEN_SWORD,"spade");var netherite=weapon(Material.NETHERITE_SWORD,"spade");
+        var model=netherite.icon();var meta=model.getItemMeta();meta.setItemModel(NamespacedKey.fromString("test:custom_sword"));meta.setEnchantmentGlintOverride(true);model.setItemMeta(meta);netherite=new CodexSettings.Entry(netherite.kind(),netherite.identity(),netherite.name(),netherite.category(),model);plugin.codexSettings().put(netherite);
+        player.getInventory().setItemInMainHand(wood.icon());plugin.openCodex(player,false);var menu=player.getOpenInventory().getTopInventory();int woodSlot=plugin.codexSettings().entries().indexOf(wood),netheriteSlot=plugin.codexSettings().entries().indexOf(netherite);
+        assertEquals(Material.NETHERITE_SWORD,menu.getItem(netheriteSlot).getType());assertEquals(NamespacedKey.fromString("test:custom_sword"),menu.getItem(netheriteSlot).getItemMeta().getItemModel());assertEquals(NamespacedKey.fromString("castigoclasses:codex_locked"),menu.getItem(netheriteSlot).getItemMeta().getTooltipStyle());assertFalse(menu.getItem(netheriteSlot).getItemMeta().getEnchantmentGlintOverride());assertFalse(menu.getItem(woodSlot).getItemMeta().hasTooltipStyle());
+        click(netheriteSlot);assertNull(WeaponSkins.source(player.getInventory().getItemInMainHand()));assertEquals(model,plugin.codexSettings().get(netherite.key()).icon());
+        player.getInventory().setItem(9,model);plugin.openCodex(player,false);var unlocked=player.getOpenInventory().getTopInventory().getItem(netheriteSlot);assertFalse(unlocked.getItemMeta().hasTooltipStyle());assertTrue(unlocked.getItemMeta().getEnchantmentGlintOverride());assertEquals(Material.NETHERITE_SWORD,unlocked.getType());
+        click(netheriteSlot);assertEquals(netherite.key(),WeaponSkins.source(player.getInventory().getItemInMainHand()));
+    }
 }
